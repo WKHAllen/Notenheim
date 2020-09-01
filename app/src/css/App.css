@@ -1,0 +1,9 @@
+.App {
+	background-color: #1f273f;
+	color: white;
+	min-height: 100vh;
+}
+
+.App-Body {
+	padding: 32px;
+}

@@ -1,0 +1,12 @@
+{
+  "name": "pgtr",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "cd app && npm start",
+    "build": "cd app && npm run build",
+    "test": "cd app && npm test",
+    "eject": "cd app && npm run eject",
+    "postinstall": "cd app && npm install"
+  }
+}

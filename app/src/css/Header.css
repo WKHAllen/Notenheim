@@ -1,0 +1,22 @@
+.Header {
+	height: 80px;
+	padding: 16px;
+	background-color: #2f374f;
+}
+
+.Home-Label {
+	display: inline-block;
+	vertical-align: middle;
+	line-height: normal;
+	margin-bottom: 0;
+	padding-left: 12px;
+	color: #bfcfdf;
+}
+
+.Home-Label:hover {
+	color: #cfdfef;
+}
+
+.Home-Label:active {
+	color: #dfefff;
+}
