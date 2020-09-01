@@ -1,1 +1,1 @@
-web: npm run build && go build -o bin/pgtr && chmod +x ./bin/pgtr -v && ./bin/pgtr
+web: npm run build && go build -o bin/notenheim && chmod +x ./bin/notenheim -v && ./bin/notenheim

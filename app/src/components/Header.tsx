@@ -8,7 +8,7 @@ export default class Header extends React.Component {
 			<div className="Header">
 				<Link to="/">
 					<img src="logo192.png" alt="logo" width="48" height="48" />
-					<h4 className="Home-Label">PGTR App</h4>
+					<h4 className="Home-Label">Notenheim</h4>
 				</Link>
 			</div>
 		);
