@@ -17,7 +17,6 @@ import (
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	_ "github.com/heroku/x/hmetrics/onload"
-	heroku "github.com/jonahgeorge/force-ssl-heroku"
 )
 
 func main() {
@@ -60,7 +59,7 @@ func main() {
 	// Set up server
 	server := &http.Server{
 		Addr:    ":" + port,
-		Handler: heroku.ForceSsl(router),
+		Handler: app.ForceSSL(router),
 	}
 
 	go func() {
