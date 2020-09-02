@@ -1,7 +1,7 @@
 .Header {
 	height: 80px;
 	padding: 16px;
-	background-color: #2f374f;
+	background-color: #1850c8;
 }
 
 .Home-Label {
@@ -10,13 +10,13 @@
 	line-height: normal;
 	margin-bottom: 0;
 	padding-left: 12px;
-	color: #bfcfdf;
+	color: #cfdfff;
 }
 
 .Home-Label:hover {
-	color: #cfdfef;
+	color: #dfefff;
 }
 
 .Home-Label:active {
-	color: #dfefff;
+	color: #eff7ff;
 }

@@ -5,3 +5,11 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 	color: #dfdfdf;
 }
+
+::selection {
+	background-color: #d70270;
+}
+
+::-moz-selection { /* Firefox */
+	background-color: #d70270;
+}
