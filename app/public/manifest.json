@@ -1,6 +1,6 @@
 {
   "short_name": "Notenheim",
-  "name": "PostreSQL-Go-TypeScript-React sample app",
+  "name": "Keep track of all your notes and lists from one place, across all devices",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#ffffff",
+  "background_color": "#0038a8"
 }
