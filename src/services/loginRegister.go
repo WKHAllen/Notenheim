@@ -65,3 +65,15 @@ func Login(email string, password string) (string, error) {
 
 	return sessionID, nil
 }
+
+// Logout logs a user out
+func Logout(sessionID string) error {
+	sql := "DELETE FROM Session WHERE id = ?;"
+	err := dbm.Execute(sql, sessionID)
+	if err != nil {
+		fmt.Printf("Unexpected error: %v\n", err)
+		return fmt.Errorf("An unexpected error occurred")
+	}
+
+	return nil
+}

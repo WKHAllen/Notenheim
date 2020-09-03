@@ -35,3 +35,16 @@ func Login(c *gin.Context) {
 		"sessionID": sessionID,
 	})
 }
+
+// Logout logs a user out
+func Logout(c *gin.Context) {
+	params, failure := helper.QueriesJSONError(c, "sessionID")
+	if failure { return }
+
+	err := services.Logout(params["sessionID"])
+	if helper.JSONErrorDefault(c, err) { return }
+
+	c.JSON(http.StatusOK, gin.H{
+		"error": nil,
+	})
+}
