@@ -65,6 +65,20 @@ func Login(email string, password string) (string, error) {
 		return "", fmt.Errorf("An unexpected error occurred")
 	}
 
+	sql = `
+		DELETE FROM Session
+		WHERE userID = ? AND id NOT IN (
+			SELECT id FROM Session
+			WHERE userID = ?
+			ORDER BY createTimestamp DESC
+			LIMIT 4
+		);`
+	err = dbm.Execute(sql, userID, userID)
+	if err != nil {
+		fmt.Printf("Unexpected error: %v\n", err)
+		return "", fmt.Errorf("An unexpected error occurred")
+	}
+
 	return sessionID, nil
 }
 
