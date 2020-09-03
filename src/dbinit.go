@@ -17,7 +17,7 @@ func InitDB(dbm *db.Manager) {
 	// AppUser table
 	panicExec(dbm, `
 		CREATE TABLE IF NOT EXISTS AppUser (
-			id            CHAR(4)      NOT NULL,
+			id            CHAR(4)      PRIMARY KEY,
 			email         VARCHAR(63)  NOT NULL,
 			password      VARCHAR(255) NOT NULL,
 			verified      BOOLEAN      NOT NULL,
@@ -28,7 +28,7 @@ func InitDB(dbm *db.Manager) {
 	// List table
 	panicExec(dbm, `
 		CREATE TABLE IF NOT EXISTS List (
-			id              CHAR(4)      NOT NULL,
+			id              CHAR(4)      PRIMARY KEY,
 			userID          CHAR(4)      NOT NULL,
 			title           VARCHAR(255) NOT NULL,
 			createTimestamp INT          NOT NULL,
@@ -39,7 +39,7 @@ func InitDB(dbm *db.Manager) {
 	// ListItem table
 	panicExec(dbm, `
 		CREATE TABLE IF NOT EXISTS ListItem (
-			id              CHAR(4)       NOT NULL,
+			id              CHAR(4)       PRIMARY KEY,
 			listID          CHAR(4)       NOT NULL,
 			content         VARCHAR(1023) NOT NULL,
 			position        INT           NOT NULL,
@@ -52,16 +52,16 @@ func InitDB(dbm *db.Manager) {
 	// Session table
 	panicExec(dbm, `
 		CREATE TABLE IF NOT EXISTS Session (
-			id              CHAR(8) NOT NULL,
-			userID          CHAR(4) NOT NULL,
-			createTimestamp INT     NOT NULL
+			id              CHAR(16) PRIMARY KEY,
+			userID          CHAR(4)  NOT NULL,
+			createTimestamp INT      NOT NULL
 		);
 	`)
 
 	// Verify table
 	panicExec(dbm, `
 		CREATE TABLE IF NOT EXISTS Verify (
-			id              CHAR(8)     NOT NULL,
+			id              CHAR(16)    PRIMARY KEY,
 			email           VARCHAR(63) NOT NULL,
 			createTimestamp INT         NOT NULL
 		);
@@ -70,7 +70,7 @@ func InitDB(dbm *db.Manager) {
 	// PasswordReset table
 	panicExec(dbm, `
 		CREATE TABLE IF NOT EXISTS PasswordReset (
-			id              CHAR(8)     NOT NULL,
+			id              CHAR(16)    PRIMARY KEY,
 			email           VARCHAR(63) NOT NULL,
 			createTimestamp INT         NOT NULL
 		);
