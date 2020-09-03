@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	app "main/src"
+	"main/src/services/helper"
 )
 
 // Register registers a user
@@ -27,7 +28,8 @@ func Register(email string, password string) error {
 			(id, email, password, verified, joinTimestamp)
 		VALUES
 			(?, ?, ?, FALSE, ?);`
-	err = dbm.Execute(sql, app.Base64ID(4), email, hashed, app.GetTime())
+	id = helper.UniqueBase64ID(4, dbm, "AppUser", "id")
+	err = dbm.Execute(sql, id, email, hashed, app.GetTime())
 	if err != nil {
 		fmt.Printf("Unexpected error: %v\n", err)
 		return fmt.Errorf("An unexpected error occurred")
@@ -51,7 +53,7 @@ func Login(email string, password string) (string, error) {
 		return "", fmt.Errorf("Invalid login")
 	}
 
-	sessionID := app.Base64ID(8)
+	sessionID := helper.UniqueBase64ID(8, dbm, "Session", "id")
 	sql = `
 		INSERT INTO Session
 			(id, userID, createTimestamp)

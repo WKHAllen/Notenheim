@@ -15,12 +15,12 @@ func init() {
 }
 
 // Base64ID generates a new random ID in base 64
-func Base64ID(n int) string {
-	b := make([]byte, n)
-	for i := range b {
-		b[i] = b64chars[rand.Intn(len(b64chars))]
+func Base64ID(length int) string {
+	id := make([]byte, length)
+	for i := range id {
+		id[i] = b64chars[rand.Intn(len(b64chars))]
 	}
-	return string(b)
+	return string(id)
 }
 
 // GetTime returns the current time in 
