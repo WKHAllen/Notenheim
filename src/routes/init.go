@@ -13,6 +13,7 @@ func LoadRoutes(router *gin.Engine, path string) {
 	api := router.Group(path)
 
 	api.GET("/register", Register)
+	api.GET("/login",    Login)
 }
 
 // LoadErrorRoutes creates redirects to error pages when errors occur

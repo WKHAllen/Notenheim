@@ -1,9 +1,10 @@
 package src
 
 import (
-	"golang.org/x/crypto/bcrypt"
 	"math/rand"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 const cost = 12
@@ -28,11 +29,12 @@ func GetTime() int64 {
 }
 
 // HashPassword generates a password hashed using bcrypt
-func HashPassword(password string) ([]byte, error) {
-	return bcrypt.GenerateFromPassword([]byte(password), cost)
+func HashPassword(password string) (string, error) {
+	hashed, err := bcrypt.GenerateFromPassword([]byte(password), cost)
+	return string(hashed), err
 }
 
 // ComparePassword compares a hashed password to a given password
-func ComparePassword(password string, hashedPassword []byte) bool {
-	return bcrypt.CompareHashAndPassword(hashedPassword, []byte(password)) == nil
+func ComparePassword(password string, hashedPassword string) bool {
+	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password)) == nil
 }

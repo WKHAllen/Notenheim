@@ -10,7 +10,7 @@ import (
 )
 
 // Register registers a user
-func Register(c * gin.Context) {
+func Register(c *gin.Context) {
 	params, failure := helper.QueriesJSONError(c, "email", "password")
 	if failure { return }
 
@@ -18,6 +18,20 @@ func Register(c * gin.Context) {
 	if helper.JSONErrorDefault(c, err) { return }
 
 	c.JSON(http.StatusOK, gin.H{
-		"success": true,
+		"error": nil,
+	})
+}
+
+// Login logs a user in
+func Login(c *gin.Context) {
+	params, failure := helper.QueriesJSONError(c, "email", "password")
+	if failure { return }
+
+	sessionID, err := services.Login(params["email"], params["password"])
+	if helper.JSONErrorDefault(c, err) { return }
+
+	c.JSON(http.StatusOK, gin.H{
+		"error":     nil,
+		"sessionID": sessionID,
 	})
 }

@@ -19,7 +19,7 @@ func InitDB(dbm *db.Manager) {
 		CREATE TABLE IF NOT EXISTS AppUser (
 			id            CHAR(4)      NOT NULL,
 			email         VARCHAR(63)  NOT NULL,
-			password      VARCHAR(127) NOT NULL,
+			password      VARCHAR(255) NOT NULL,
 			verified      BOOLEAN      NOT NULL,
 			joinTimestamp INT          NOT NULL
 		);
