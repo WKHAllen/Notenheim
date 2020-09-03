@@ -9,3 +9,27 @@ The app is deployed to [notenheim.com](https://www.notenheim.com/).
 ## Stack
 
 For this project, the [PGTR](https://github.com/WKHAllen/pgtr-sample-app) stack is used.
+
+## REST API Endpoints
+
+Listed below are all the available REST endpoints. All endpoints contain the attribute `error` which will be an error string if an error occurred, or `null` if not.
+
+### Register
+
+Path: `/api/register`
+
+Parameters: `email` (string), `password` (string)
+
+### Login
+
+Path: `/api/login`
+
+Parameters: `email` (string), `password` (string)
+
+Returns: `sessionID` (string)
+
+### Logout
+
+Path: `/api/logout`
+
+Parameters: `sessionID` (string)
