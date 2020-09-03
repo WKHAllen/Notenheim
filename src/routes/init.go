@@ -12,10 +12,12 @@ import (
 func LoadRoutes(router *gin.Engine, path string) {
 	api := router.Group(path)
 
+	// Login/register
 	api.GET("/register", Register)
 	api.GET("/login",    Login)
 	api.GET("/logout",   Logout)
 
+	// Password reset
 	api.GET("/requestPasswordReset", RequestPasswordReset)
 	api.GET("/validPasswordResetID", ValidPasswordResetID)
 	api.GET("/resetPassword",        ResetPassword)

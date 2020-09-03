@@ -32,11 +32,8 @@ func RequestPasswordReset(email string) error {
 		VALUES
 			(?, ?, ?);`
 	id = helper.UniqueBase64ID(16, dbm, "PasswordReset", "id")
-	err = dbm.Execute(sql, id, email, app.GetTime())
-	if err != nil {
-		fmt.Printf("Unexpected error: %v\n", err)
-		return fmt.Errorf("An unexpected error occurred")
-	}
+	err = helper.UnexpectedError(dbm, sql, id, email, app.GetTime())
+	if err != nil { return err }
 
 	return nil
 }
@@ -64,11 +61,8 @@ func ResetPassword(resetID string, newPassword string) error {
 
 	// Delete the password reset ID
 	sql = "DELETE FROM PasswordReset WHERE id = ?;"
-	err = dbm.Execute(sql, resetID)
-	if err != nil {
-		fmt.Printf("Unexpected error: %v\n", err)
-		return fmt.Errorf("An unexpected error occurred")
-	}
+	err = helper.UnexpectedError(dbm, sql, resetID)
+	if err != nil { return err }
 
 	// Hash the new password
 	hashed, err := app.HashPassword(newPassword)
@@ -79,11 +73,8 @@ func ResetPassword(resetID string, newPassword string) error {
 
 	// Change the password
 	sql = "UPDATE AppUser SET password = ? WHERE email = ?;"
-	err = dbm.Execute(sql, hashed, email)
-	if err != nil {
-		fmt.Printf("Unexpected error: %v\n", err)
-		return fmt.Errorf("An unexpected error occurred")
-	}
+	err = helper.UnexpectedError(dbm, sql, hashed, email)
+	if err != nil { return err }
 
 	return nil
 }

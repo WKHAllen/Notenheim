@@ -32,11 +32,8 @@ func Register(email string, password string) error {
 		VALUES
 			(?, ?, ?, FALSE, ?);`
 	id = helper.UniqueBase64ID(4, dbm, "AppUser", "id")
-	err = dbm.Execute(sql, id, email, hashed, app.GetTime())
-	if err != nil {
-		fmt.Printf("Unexpected error: %v\n", err)
-		return fmt.Errorf("An unexpected error occurred")
-	}
+	err = helper.UnexpectedError(dbm, sql, id, email, hashed, app.GetTime())
+	if err != nil { return err }
 
 	return nil
 }
@@ -59,17 +56,14 @@ func Login(email string, password string) (string, error) {
 	}
 
 	// Create a new session for the user
-	sessionID := helper.UniqueBase64ID(8, dbm, "Session", "id")
+	sessionID := helper.UniqueBase64ID(16, dbm, "Session", "id")
 	sql = `
 		INSERT INTO Session
 			(id, userID, createTimestamp)
 		VALUES
 			(?, ?, ?);`
-	err = dbm.Execute(sql, sessionID, userID, app.GetTime())
-	if err != nil {
-		fmt.Printf("Unexpected error: %v\n", err)
-		return "", fmt.Errorf("An unexpected error occurred")
-	}
+	err = helper.UnexpectedError(dbm, sql, sessionID, userID, app.GetTime())
+	if err != nil { return "", err }
 
 	// Delete all but the user's four most recent sessions
 	sql = `
@@ -80,11 +74,8 @@ func Login(email string, password string) (string, error) {
 			ORDER BY createTimestamp DESC
 			LIMIT 4
 		);`
-	err = dbm.Execute(sql, userID, userID)
-	if err != nil {
-		fmt.Printf("Unexpected error: %v\n", err)
-		return "", fmt.Errorf("An unexpected error occurred")
-	}
+	err = helper.UnexpectedError(dbm, sql, userID, userID)
+	if err != nil { return "", err }
 
 	return sessionID, nil
 }
@@ -93,11 +84,8 @@ func Login(email string, password string) (string, error) {
 func Logout(sessionID string) error {
 	// Delete the provided session
 	sql := "DELETE FROM Session WHERE id = ?;"
-	err := dbm.Execute(sql, sessionID)
-	if err != nil {
-		fmt.Printf("Unexpected error: %v\n", err)
-		return fmt.Errorf("An unexpected error occurred")
-	}
+	err := helper.UnexpectedError(dbm, sql, sessionID)
+	if err != nil { return err }
 
 	return nil
 }

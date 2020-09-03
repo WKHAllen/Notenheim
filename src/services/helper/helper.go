@@ -7,6 +7,16 @@ import (
 	"main/src/db"
 )
 
+// UnexpectedError returns a generic error message back and prints a more helpful message
+func UnexpectedError(dbm *db.Manager, sql string, params ...interface{}) error {
+	err := dbm.Execute(sql, params...)
+	if err != nil {
+		fmt.Printf("Unexpected error: %v\n", err)
+		return fmt.Errorf("An unexpected error occurred")
+	}
+	return nil
+}
+
 // UniqueBase64ID generates a new random ID in base 64 unique to the column it will go in
 func UniqueBase64ID(length int, dbm *db.Manager, table string, column string) string {
 	id := app.Base64ID(length)
