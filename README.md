@@ -16,31 +16,31 @@ Listed below are all the available REST endpoints. All endpoints contain the att
 
 ### Register
 
-Path: `/api/register`
-Parameters: `email` (string), `password` (string)
+* Path: `/api/register`
+* Parameters: `email` (string), `password` (string)
 
 ### Login
 
-Path: `/api/login`
-Parameters: `email` (string), `password` (string)
-Returns: `sessionID` (string)
+* Path: `/api/login`
+* Parameters: `email` (string), `password` (string)
+* Returns: `sessionID` (string)
 
 ### Logout
 
-Path: `/api/logout`
-Parameters: `sessionID` (string)
+* Path: `/api/logout`
+* Parameters: `sessionID` (string)
 
 ### Request password reset
 
-Path: `/api/requestPasswordReset`
-Parameters: `email` (string)
+* Path: `/api/requestPasswordReset`
+* Parameters: `email` (string)
 
 ### Check password reset ID validity
 
-Path: `/api/validPasswordResetID`
-Parameters: `resetID` (string)
+* Path: `/api/validPasswordResetID`
+* Parameters: `resetID` (string)
 
 ### Reset password
 
-Path: `/api/resetPassword`
-Parameters: `resetID` (string), `newPassword` (string)
+* Path: `/api/resetPassword`
+* Parameters: `resetID` (string), `newPassword` (string)
