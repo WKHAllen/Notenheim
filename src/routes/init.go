@@ -15,6 +15,10 @@ func LoadRoutes(router *gin.Engine, path string) {
 	api.GET("/register", Register)
 	api.GET("/login",    Login)
 	api.GET("/logout",   Logout)
+
+	api.GET("/requestPasswordReset", RequestPasswordReset)
+	api.GET("/validPasswordResetID", ValidPasswordResetID)
+	api.GET("/resetPassword",        ResetPassword)
 }
 
 // LoadErrorRoutes creates redirects to error pages when errors occur
