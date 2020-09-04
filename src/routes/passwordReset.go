@@ -14,8 +14,10 @@ func RequestPasswordReset(c *gin.Context) {
 	params, failure := helper.QueriesJSONError(c, "email")
 	if failure { return }
 
-	err := services.RequestPasswordReset(params["email"])
+	resetID, err := services.RequestPasswordReset(params["email"])
 	if helper.JSONErrorDefault(c, err) { return }
+
+	services.PrunePasswordReset(resetID)
 
 	c.JSON(http.StatusOK, gin.H{
 		"error": nil,

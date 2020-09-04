@@ -17,8 +17,10 @@ func Register(c *gin.Context) {
 	err := services.Register(params["email"], params["password"])
 	if helper.JSONErrorDefault(c, err) { return }
 
-	_, err = services.CreateVerification(params["email"])
+	verifyID, err := services.CreateVerification(params["email"])
 	if helper.JSONErrorDefault(c, err) { return }
+
+	services.PruneVerification(verifyID)
 
 	c.JSON(http.StatusOK, gin.H{
 		"error": nil,

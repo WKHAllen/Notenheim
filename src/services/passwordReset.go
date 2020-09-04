@@ -2,27 +2,28 @@ package services
 
 import (
 	"fmt"
+	"time"
 
 	app "main/src"
 	"main/src/services/helper"
 )
 
 // RequestPasswordReset requests a password reset
-func RequestPasswordReset(email string) error {
-	var id string
+func RequestPasswordReset(email string) (string, error) {
+	var resetID string
 
 	// Confirm that the email address exists
 	sql := "SELECT id FROM AppUser WHERE email = ? AND verified = TRUE;"
-	err := dbm.QueryRow(sql, email).Scan(&id)
+	err := dbm.QueryRow(sql, email).Scan(&resetID)
 	if err != nil {
-		return nil // Email address not registered
+		return "", nil // Email address not registered
 	}
 
 	// Check that no password reset has already been requested
 	sql = "SELECT id FROM PasswordReset WHERE email = ?;"
-	err = dbm.QueryRow(sql, email).Scan(&id)
+	err = dbm.QueryRow(sql, email).Scan(&resetID)
 	if err == nil {
-		return nil // Password reset has already been requested
+		return "", nil // Password reset has already been requested
 	}
 
 	// Create password reset request
@@ -31,11 +32,11 @@ func RequestPasswordReset(email string) error {
 			(id, email, createTimestamp)
 		VALUES
 			(?, ?, ?);`
-	id = helper.UniqueBase64ID(16, dbm, "PasswordReset", "id")
-	err = helper.UnexpectedError(dbm, sql, id, email, app.GetTime())
-	if err != nil { return err }
+	resetID = helper.UniqueBase64ID(16, dbm, "PasswordReset", "id")
+	err = helper.UnexpectedError(dbm, sql, resetID, email, app.GetTime())
+	if err != nil { return "", err }
 
-	return nil
+	return resetID, nil
 }
 
 // ValidPasswordResetID verifies that a password reset ID is valid
@@ -77,4 +78,38 @@ func ResetPassword(resetID string, newPassword string) error {
 	if err != nil { return err }
 
 	return nil
+}
+
+// PrunePasswordReset removes a password reset record
+func PrunePasswordReset(resetID string) {
+	go func() {
+		var createTimestamp int64
+
+		sql := "SELECT createTimestamp FROM PasswordReset WHERE id = ?;"
+		err := dbm.QueryRow(sql, resetID).Scan(&createTimestamp)
+		if err != nil {
+			fmt.Printf("Unexpected error: %v\n", err)
+			return
+		}
+
+		createdTime := time.Unix(createTimestamp, 0)
+		endTime := createdTime.Add(time.Hour)
+		now := time.Now()
+		var sleepTime time.Duration
+
+		if now.After(endTime) {
+			sleepTime = 0
+		} else {
+			sleepTime = endTime.Sub(now)
+		}
+
+		time.Sleep(sleepTime)
+
+		sql = "DELETE FROM PasswordReset WHERE id = ?;"
+		err = dbm.Execute(sql, resetID)
+		if err != nil {
+			fmt.Printf("Unexpected error: %v\n", err)
+			return
+		}
+	}()
 }

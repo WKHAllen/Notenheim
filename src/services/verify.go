@@ -2,6 +2,8 @@ package services
 
 import (
 	"fmt"
+	"time"
+
 	app "main/src"
 	"main/src/services/helper"
 )
@@ -59,4 +61,38 @@ func Verify(verifyID string) error {
 	if err != nil { return err }
 
 	return nil
+}
+
+// PruneVerification removes a verification record
+func PruneVerification(verifyID string) {
+	go func() {
+		var createTimestamp int64
+
+		sql := "SELECT createTimestamp FROM Verify WHERE id = ?;"
+		err := dbm.QueryRow(sql, verifyID).Scan(&createTimestamp)
+		if err != nil {
+			fmt.Printf("Unexpected error: %v\n", err)
+			return
+		}
+
+		createdTime := time.Unix(createTimestamp, 0)
+		endTime := createdTime.Add(time.Hour)
+		now := time.Now()
+		var sleepTime time.Duration
+
+		if now.After(endTime) {
+			sleepTime = 0
+		} else {
+			sleepTime = endTime.Sub(now)
+		}
+
+		time.Sleep(sleepTime)
+
+		sql = "DELETE FROM Verify WHERE id = ?;"
+		err = dbm.Execute(sql, verifyID)
+		if err != nil {
+			fmt.Printf("Unexpected error: %v\n", err)
+			return
+		}
+	}()
 }
