@@ -17,6 +17,9 @@ func Register(c *gin.Context) {
 	err := services.Register(params["email"], params["password"])
 	if helper.JSONErrorDefault(c, err) { return }
 
+	_, err = services.CreateVerification(params["email"])
+	if helper.JSONErrorDefault(c, err) { return }
+
 	c.JSON(http.StatusOK, gin.H{
 		"error": nil,
 	})

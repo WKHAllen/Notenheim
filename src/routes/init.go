@@ -17,6 +17,9 @@ func LoadRoutes(router *gin.Engine, path string) {
 	api.GET("/login",    Login)
 	api.GET("/logout",   Logout)
 
+	// Verify
+	api.GET("/verify", Verify)
+
 	// Password reset
 	api.GET("/requestPasswordReset", RequestPasswordReset)
 	api.GET("/validPasswordResetID", ValidPasswordResetID)

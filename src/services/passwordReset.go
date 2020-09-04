@@ -15,14 +15,14 @@ func RequestPasswordReset(email string) error {
 	sql := "SELECT id FROM AppUser WHERE email = ? AND verified = TRUE;"
 	err := dbm.QueryRow(sql, email).Scan(&id)
 	if err != nil {
-		return fmt.Errorf("Email address not registered")
+		return nil // Email address not registered
 	}
 
 	// Check that no password reset has already been requested
 	sql = "SELECT id FROM PasswordReset WHERE email = ?;"
 	err = dbm.QueryRow(sql, email).Scan(&id)
 	if err == nil {
-		return fmt.Errorf("Password reset has already been requested")
+		return nil // Password reset has already been requested
 	}
 
 	// Create password reset request

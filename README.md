@@ -30,6 +30,11 @@ Listed below are all the available REST endpoints. All endpoints contain the att
 * Path: `/api/logout`
 * Parameters: `sessionID` (string)
 
+### Verification
+
+* Path: `/api/verify`
+* Parameters: `verifyID` (string)
+
 ### Request password reset
 
 * Path: `/api/requestPasswordReset`
