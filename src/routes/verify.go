@@ -1,8 +1,6 @@
 package routes
 
 import (
-	"net/http"
-
 	"main/src/routes/helper"
 	"main/src/services"
 
@@ -17,7 +15,5 @@ func Verify(c *gin.Context) {
 	err := services.Verify(params["verifyID"])
 	if helper.JSONErrorDefault(c, err) { return }
 
-	c.JSON(http.StatusOK, gin.H{
-		"error": nil,
-	})
+	helper.JSONSuccess(c)
 }

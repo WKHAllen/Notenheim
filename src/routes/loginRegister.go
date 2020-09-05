@@ -23,9 +23,7 @@ func Register(c *gin.Context) {
 
 	services.PruneVerification(verifyID)
 
-	c.JSON(http.StatusOK, gin.H{
-		"error": nil,
-	})
+	helper.JSONSuccess(c)
 }
 
 // Login logs a user in
@@ -43,9 +41,7 @@ func Login(c *gin.Context) {
 
 	c.SetCookie("sessionID", sessionID, 0, "/", domain, false, true)
 
-	c.JSON(http.StatusOK, gin.H{
-		"error": nil,
-	})
+	helper.JSONSuccess(c)
 }
 
 // Logout logs a user out
@@ -65,8 +61,6 @@ func Logout(c *gin.Context) {
 		err := services.Logout(sessionID)
 		if helper.JSONErrorDefault(c, err) { return }
 
-		c.JSON(http.StatusOK, gin.H{
-			"error": nil,
-		})
+		helper.JSONSuccess(c)
 	}
 }

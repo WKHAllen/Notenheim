@@ -9,6 +9,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// JSONSuccess sends a success message in JSON format
+func JSONSuccess(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"error": nil,
+	})
+}
+
 // JSONError sends an error message in JSON format if an error has occurred
 func JSONError(c *gin.Context, err error, errorMsg string) bool {
 	if err != nil {

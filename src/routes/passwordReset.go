@@ -19,9 +19,7 @@ func RequestPasswordReset(c *gin.Context) {
 
 	services.PrunePasswordReset(resetID)
 
-	c.JSON(http.StatusOK, gin.H{
-		"error": nil,
-	})
+	helper.JSONSuccess(c)
 }
 
 // ValidPasswordResetID verifies that a password reset ID is valid
@@ -35,9 +33,7 @@ func ValidPasswordResetID(c *gin.Context) {
 			"error": "Invalid password reset ID",
 		})
 	} else {
-		c.JSON(http.StatusOK, gin.H{
-			"error": nil,
-		})
+		helper.JSONSuccess(c)
 	}
 }
 
@@ -49,7 +45,5 @@ func ResetPassword(c *gin.Context) {
 	err := services.ResetPassword(params["resetID"], params["newPassword"])
 	if helper.JSONErrorDefault(c, err) { return }
 
-	c.JSON(http.StatusOK, gin.H{
-		"error": nil,
-	})
+	helper.JSONSuccess(c)
 }

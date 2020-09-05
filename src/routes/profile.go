@@ -25,7 +25,5 @@ func ChangePassword(c *gin.Context) {
 	err = services.ChangePassword(sessionID, params["newPassword"])
 	if helper.JSONErrorDefault(c, err) { return }
 
-	c.JSON(http.StatusOK, gin.H{
-		"error": nil,
-	})
+	helper.JSONSuccess(c)
 }
