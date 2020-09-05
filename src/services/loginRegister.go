@@ -9,11 +9,11 @@ import (
 
 // Register registers a user
 func Register(email string, password string) error {
-	var id string
+	var userID string
 
 	// Confirm that the email address has not already been used
 	sql := "SELECT id FROM AppUser WHERE email = ?;"
-	err := dbm.QueryRow(sql, email).Scan(&id)
+	err := dbm.QueryRow(sql, email).Scan(&userID)
 	if err == nil {
 		return fmt.Errorf("Email address has already been registered")
 	}
@@ -31,8 +31,8 @@ func Register(email string, password string) error {
 			(id, email, password, verified, joinTimestamp)
 		VALUES
 			(?, ?, ?, FALSE, ?);`
-	id = helper.UniqueBase64ID(4, dbm, "AppUser", "id")
-	err = helper.UnexpectedError(dbm, sql, id, email, hashed, app.GetTime())
+	userID = helper.UniqueBase64ID(4, dbm, "AppUser", "id")
+	err = helper.UnexpectedError(dbm, sql, userID, email, hashed, app.GetTime())
 	if err != nil { return err }
 
 	return nil
