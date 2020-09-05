@@ -23,12 +23,10 @@ Listed below are all the available REST endpoints. All endpoints contain the att
 
 * Path: `/api/login`
 * Parameters: `email` (string), `password` (string)
-* Returns: `sessionID` (string)
 
 ### Logout
 
 * Path: `/api/logout`
-* Parameters: `sessionID` (string)
 
 ### Verification
 
@@ -49,3 +47,8 @@ Listed below are all the available REST endpoints. All endpoints contain the att
 
 * Path: `/api/resetPassword`
 * Parameters: `resetID` (string), `newPassword` (string)
+
+### Change password
+
+* Path: `/api/changePassword`
+* Parameters: `newPassword` (string)
