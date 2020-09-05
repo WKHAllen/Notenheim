@@ -52,3 +52,9 @@ Listed below are all the available REST endpoints. All endpoints contain the att
 
 * Path: `/api/changePassword`
 * Parameters: `newPassword` (string)
+
+### New list
+
+* Path: `/api/newList`
+* Parameters: `title` (string)
+* Returns: `listID` (string)
