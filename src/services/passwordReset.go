@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"io/ioutil"
 	"time"
 
 	app "main/src"
@@ -26,13 +27,28 @@ func RequestPasswordReset(email string) (string, error) {
 		return "", nil // Password reset has already been requested
 	}
 
+	// Generate the new password reset ID
+	resetID = helper.UniqueBase64ID(16, dbm, "PasswordReset", "id")
+
+	// Send password reset email
+	content, err := ioutil.ReadFile("src/emails/passwordReset.html")
+	if err != nil {
+		fmt.Printf("Unexpected error: %v\n", err)
+		return "", fmt.Errorf("An unexpected error occurred")
+	}
+	emailBody := fmt.Sprintf(string(content), resetID)
+	err = app.SendEmail(email, "Notenheim - Password Reset", emailBody)
+	if err != nil {
+		fmt.Printf("Unexpected error: %v\n", err)
+		return "", fmt.Errorf("An unexpected error occurred")
+	}
+
 	// Create password reset request
 	sql = `
 		INSERT INTO PasswordReset
 			(id, email, createTimestamp)
 		VALUES
 			(?, ?, ?);`
-	resetID = helper.UniqueBase64ID(16, dbm, "PasswordReset", "id")
 	err = helper.UnexpectedError(dbm, sql, resetID, email, app.GetTime())
 	if err != nil { return "", err }
 

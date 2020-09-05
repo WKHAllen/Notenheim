@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"io/ioutil"
 	"time"
 
 	app "main/src"
@@ -10,20 +11,36 @@ import (
 
 // CreateVerification creates a verification record
 func CreateVerification(email string) (string, error) {
-	var id string
+	var verifyID string
 
 	// Confirm that the email has been registered and the user is not yet verified
 	sql := "SELECT id FROM AppUser WHERE email = ? AND verified = FALSE;"
-	err := dbm.QueryRow(sql, email).Scan(&id)
+	err := dbm.QueryRow(sql, email).Scan(&verifyID)
 	if err != nil {
 		return "", nil // Email address not registered
 	}
 
 	// Check that no verification has already been requested
 	sql = "SELECT id FROM Verify WHERE email = ?;"
-	err = dbm.QueryRow(sql, email).Scan(&id)
+	err = dbm.QueryRow(sql, email).Scan(&verifyID)
 	if err == nil {
 		return "", nil // Verification has already been requested
+	}
+
+	// Generate the new verification ID
+	verifyID = helper.UniqueBase64ID(16, dbm, "Verify", "id")
+
+	// Send verification email
+	content, err := ioutil.ReadFile("src/emails/verify.html")
+	if err != nil {
+		fmt.Printf("Unexpected error: %v\n", err)
+		return "", fmt.Errorf("An unexpected error occurred")
+	}
+	emailBody := fmt.Sprintf(string(content), verifyID)
+	err = app.SendEmail(email, "Notenheim - Account Verification", emailBody)
+	if err != nil {
+		fmt.Printf("Unexpected error: %v\n", err)
+		return "", fmt.Errorf("An unexpected error occurred")
 	}
 
 	// Create verification request
@@ -32,11 +49,10 @@ func CreateVerification(email string) (string, error) {
 			(id, email, createTimestamp)
 		VALUES
 			(?, ?, ?);`
-	id = helper.UniqueBase64ID(16, dbm, "Verify", "id")
-	err = helper.UnexpectedError(dbm, sql, id, email, app.GetTime())
+	err = helper.UnexpectedError(dbm, sql, verifyID, email, app.GetTime())
 	if err != nil { return "", err }
 
-	return id, nil
+	return verifyID, nil
 }
 
 // Verify attempts to mark a user as verified
