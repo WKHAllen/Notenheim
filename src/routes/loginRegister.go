@@ -2,6 +2,7 @@ package routes
 
 import (
 	"net/http"
+	"os"
 
 	"main/src/routes/helper"
 	"main/src/services"
@@ -35,21 +36,37 @@ func Login(c *gin.Context) {
 	sessionID, err := services.Login(params["email"], params["password"])
 	if helper.JSONErrorDefault(c, err) { return }
 
+	var domain string = "localhost"
+	if os.Getenv("DEBUG") == "false" {
+		domain = "notenheim.com"
+	}
+
+	c.SetCookie("sessionID", sessionID, 0, "/", domain, false, true)
+
 	c.JSON(http.StatusOK, gin.H{
-		"error":     nil,
-		"sessionID": sessionID,
+		"error": nil,
 	})
 }
 
 // Logout logs a user out
 func Logout(c *gin.Context) {
-	params, failure := helper.QueriesJSONError(c, "sessionID")
-	if failure { return }
+	sessionID, err := c.Cookie("sessionID")
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"error": "Not logged in",
+		})
+	} else {
+		var domain string = "localhost"
+		if os.Getenv("DEBUG") == "false" {
+			domain = "notenheim.com"
+		}
 
-	err := services.Logout(params["sessionID"])
-	if helper.JSONErrorDefault(c, err) { return }
+		c.SetCookie("sessionID", "", -1, "/", domain, false, true)
+		err := services.Logout(sessionID)
+		if helper.JSONErrorDefault(c, err) { return }
 
-	c.JSON(http.StatusOK, gin.H{
-		"error": nil,
-	})
+		c.JSON(http.StatusOK, gin.H{
+			"error": nil,
+		})
+	}
 }
