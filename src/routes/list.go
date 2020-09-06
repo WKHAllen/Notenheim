@@ -61,6 +61,20 @@ func ListInfo(c *gin.Context) {
 	})
 }
 
+// RenameList renames a list
+func RenameList(c *gin.Context) {
+	params, failure := helper.QueriesJSONError(c, "listID", "newName")
+	if failure { return }
+
+	sessionID, failure := helper.GetSessionID(c)
+	if failure { return }
+
+	err := services.RenameList(sessionID, params["listID"], params["newName"])
+	if helper.JSONErrorDefault(c, err) { return }
+
+	helper.JSONSuccess(c)
+}
+
 // DeleteList deletes a list
 func DeleteList(c *gin.Context) {
 	params, failure := helper.QueriesJSONError(c, "listID")

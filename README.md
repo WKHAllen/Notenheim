@@ -70,6 +70,11 @@ Listed below are all the available REST endpoints. All endpoints contain the att
 * Parameters: `listID` (string)
 * Returns: `info: { title (string), items: [ { listItemID (string), content (string), position (int), checked (boolean) }, ... ] }`
 
+### Rename list
+
+* Path: `/api/renameList`
+* Parameters: `listID` (string), `newName` (string)
+
 ### Delete list
 
 * Path: `/api/deleteList`
