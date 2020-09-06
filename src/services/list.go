@@ -54,7 +54,7 @@ func GetLists(sessionID string) ([](map[string]interface{}), error) {
 		return emptyMap, fmt.Errorf("An unexpected error occurred")
 	}
 
-	var lists [](map[string]interface{})
+	lists := make([](map[string]interface{}), 0)
 	for rows.Next() {
 		row, err := rows.Values()
 		if err != nil {
