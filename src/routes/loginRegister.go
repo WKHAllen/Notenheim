@@ -28,6 +28,12 @@ func Register(c *gin.Context) {
 
 // Login logs a user in
 func Login(c *gin.Context) {
+	_, err := c.Cookie("sessionID")
+	if err == nil {
+		helper.JSONSuccess(c)
+		return
+	}
+
 	params, failure := helper.QueriesJSONError(c, "email", "password")
 	if failure { return }
 
