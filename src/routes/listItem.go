@@ -39,3 +39,30 @@ func EditListItem(c *gin.Context) {
 
 	helper.JSONSuccess(c)
 }
+
+// CheckListItem checks or unchecks a list item
+func CheckListItem(c *gin.Context) {
+	params, failure := helper.QueriesJSONError(c, "listItemID", "checked")
+	if failure { return }
+
+	var checked bool
+	switch (params["checked"]) {
+		case "true":
+			checked = true
+		case "false":
+			checked = false
+		default:
+			c.JSON(http.StatusOK, gin.H{
+				"error": "Parameter 'checked' must be 'true' or 'false'",
+			})
+			return
+	}
+
+	sessionID, failure := helper.GetSessionID(c)
+	if failure { return }
+
+	err := services.CheckListItem(sessionID, params["listItemID"], checked)
+	if helper.JSONErrorDefault(c, err) { return }
+
+	helper.JSONSuccess(c)
+}

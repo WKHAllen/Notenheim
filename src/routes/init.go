@@ -36,8 +36,9 @@ func LoadRoutes(router *gin.Engine, path string) {
 	api.GET("/deleteList", DeleteList)
 
 	// List item
-	api.GET("/newListItem",  NewListItem)
-	api.GET("/editListItem", EditListItem)
+	api.GET("/newListItem",   NewListItem)
+	api.GET("/editListItem",  EditListItem)
+	api.GET("/checkListItem", CheckListItem)
 }
 
 // LoadErrorRoutes creates redirects to error pages when errors occur
