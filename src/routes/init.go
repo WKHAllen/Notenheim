@@ -29,9 +29,12 @@ func LoadRoutes(router *gin.Engine, path string) {
 	api.GET("/changePassword", ChangePassword)
 
 	// List
-	api.GET("/newList",     NewList)
-	api.GET("/getLists",    GetLists)
-	api.GET("/listInfo",    ListInfo)
+	api.GET("/newList",    NewList)
+	api.GET("/getLists",   GetLists)
+	api.GET("/listInfo",   ListInfo)
+	api.GET("/deleteList", DeleteList)
+
+	// List item
 	api.GET("/newListItem", NewListItem)
 }
 

@@ -60,3 +60,17 @@ func ListInfo(c *gin.Context) {
 		},
 	})
 }
+
+// DeleteList deletes a list
+func DeleteList(c *gin.Context) {
+	params, failure := helper.QueriesJSONError(c, "listID")
+	if failure { return }
+
+	sessionID, failure := helper.GetSessionID(c)
+	if failure { return }
+
+	err := services.DeleteList(sessionID, params["listID"])
+	if helper.JSONErrorDefault(c, err) { return }
+
+	helper.JSONSuccess(c)
+}

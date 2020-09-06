@@ -86,8 +86,8 @@ func ListInfo(sessionID string, listID string) (string, []app.Object, error) {
 	}
 
 	// Get the list title
-	sql = "SELECT title FROM List WHERE id = ?;"
-	err = dbm.QueryRow(sql, listID).Scan(&title)
+	sql = "SELECT title FROM List WHERE id = ? AND userID = ?;"
+	err = dbm.QueryRow(sql, listID, userID).Scan(&title)
 	if err != nil {
 		return "", emptyObj, fmt.Errorf("Invalid list ID")
 	}
@@ -114,4 +114,36 @@ func ListInfo(sessionID string, listID string) (string, []app.Object, error) {
 	}
 
 	return title, info, nil
+}
+
+// DeleteList deletes a list
+func DeleteList(sessionID string, listID string) error {
+	var userID string
+	var title string
+
+	// Confirm that the session ID exists
+	sql := "SELECT userID FROM Session WHERE id = ?;"
+	err := dbm.QueryRow(sql, sessionID).Scan(&userID)
+	if err != nil {
+		return fmt.Errorf("Invalid session")
+	}
+
+	// Confirm that the list ID is valid
+	sql = "SELECT title FROM List WHERE id = ? AND userID = ?;"
+	err = dbm.QueryRow(sql, listID, userID).Scan(&title)
+	if err != nil {
+		return fmt.Errorf("Invalid list ID")
+	}
+
+	// Delete the list
+	sql = "DELETE FROM List WHERE id = ?;"
+	err = helper.UnexpectedError(dbm, sql, listID)
+	if err != nil { return err }
+
+	// Delete the list's items
+	sql = "DELETE FROM ListItem WHERE listID = ?;"
+	err = helper.UnexpectedError(dbm, sql, listID)
+	if err != nil { return err }
+
+	return nil
 }
