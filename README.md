@@ -63,3 +63,9 @@ Listed below are all the available REST endpoints. All endpoints contain the att
 
 * Path: `/api/getLists`
 * Returns: `lists: [{listID (string), title (string), updateTimestamp (int)}, ...]`
+
+### New list item
+
+* Path: `/api/newListItem`
+* Parameters: `listID` (string)
+* Returns: `listItemID` (string)
