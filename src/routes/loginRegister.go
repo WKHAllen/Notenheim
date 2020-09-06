@@ -39,7 +39,8 @@ func Login(c *gin.Context) {
 		domain = "notenheim.com"
 	}
 
-	c.SetCookie("sessionID", sessionID, 0, "/", domain, false, false)
+	c.SetCookie("sessionID", sessionID, 0, "/", domain, false, true)
+	c.SetCookie("loggedIn", "true", 0, "/", domain, false, false)
 
 	helper.JSONSuccess(c)
 }
@@ -57,7 +58,8 @@ func Logout(c *gin.Context) {
 			domain = "notenheim.com"
 		}
 
-		c.SetCookie("sessionID", "", -1, "/", domain, false, false)
+		c.SetCookie("sessionID", "", -1, "/", domain, false, true)
+		c.SetCookie("loggedIn", "false", 0, "/", domain, false, false)
 		err := services.Logout(sessionID)
 		if helper.JSONErrorDefault(c, err) { return }
 
