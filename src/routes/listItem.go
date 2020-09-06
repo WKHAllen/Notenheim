@@ -25,3 +25,17 @@ func NewListItem(c *gin.Context) {
 		"listItemID": listItemID,
 	})
 }
+
+// EditListItem edits a list item's content
+func EditListItem(c *gin.Context) {
+	params, failure := helper.QueriesJSONError(c, "listItemID", "newContent")
+	if failure { return }
+
+	sessionID, failure := helper.GetSessionID(c)
+	if failure { return }
+
+	err := services.EditListItem(sessionID, params["listItemID"], params["newContent"])
+	if helper.JSONErrorDefault(c, err) { return }
+
+	helper.JSONSuccess(c)
+}

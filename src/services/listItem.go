@@ -37,3 +37,34 @@ func NewListItem(sessionID string, listID string) (string, error) {
 
 	return listItemID, nil
 }
+
+// EditListItem edits a list item's content
+func EditListItem(sessionID string, listItemID string, newContent string) error {
+	var listID string
+	var title string
+
+	// Confirm that the session ID exists
+	userID, err := helper.GetUserSession(dbm, sessionID)
+	if err != nil { return err }
+
+	// Confirm that the list item ID is valid
+	sql := "SELECT listID FROM ListItem WHERE id = ?;"
+	err = dbm.QueryRow(sql, listItemID).Scan(&listID)
+	if err != nil {
+		return fmt.Errorf("Invalid list item ID")
+	}
+
+	// Confirm that the list ID is valid
+	sql = "SELECT title FROM List WHERE id = ? AND userID = ?;"
+	err = dbm.QueryRow(sql, listID, userID).Scan(&title)
+	if err != nil {
+		return fmt.Errorf("Invalid list item ID")
+	}
+
+	// Edit list item content
+	sql = "UPDATE ListItem SET content = ? WHERE id = ?;"
+	err = helper.UnexpectedError(dbm, sql, newContent, listItemID)
+	if err != nil { return err }
+
+	return nil
+}

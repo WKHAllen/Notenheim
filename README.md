@@ -85,3 +85,8 @@ Listed below are all the available REST endpoints. All endpoints contain the att
 * Path: `/api/newListItem`
 * Parameters: `listID` (string)
 * Returns: `listItemID` (string)
+
+### Edit list item
+
+* Path: `/api/editListItem`
+* Parameters: `listItemID` (string), `newContent` (string)
