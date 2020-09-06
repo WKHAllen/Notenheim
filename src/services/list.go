@@ -85,12 +85,11 @@ func ListInfo(sessionID string, listID string) (string, []app.Object, error) {
 		return "", emptyObj, fmt.Errorf("Invalid session")
 	}
 
-	// Get list title
+	// Get the list title
 	sql = "SELECT title FROM List WHERE id = ?;"
 	err = dbm.QueryRow(sql, listID).Scan(&title)
 	if err != nil {
-		fmt.Printf("Unexpected error: %v\n", err)
-		return "", emptyObj, fmt.Errorf("An unexpected error occurred")
+		return "", emptyObj, fmt.Errorf("Invalid list ID")
 	}
 
 	// Get list items
