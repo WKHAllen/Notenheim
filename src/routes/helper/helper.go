@@ -91,3 +91,16 @@ func QueriesJSONError(c *gin.Context, keys ...string) (map[string]string, bool) 
 			return nil, true
 	}
 }
+
+// GetSessionID attempts to get the session ID and sends an error message if it cannot be retrieved
+func GetSessionID(c *gin.Context) (string, bool) {
+	sessionID, err := c.Cookie("sessionID")
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"error": "Not logged in",
+		})
+		return "", true
+	}
+
+	return sessionID, false
+}

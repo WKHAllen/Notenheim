@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"net/http"
 	"os"
 
 	"main/src/routes/helper"
@@ -53,13 +52,8 @@ func Login(c *gin.Context) {
 
 // Logout logs a user out
 func Logout(c *gin.Context) {
-	sessionID, err := c.Cookie("sessionID")
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"error": "Not logged in",
-		})
-		return
-	}
+	sessionID, failure := helper.GetSessionID(c)
+	if failure { return }
 
 	var domain string = "localhost"
 	if os.Getenv("DEBUG") == "false" {
@@ -68,7 +62,7 @@ func Logout(c *gin.Context) {
 
 	c.SetCookie("sessionID", "", -1, "/", domain, false, true)
 	c.SetCookie("loggedIn", "false", 0, "/", domain, false, false)
-	err = services.Logout(sessionID)
+	err := services.Logout(sessionID)
 	if helper.JSONErrorDefault(c, err) { return }
 
 	helper.JSONSuccess(c)

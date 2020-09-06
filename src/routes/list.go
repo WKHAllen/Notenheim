@@ -3,6 +3,7 @@ package routes
 import (
 	"net/http"
 
+	app "main/src"
 	"main/src/routes/helper"
 	"main/src/services"
 
@@ -14,13 +15,8 @@ func NewList(c *gin.Context) {
 	params, failure := helper.QueriesJSONError(c, "title")
 	if failure { return }
 
-	sessionID, err := c.Cookie("sessionID")
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"error": "Not logged in",
-		})
-		return
-	}
+	sessionID, failure := helper.GetSessionID(c)
+	if failure { return }
 
 	listID, err := services.NewList(sessionID, params["title"])
 	if helper.JSONErrorDefault(c, err) { return }
@@ -33,13 +29,8 @@ func NewList(c *gin.Context) {
 
 // GetLists gets all lists created by a user
 func GetLists(c *gin.Context) {
-	sessionID, err := c.Cookie("sessionID")
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"error": "Not logged in",
-		})
-		return
-	}
+	sessionID, failure := helper.GetSessionID(c)
+	if failure { return }
 
 	lists, err := services.GetLists(sessionID)
 	if helper.JSONErrorDefault(c, err) { return }
@@ -47,5 +38,25 @@ func GetLists(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"error": nil,
 		"lists": lists,
+	})
+}
+
+// ListInfo gets the title and items within a list
+func ListInfo(c *gin.Context) {
+	params, failure := helper.QueriesJSONError(c, "listID")
+	if failure { return }
+
+	sessionID, failure := helper.GetSessionID(c)
+	if failure { return }
+
+	title, items, err := services.ListInfo(sessionID, params["listID"])
+	if helper.JSONErrorDefault(c, err) { return }
+
+	c.JSON(http.StatusOK, gin.H{
+		"error": nil,
+		"info": app.Object{
+			"title": title,
+			"items": items,
+		},
 	})
 }

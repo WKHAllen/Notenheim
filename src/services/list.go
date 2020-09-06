@@ -18,7 +18,8 @@ func NewList(sessionID string, title string) (string, error) {
 		return "", fmt.Errorf("Invalid session")
 	}
 
-	listID := helper.UniqueBase64ID(4, dbm, "Session", "id")
+	// Add list record
+	listID := helper.UniqueBase64ID(4, dbm, "List", "id")
 	now := app.GetTime()
 	sql = `
 		INSERT INTO List
@@ -32,17 +33,18 @@ func NewList(sessionID string, title string) (string, error) {
 }
 
 // GetLists gets all lists created by a user
-func GetLists(sessionID string) ([](map[string]interface{}), error) {
-	var emptyMap [](map[string]interface{})
+func GetLists(sessionID string) ([]app.Object, error) {
+	var emptyObj []app.Object
 	var userID string
 
 	// Confirm that the session ID exists
 	sql := "SELECT userID FROM Session WHERE id = ?;"
 	err := dbm.QueryRow(sql, sessionID).Scan(&userID)
 	if err != nil {
-		return emptyMap, fmt.Errorf("Invalid session")
+		return emptyObj, fmt.Errorf("Invalid session")
 	}
 
+	// Get lists
 	sql = `
 		SELECT id, title, updateTimestamp
 		FROM List
@@ -51,20 +53,66 @@ func GetLists(sessionID string) ([](map[string]interface{}), error) {
 	rows, err := dbm.QueryRows(sql, userID)
 	if err != nil {
 		fmt.Printf("Unexpected error: %v\n", err)
-		return emptyMap, fmt.Errorf("An unexpected error occurred")
+		return emptyObj, fmt.Errorf("An unexpected error occurred")
 	}
 
-	lists := make([](map[string]interface{}), 0)
+	// Parse list information
+	lists := make([]app.Object, 0)
 	for rows.Next() {
 		row, err := rows.Values()
 		if err != nil {
 			fmt.Printf("Unexpected error: %v\n", err)
-			return emptyMap, fmt.Errorf("An unexpected error occurred")
+			return emptyObj, fmt.Errorf("An unexpected error occurred")
 		}
 
-		structuredRow := helper.StructureRow(row, "id", "title", "updateTimestamp")
+		structuredRow := helper.StructureRow(row, "listID", "title", "updateTimestamp")
 		lists = append(lists, structuredRow)
 	}
 
 	return lists, nil
+}
+
+// ListInfo gets the title and items within a list
+func ListInfo(sessionID string, listID string) (string, []app.Object, error) {
+	var emptyObj []app.Object
+	var userID string
+	var title string
+
+	// Confirm that the session ID exists
+	sql := "SELECT userID FROM Session WHERE id = ?;"
+	err := dbm.QueryRow(sql, sessionID).Scan(&userID)
+	if err != nil {
+		return "", emptyObj, fmt.Errorf("Invalid session")
+	}
+
+	// Get list title
+	sql = "SELECT title FROM List WHERE id = ?;"
+	err = dbm.QueryRow(sql, listID).Scan(&title)
+	if err != nil {
+		fmt.Printf("Unexpected error: %v\n", err)
+		return "", emptyObj, fmt.Errorf("An unexpected error occurred")
+	}
+
+	// Get list items
+	sql = `
+		SELECT id, content, position, checked
+		FROM ListItem
+		WHERE listID = ?
+		ORDER BY position ASC;`
+	rows, err := dbm.QueryRows(sql, listID)
+
+	// Parse list item information
+	info := make([]app.Object, 0)
+	for rows.Next() {
+		row, err := rows.Values()
+		if err != nil {
+			fmt.Printf("Unexpected error: %v\n", err)
+			return "", emptyObj, fmt.Errorf("An unexpected error occurred")
+		}
+
+		structuredRow := helper.StructureRow(row, "listItemID", "content", "position", "checked")
+		info = append(info, structuredRow)
+	}
+
+	return title, info, nil
 }

@@ -62,4 +62,4 @@ Listed below are all the available REST endpoints. All endpoints contain the att
 ### Get lists
 
 * Path: `/api/getLists`
-* Returns: `lists: [{id (string), title (string), updateTimestamp (int)}, ...]`
+* Returns: `lists: [{listID (string), title (string), updateTimestamp (int)}, ...]`
