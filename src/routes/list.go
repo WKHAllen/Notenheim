@@ -30,3 +30,22 @@ func NewList(c *gin.Context) {
 		"listID": listID,
 	})
 }
+
+// GetLists gets all lists created by a user
+func GetLists(c *gin.Context) {
+	sessionID, err := c.Cookie("sessionID")
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"error": "Not logged in",
+		})
+		return
+	}
+
+	lists, err := services.GetLists(sessionID)
+	if helper.JSONErrorDefault(c, err) { return }
+
+	c.JSON(http.StatusOK, gin.H{
+		"error": nil,
+		"lists": lists,
+	})
+}

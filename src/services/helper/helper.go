@@ -30,3 +30,14 @@ func UniqueBase64ID(length int, dbm *db.Manager, table string, column string) st
 
 	return id
 }
+
+// StructureRow organizes a row into a logical key-value structure
+func StructureRow(row []interface{}, keys ...string) map[string]interface{} {
+	structuredRow := make(map[string]interface{})
+
+	for index, key := range keys {
+		structuredRow[key] = row[index]
+	}
+
+	return structuredRow
+}

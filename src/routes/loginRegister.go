@@ -52,17 +52,18 @@ func Logout(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"error": "Not logged in",
 		})
-	} else {
-		var domain string = "localhost"
-		if os.Getenv("DEBUG") == "false" {
-			domain = "notenheim.com"
-		}
-
-		c.SetCookie("sessionID", "", -1, "/", domain, false, true)
-		c.SetCookie("loggedIn", "false", 0, "/", domain, false, false)
-		err := services.Logout(sessionID)
-		if helper.JSONErrorDefault(c, err) { return }
-
-		helper.JSONSuccess(c)
+		return
 	}
+
+	var domain string = "localhost"
+	if os.Getenv("DEBUG") == "false" {
+		domain = "notenheim.com"
+	}
+
+	c.SetCookie("sessionID", "", -1, "/", domain, false, true)
+	c.SetCookie("loggedIn", "false", 0, "/", domain, false, false)
+	err = services.Logout(sessionID)
+	if helper.JSONErrorDefault(c, err) { return }
+
+	helper.JSONSuccess(c)
 }

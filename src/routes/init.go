@@ -28,8 +28,9 @@ func LoadRoutes(router *gin.Engine, path string) {
 	// Profile
 	api.GET("/changePassword", ChangePassword)
 
-	// New list
-	api.GET("/newList", NewList)
+	// List
+	api.GET("/newList",  NewList)
+	api.GET("/getLists", GetLists)
 }
 
 // LoadErrorRoutes creates redirects to error pages when errors occur
