@@ -41,3 +41,16 @@ func StructureRow(row []interface{}, keys ...string) map[string]interface{} {
 
 	return structuredRow
 }
+
+// GetUserSession gets a user's ID based on their session ID
+func GetUserSession(dbm *db.Manager, sessionID string) (string, error) {
+	var userID string
+
+	sql := "SELECT userID FROM Session WHERE id = ?;"
+	err := dbm.QueryRow(sql, sessionID).Scan(&userID)
+	if err != nil {
+		return "", fmt.Errorf("Invalid session")
+	}
+
+	return userID, nil
+}

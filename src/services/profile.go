@@ -9,14 +9,9 @@ import (
 
 // ChangePassword changes a user's password
 func ChangePassword(sessionID string, newPassword string) error {
-	var userID string
-
 	// Confirm that the session ID exists
-	sql := "SELECT userID FROM Session WHERE id = ?;"
-	err := dbm.QueryRow(sql, sessionID).Scan(&userID)
-	if err != nil {
-		return fmt.Errorf("Invalid session")
-	}
+	userID, err := helper.GetUserSession(dbm, sessionID)
+	if err != nil { return err }
 
 	// Hash the new password
 	hashed, err := app.HashPassword(newPassword)
@@ -26,7 +21,7 @@ func ChangePassword(sessionID string, newPassword string) error {
 	}
 
 	// Change password
-	sql = "UPDATE AppUser SET password = ? WHERE id = ?;"
+	sql := "UPDATE AppUser SET password = ? WHERE id = ?;"
 	err = helper.UnexpectedError(dbm, sql, hashed, userID)
 	if err != nil { return err }
 

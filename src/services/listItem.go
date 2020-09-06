@@ -9,13 +9,17 @@ import (
 
 // NewListItem creates a new item in a list
 func NewListItem(sessionID string, listID string) (string, error) {
-	var userID string
+	var title string
 
 	// Confirm that the session ID exists
-	sql := "SELECT userID FROM Session WHERE id = ?;"
-	err := dbm.QueryRow(sql, sessionID).Scan(&userID)
+	userID, err := helper.GetUserSession(dbm, sessionID)
+	if err != nil { return "", err }
+
+	// Confirm that the list ID is valid
+	sql := "SELECT title FROM List WHERE id = ? AND userID = ?;"
+	err = dbm.QueryRow(sql, listID, userID).Scan(&title)
 	if err != nil {
-		return "", fmt.Errorf("Invalid session")
+		return "", fmt.Errorf("Invalid list ID")
 	}
 
 	// Add list record

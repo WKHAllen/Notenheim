@@ -9,19 +9,14 @@ import (
 
 // NewList creates a new list
 func NewList(sessionID string, title string) (string, error) {
-	var userID string
-
 	// Confirm that the session ID exists
-	sql := "SELECT userID FROM Session WHERE id = ?;"
-	err := dbm.QueryRow(sql, sessionID).Scan(&userID)
-	if err != nil {
-		return "", fmt.Errorf("Invalid session")
-	}
+	userID, err := helper.GetUserSession(dbm, sessionID)
+	if err != nil { return "", err }
 
 	// Add list record
 	listID := helper.UniqueBase64ID(4, dbm, "List", "id")
 	now := app.GetTime()
-	sql = `
+	sql := `
 		INSERT INTO List
 			(id, userID, title, createTimestamp, updateTimestamp)
 		VALUES
@@ -35,17 +30,13 @@ func NewList(sessionID string, title string) (string, error) {
 // GetLists gets all lists created by a user
 func GetLists(sessionID string) ([]app.Object, error) {
 	var emptyObj []app.Object
-	var userID string
 
 	// Confirm that the session ID exists
-	sql := "SELECT userID FROM Session WHERE id = ?;"
-	err := dbm.QueryRow(sql, sessionID).Scan(&userID)
-	if err != nil {
-		return emptyObj, fmt.Errorf("Invalid session")
-	}
+	userID, err := helper.GetUserSession(dbm, sessionID)
+	if err != nil { return emptyObj, err }
 
 	// Get lists
-	sql = `
+	sql := `
 		SELECT id, title, updateTimestamp
 		FROM List
 		WHERE userID = ?
@@ -75,18 +66,14 @@ func GetLists(sessionID string) ([]app.Object, error) {
 // ListInfo gets the title and items within a list
 func ListInfo(sessionID string, listID string) (string, []app.Object, error) {
 	var emptyObj []app.Object
-	var userID string
 	var title string
 
 	// Confirm that the session ID exists
-	sql := "SELECT userID FROM Session WHERE id = ?;"
-	err := dbm.QueryRow(sql, sessionID).Scan(&userID)
-	if err != nil {
-		return "", emptyObj, fmt.Errorf("Invalid session")
-	}
+	userID, err := helper.GetUserSession(dbm, sessionID)
+	if err != nil { return "", emptyObj, err }
 
 	// Get the list title
-	sql = "SELECT title FROM List WHERE id = ? AND userID = ?;"
+	sql := "SELECT title FROM List WHERE id = ? AND userID = ?;"
 	err = dbm.QueryRow(sql, listID, userID).Scan(&title)
 	if err != nil {
 		return "", emptyObj, fmt.Errorf("Invalid list ID")
@@ -118,18 +105,14 @@ func ListInfo(sessionID string, listID string) (string, []app.Object, error) {
 
 // RenameList renames a list
 func RenameList(sessionID string, listID string, newName string) error {
-	var userID string
 	var title string
 
 	// Confirm that the session ID exists
-	sql := "SELECT userID FROM Session WHERE id = ?;"
-	err := dbm.QueryRow(sql, sessionID).Scan(&userID)
-	if err != nil {
-		return fmt.Errorf("Invalid session")
-	}
+	userID, err := helper.GetUserSession(dbm, sessionID)
+	if err != nil { return err }
 
 	// Confirm that the list ID is valid
-	sql = "SELECT title FROM List WHERE id = ? AND userID = ?;"
+	sql := "SELECT title FROM List WHERE id = ? AND userID = ?;"
 	err = dbm.QueryRow(sql, listID, userID).Scan(&title)
 	if err != nil {
 		return fmt.Errorf("Invalid list ID")
@@ -148,18 +131,14 @@ func RenameList(sessionID string, listID string, newName string) error {
 
 // DeleteList deletes a list
 func DeleteList(sessionID string, listID string) error {
-	var userID string
 	var title string
 
 	// Confirm that the session ID exists
-	sql := "SELECT userID FROM Session WHERE id = ?;"
-	err := dbm.QueryRow(sql, sessionID).Scan(&userID)
-	if err != nil {
-		return fmt.Errorf("Invalid session")
-	}
+	userID, err := helper.GetUserSession(dbm, sessionID)
+	if err != nil { return err }
 
 	// Confirm that the list ID is valid
-	sql = "SELECT title FROM List WHERE id = ? AND userID = ?;"
+	sql := "SELECT title FROM List WHERE id = ? AND userID = ?;"
 	err = dbm.QueryRow(sql, listID, userID).Scan(&title)
 	if err != nil {
 		return fmt.Errorf("Invalid list ID")
