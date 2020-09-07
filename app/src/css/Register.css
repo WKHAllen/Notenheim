@@ -1,3 +1,7 @@
 .Register h1 {
 	text-align: center;
 }
+
+.Register p {
+	text-align: justify;
+}
