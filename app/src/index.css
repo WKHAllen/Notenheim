@@ -36,3 +36,7 @@ input:focus, button:focus {
 .hidden {
 	display: none;
 }
+
+.loading {
+	text-align: center !important;
+}
