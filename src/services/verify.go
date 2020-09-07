@@ -82,30 +82,43 @@ func Verify(verifyID string) error {
 // PruneVerification removes a verification record
 func PruneVerification(verifyID string) {
 	go func() {
+		var email string
 		var createTimestamp int64
 
-		sql := "SELECT createTimestamp FROM Verify WHERE id = ?;"
-		err := dbm.QueryRow(sql, verifyID).Scan(&createTimestamp)
+		// Get email and verification creation timestamp
+		sql := "SELECT email, createTimestamp FROM Verify WHERE id = ?;"
+		err := dbm.QueryRow(sql, verifyID).Scan(&email, &createTimestamp)
 		if err != nil {
 			fmt.Printf("Unexpected error: %v\n", err)
 			return
 		}
 
+		// Calculate time remaining
 		createdTime := time.Unix(createTimestamp, 0)
 		endTime := createdTime.Add(time.Hour)
 		now := time.Now()
+		
 		var sleepTime time.Duration
-
 		if now.After(endTime) {
 			sleepTime = 0
 		} else {
 			sleepTime = endTime.Sub(now)
 		}
 
+		// Wait
 		time.Sleep(sleepTime)
 
+		// Remove the verification record
 		sql = "DELETE FROM Verify WHERE id = ?;"
 		err = dbm.Execute(sql, verifyID)
+		if err != nil {
+			fmt.Printf("Unexpected error: %v\n", err)
+			return
+		}
+
+		// Remove the user who created the verification request
+		sql = "DELETE FROM AppUser WHERE email = ?;"
+		err = dbm.Execute(sql, email)
 		if err != nil {
 			fmt.Printf("Unexpected error: %v\n", err)
 			return

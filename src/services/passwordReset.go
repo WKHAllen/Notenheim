@@ -101,6 +101,7 @@ func PrunePasswordReset(resetID string) {
 	go func() {
 		var createTimestamp int64
 
+		// Get the verification creation timestamp
 		sql := "SELECT createTimestamp FROM PasswordReset WHERE id = ?;"
 		err := dbm.QueryRow(sql, resetID).Scan(&createTimestamp)
 		if err != nil {
@@ -108,19 +109,22 @@ func PrunePasswordReset(resetID string) {
 			return
 		}
 
+		// Calculate time remaining
 		createdTime := time.Unix(createTimestamp, 0)
 		endTime := createdTime.Add(time.Hour)
 		now := time.Now()
+		
 		var sleepTime time.Duration
-
 		if now.After(endTime) {
 			sleepTime = 0
 		} else {
 			sleepTime = endTime.Sub(now)
 		}
 
+		// Wait
 		time.Sleep(sleepTime)
 
+		// Remove the password reset record
 		sql = "DELETE FROM PasswordReset WHERE id = ?;"
 		err = dbm.Execute(sql, resetID)
 		if err != nil {
