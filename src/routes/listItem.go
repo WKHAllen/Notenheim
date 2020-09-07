@@ -87,3 +87,17 @@ func MoveListItem(c *gin.Context) {
 
 	helper.JSONSuccess(c)
 }
+
+// DeleteListItem deletes a list item
+func DeleteListItem(c *gin.Context) {
+	params, failure := helper.QueriesJSONError(c, "listItemID")
+	if failure { return }
+
+	sessionID, failure := helper.GetSessionID(c)
+	if failure { return }
+
+	err := services.DeleteListItem(sessionID, params["listItemID"])
+	if helper.JSONErrorDefault(c, err) { return }
+
+	helper.JSONSuccess(c)
+}

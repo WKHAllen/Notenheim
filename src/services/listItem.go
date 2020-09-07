@@ -160,3 +160,40 @@ func MoveListItem(sessionID string, listItemID string, direction string) error {
 
 	return nil
 }
+
+// DeleteListItem deletes a list item
+func DeleteListItem(sessionID string, listItemID string) error {
+	var listID string
+	var position int
+	var title string
+
+	// Confirm that the session ID exists
+	userID, err := helper.GetUserSession(dbm, sessionID)
+	if err != nil { return err }
+
+	// Confirm that the list item ID is valid
+	sql := "SELECT listID, position FROM ListItem WHERE id = ?;"
+	err = dbm.QueryRow(sql, listItemID).Scan(&listID, &position)
+	if err != nil {
+		return fmt.Errorf("Invalid list item ID")
+	}
+
+	// Confirm that the list ID is valid
+	sql = "SELECT title FROM List WHERE id = ? AND userID = ?;"
+	err = dbm.QueryRow(sql, listID, userID).Scan(&title)
+	if err != nil {
+		return fmt.Errorf("Invalid list item ID")
+	}
+
+	// Delete list item
+	sql = "DELETE FROM ListItem WHERE id = ?;"
+	err = helper.UnexpectedError(dbm, sql, listItemID)
+	if err != nil { return err }
+
+	// Alter list item positions
+	sql = "UPDATE ListItem SET position = position - 1 WHERE listID = ? AND position > ?;"
+	err = helper.UnexpectedError(dbm, sql, listID, position)
+	if err != nil { return err }
+
+	return nil
+}

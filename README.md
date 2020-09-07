@@ -100,3 +100,8 @@ Listed below are all the available REST endpoints. All endpoints contain the att
 
 * Path `/api/moveListItem`
 * Parameters: `listItemID` (string), `direction` (string: 'up' | 'down')
+
+### Delete list item
+
+* Path `/api/deleteListItem`
+* Parameters: `listItemID` (string)
