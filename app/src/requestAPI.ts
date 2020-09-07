@@ -1,5 +1,6 @@
 export interface APIResponse {
-	error: string | null
+	error: string | null,
+	[key: string]: any
 }
 
 export interface ParamMap {
@@ -9,7 +10,7 @@ export interface ParamMap {
 export async function requestAPI(url: string, params?: ParamMap): Promise<APIResponse> {
 	const requestURL = params ? `/api${url}?` + new URLSearchParams(params) : `/api${url}`;
 	const response = await fetch(requestURL);
-	const responseJSON = await response.json();
+	const responseJSON = await response.json() as APIResponse;
 	return responseJSON;
 }
 

@@ -21,15 +21,15 @@ export default class App extends React.Component {
 					<Header />
 					<div className="App-Body">
 						<Switch>
-							<Route exact path="/"              component={Home} />
-							<Route exact path="/register"      component={Register} />
-							<Route exact path="/login"         component={Login} />
-							<Route exact path="/logout"        component={Logout} />
-							<Route       path="/verify"        component={Verify} />
-							<Route       path="/resetPassword" component={PasswordReset} />
-							<Route exact path="/profile"       component={Profile} />
-							<Route exact path="/new"           component={NewList} />
-							<Route       path="/list"          component={List} />
+							<Route exact path="/"                       component={Home} />
+							<Route exact path="/register"               component={Register} />
+							<Route exact path="/login"                  component={Login} />
+							<Route exact path="/logout"                 component={Logout} />
+							<Route exact path="/verify/:verifyID"       component={Verify} />
+							<Route exact path="/resetPassword/:resetID" component={PasswordReset} />
+							<Route exact path="/profile"                component={Profile} />
+							<Route exact path="/new"                    component={NewList} />
+							<Route exact path="/list/:listID"           component={List} />
 							<Route component={NotFound} />
 						</Switch>
 					</div>
