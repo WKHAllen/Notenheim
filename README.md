@@ -95,3 +95,8 @@ Listed below are all the available REST endpoints. All endpoints contain the att
 
 * Path: `/api/checkListItem`
 * Parameters: `listItemID` (string), `checked` (boolean)
+
+### Move list item
+
+* Path `/api/moveListItem`
+* Parameters: `listItemID` (string), `direction` (string: 'up' | 'down')

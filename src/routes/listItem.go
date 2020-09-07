@@ -66,3 +66,24 @@ func CheckListItem(c *gin.Context) {
 
 	helper.JSONSuccess(c)
 }
+
+// MoveListItem moves a list item up or down
+func MoveListItem(c *gin.Context) {
+	params, failure := helper.QueriesJSONError(c, "listItemID", "direction")
+	if failure { return }
+
+	if params["direction"] != "down" && params["direction"] != "up" {
+		c.JSON(http.StatusOK, gin.H{
+			"error": "Parameter 'direction' must be 'up' or 'down'",
+		})
+		return
+	}
+
+	sessionID, failure := helper.GetSessionID(c)
+	if failure { return }
+
+	err := services.MoveListItem(sessionID, params["listItemID"], params["direction"])
+	if helper.JSONErrorDefault(c, err) { return }
+
+	helper.JSONSuccess(c)
+}
