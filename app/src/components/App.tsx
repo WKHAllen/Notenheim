@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import '../css/App.css';
 import Header from './Header';
+import Error from './Error';
 import Home          from './Home';
 import Register      from './Register';
 import Login         from './Login';
@@ -11,7 +12,7 @@ import PasswordReset from './PasswordReset';
 import Profile       from './Profile';
 import NewList       from './NewList';
 import List          from './List';
-import NotFound from './errors/NotFound';
+import NotFound from './NotFound';
 
 export default class App extends React.Component {
 	render() {
@@ -20,6 +21,7 @@ export default class App extends React.Component {
 				<div className="App">
 					<Header />
 					<div className="App-Body">
+						<Error />
 						<Switch>
 							<Route exact path="/"                       component={Home} />
 							<Route exact path="/register"               component={Register} />

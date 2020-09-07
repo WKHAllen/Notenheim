@@ -1,6 +1,7 @@
 import React from 'react';
 import '../css/Register.css';
 import { requestAPIForm } from '../requestAPI';
+import { showAPIError } from '../apiError';
 
 interface RegisterState {
 	formGood: boolean
@@ -26,11 +27,11 @@ export default class Register extends React.Component<any, RegisterState> {
 					</div>
 					<div className="form-group">
 						<label htmlFor="password">Password</label>
-						<input type="text" className="form-control" id="password" name="password" onChange={() => this.checkPasswords()} />
+						<input type="password" className="form-control" id="password" name="password" onChange={() => this.checkPasswords()} />
 					</div>
 					<div className="form-group">
 						<label htmlFor="confirm-password">Confirm password</label>
-						<input type="text" className="form-control" id="confirm-password" name="confirm-password" onChange={() => this.checkPasswords()} />
+						<input type="password" className="form-control" id="confirm-password" name="confirm-password" onChange={() => this.checkPasswords()} />
 					</div>
 					<button type="submit" className="btn btn-primary btn-pink" id="register-button" disabled={!this.state.formGood}>Register</button>
 				</form>
@@ -43,6 +44,12 @@ export default class Register extends React.Component<any, RegisterState> {
 
 		const formData = new FormData(e.currentTarget);
 		const res = await requestAPIForm('/register', formData, ['email', 'password']);
+
+		if (res.error === null) {
+			// show success
+		} else {
+			showAPIError(res.error);
+		}
 	}
 
 	private async checkPasswords(): Promise<void> {

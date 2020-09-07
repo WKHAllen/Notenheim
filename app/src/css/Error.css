@@ -1,0 +1,8 @@
+.Error {
+	background-color: red;
+	color: white;
+}
+
+.Error button {
+	box-shadow: none !important;
+}

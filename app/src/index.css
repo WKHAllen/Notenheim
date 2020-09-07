@@ -32,3 +32,7 @@ input:focus, button:focus {
 	background-color: #d70270 !important;
 	border-color: #d70270 !important;
 }
+
+.hidden {
+	display: none;
+}
