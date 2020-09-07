@@ -13,3 +13,22 @@ body {
 ::-moz-selection { /* Firefox */
 	background-color: #d70270;
 }
+
+input:focus, button:focus {
+	box-shadow: 0 0 0 3pt #734f96 !important;
+}
+
+.btn-blue {
+	background-color: #0038a8 !important;
+	border-color: #0038a8 !important;
+}
+
+.btn-purple {
+	background-color: #734f96 !important;
+	border-color: #734f96 !important;
+}
+
+.btn-pink {
+	background-color: #d70270 !important;
+	border-color: #d70270 !important;
+}
