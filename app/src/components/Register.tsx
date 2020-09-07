@@ -1,5 +1,6 @@
 import React from 'react';
 import '../css/Register.css';
+import { requestAPIForm } from '../requestAPI';
 
 interface RegisterState {
 	formGood: boolean
@@ -40,13 +41,8 @@ export default class Register extends React.Component<any, RegisterState> {
 	private async register(e: React.FormEvent<HTMLFormElement>): Promise<void> {
 		e.preventDefault();
 
-		const data = new FormData(e.currentTarget);
-		fetch('/api/register?' + new URLSearchParams({
-			email: data.get('email') as string,
-			password: data.get('password') as string
-		}))
-			.then(res => res.json())
-			.then(console.log);
+		const formData = new FormData(e.currentTarget);
+		const res = await requestAPIForm('/register', formData, ['email', 'password']);
 	}
 
 	private async checkPasswords(): Promise<void> {
