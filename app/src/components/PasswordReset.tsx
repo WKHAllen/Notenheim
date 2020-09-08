@@ -60,11 +60,11 @@ export default class PasswordReset extends React.Component<any, PasswordResetSta
 					<form onSubmit={event => { this.resetPassword(event); return false; }} className="mb-3">
 						<div className="form-group">
 							<label htmlFor="password">New password</label>
-							<input type="password" className="form-control" id="password" name="password" onChange={() => this.checkForm()} />
+							<input type="password" className="form-control" id="password" name="password" maxLength={255} onChange={() => this.checkForm()} />
 						</div>
 						<div className="form-group">
 							<label htmlFor="confirm-password">Confirm new password</label>
-							<input type="password" className="form-control" id="confirm-password" name="confirm-password" onChange={() => this.checkForm()} />
+							<input type="password" className="form-control" id="confirm-password" name="confirm-password" maxLength={255} onChange={() => this.checkForm()} />
 						</div>
 						<button type="submit" className="btn btn-primary btn-pink" disabled={!this.state.formGood || this.state.submitClicked}>Reset password</button>
 					</form>

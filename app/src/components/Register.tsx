@@ -29,15 +29,15 @@ export default class Register extends React.Component<any, RegisterState> {
 					<form onSubmit={event => { this.register(event); return false; }} className="mb-3">
 						<div className="form-group">
 							<label htmlFor="email">Email</label>
-							<input type="email" className="form-control" id="email" name="email" onChange={() => this.checkForm()} />
+							<input type="email" className="form-control" id="email" name="email" maxLength={63} onChange={() => this.checkForm()} />
 						</div>
 						<div className="form-group">
 							<label htmlFor="password">Password</label>
-							<input type="password" className="form-control" id="password" name="password" onChange={() => this.checkForm()} />
+							<input type="password" className="form-control" id="password" name="password" maxLength={255} onChange={() => this.checkForm()} />
 						</div>
 						<div className="form-group">
 							<label htmlFor="confirm-password">Confirm password</label>
-							<input type="password" className="form-control" id="confirm-password" name="confirm-password" onChange={() => this.checkForm()} />
+							<input type="password" className="form-control" id="confirm-password" name="confirm-password" maxLength={255} onChange={() => this.checkForm()} />
 						</div>
 						<button type="submit" className="btn btn-primary btn-pink" disabled={!this.state.formGood || this.state.submitClicked}>Register</button>
 					</form>
