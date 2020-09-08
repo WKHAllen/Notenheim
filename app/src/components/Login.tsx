@@ -5,6 +5,7 @@ import { requestAPIForm } from '../requestAPI';
 import { showAPIError, hideAPIError } from '../apiError';
 
 interface LoginState {
+	formGood: boolean,
 	submitClicked: boolean
 }
 
@@ -13,6 +14,7 @@ export default class Login extends React.Component<any, LoginState> {
 		super(props);
 
 		this.state = {
+			formGood: false,
 			submitClicked: false
 		};
 	}
@@ -24,13 +26,13 @@ export default class Login extends React.Component<any, LoginState> {
 				<form onSubmit={event => { this.login(event); return false; }} className="mb-3">
 					<div className="form-group">
 						<label htmlFor="email">Email</label>
-						<input type="email" className="form-control" id="email" name="email" />
+						<input type="email" className="form-control" id="email" name="email" onChange={() => this.checkForm()} />
 					</div>
 					<div className="form-group">
 						<label htmlFor="password">Password</label>
-						<input type="password" className="form-control" id="password" name="password" />
+						<input type="password" className="form-control" id="password" name="password" onChange={() => this.checkForm()} />
 					</div>
-					<button type="submit" className="btn btn-primary btn-pink" disabled={this.state.submitClicked}>Register</button>
+					<button type="submit" className="btn btn-primary btn-pink" disabled={!this.state.formGood || this.state.submitClicked}>Register</button>
 				</form>
 				<small>If you do not have an account, please <Link to="/register">register here</Link>.</small>
 				<br />
@@ -59,5 +61,14 @@ export default class Login extends React.Component<any, LoginState> {
 			});
 			showAPIError(res.error);
 		}
+	}
+
+	private async checkForm(): Promise<void> {
+		const email    = (document.getElementById('email')    as HTMLInputElement).value;
+		const password = (document.getElementById('password') as HTMLInputElement).value;
+
+		this.setState({
+			formGood: email.match(/^([A-Za-z0-9.]+)@([a-z0-9]+)\.([a-z]+)$/g) !== null && password.length >= 8
+		});
 	}
 }

@@ -29,15 +29,15 @@ export default class Register extends React.Component<any, RegisterState> {
 					<form onSubmit={event => { this.register(event); return false; }} className="mb-3">
 						<div className="form-group">
 							<label htmlFor="email">Email</label>
-							<input type="email" className="form-control" id="email" name="email" onChange={() => this.checkPasswords()} />
+							<input type="email" className="form-control" id="email" name="email" onChange={() => this.checkForm()} />
 						</div>
 						<div className="form-group">
 							<label htmlFor="password">Password</label>
-							<input type="password" className="form-control" id="password" name="password" onChange={() => this.checkPasswords()} />
+							<input type="password" className="form-control" id="password" name="password" onChange={() => this.checkForm()} />
 						</div>
 						<div className="form-group">
 							<label htmlFor="confirm-password">Confirm password</label>
-							<input type="password" className="form-control" id="confirm-password" name="confirm-password" onChange={() => this.checkPasswords()} />
+							<input type="password" className="form-control" id="confirm-password" name="confirm-password" onChange={() => this.checkForm()} />
 						</div>
 						<button type="submit" className="btn btn-primary btn-pink" disabled={!this.state.formGood || this.state.submitClicked}>Register</button>
 					</form>
@@ -77,13 +77,13 @@ export default class Register extends React.Component<any, RegisterState> {
 		}
 	}
 
-	private async checkPasswords(): Promise<void> {
+	private async checkForm(): Promise<void> {
 		const email             = (document.getElementById('email')            as HTMLInputElement).value;
 		const password          = (document.getElementById('password')         as HTMLInputElement).value;
 		const confirmedPassword = (document.getElementById('confirm-password') as HTMLInputElement).value;
 
 		this.setState({
-			formGood: email.length > 0 && password === confirmedPassword && password.length >= 8
+			formGood: email.match(/^([A-Za-z0-9.]+)@([a-z0-9]+)\.([a-z]+)$/g) !== null && password === confirmedPassword && password.length >= 8
 		});
 	}
 }

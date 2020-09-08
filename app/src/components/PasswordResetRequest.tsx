@@ -4,6 +4,7 @@ import { requestAPIForm } from '../requestAPI';
 import { hideAPIError, showAPIError } from '../apiError';
 
 interface PasswordResetRequestState {
+	formGood: boolean,
 	submitClicked: boolean,
 	resetRequestSuccess: boolean
 }
@@ -13,6 +14,7 @@ export default class PasswordResetRequest extends React.Component<any, PasswordR
 		super(props);
 
 		this.state = {
+			formGood: false,
 			submitClicked: false,
 			resetRequestSuccess: false
 		};
@@ -27,9 +29,9 @@ export default class PasswordResetRequest extends React.Component<any, PasswordR
 					<form onSubmit={event => { this.requestPasswordReset(event); return false; }} className="mb-3">
 						<div className="form-group">
 							<label htmlFor="email">Email</label>
-							<input type="email" className="form-control" id="email" name="email" />
+							<input type="email" className="form-control" id="email" name="email" onChange={() => this.checkForm()} />
 						</div>
-						<button type="submit" className="btn btn-primary btn-pink" disabled={this.state.submitClicked}>Register</button>
+						<button type="submit" className="btn btn-primary btn-pink" disabled={!this.state.formGood || this.state.submitClicked}>Register</button>
 					</form>
 				</div>
 			);
@@ -64,5 +66,13 @@ export default class PasswordResetRequest extends React.Component<any, PasswordR
 			});
 			showAPIError(res.error);
 		}
+	}
+
+	private async checkForm(): Promise<void> {
+		const email = (document.getElementById('email') as HTMLInputElement).value;
+
+		this.setState({
+			formGood: email.match(/^([A-Za-z0-9.]+)@([a-z0-9]+)\.([a-z]+)$/g) !== null
+		});
 	}
 }
