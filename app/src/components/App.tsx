@@ -15,7 +15,7 @@ import List          from './List';
 import NotFound from './NotFound';
 
 export default class App extends React.Component {
-	render() {
+	public render() {
 		return (
 			<Router>
 				<div className="App">

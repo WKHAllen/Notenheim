@@ -1,7 +1,10 @@
 .Header {
-	height: 80px;
+	/* height: 80px; */
 	padding: 16px;
 	background-color: #1850c8;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .Home-Label {
@@ -18,5 +21,29 @@
 }
 
 .Home-Label:active {
+	color: #eff7ff;
+}
+
+.Nav-Links {
+	list-style: none;
+	margin-bottom: 0;
+	font-size: 12pt;
+}
+
+.Nav-Links li {
+	display: inline-block;
+	padding: 0px 16px;
+}
+
+.Nav-Links li a {
+	color: #cfdfff;
+	text-decoration: none;
+}
+
+.Nav-Links li a:hover {
+	color: #dfefff;
+}
+
+.Nav-Links li a:active {
 	color: #eff7ff;
 }
