@@ -22,7 +22,7 @@ export default class Login extends React.Component<any, LoginState> {
 	public render() {
 		return (
 			<div className="Login">
-				<h1>Log In</h1>
+				<h1>Login</h1>
 				<form onSubmit={event => { this.login(event); return false; }} className="mb-3">
 					<div className="form-group">
 						<label htmlFor="email">Email</label>
@@ -32,7 +32,7 @@ export default class Login extends React.Component<any, LoginState> {
 						<label htmlFor="password">Password</label>
 						<input type="password" className="form-control" id="password" name="password" onChange={() => this.checkForm()} />
 					</div>
-					<button type="submit" className="btn btn-primary btn-pink" disabled={!this.state.formGood || this.state.submitClicked}>Register</button>
+					<button type="submit" className="btn btn-primary btn-pink" disabled={!this.state.formGood || this.state.submitClicked}>Login</button>
 				</form>
 				<small>If you do not have an account, please <Link to="/register">register here</Link>.</small>
 				<br />

@@ -31,7 +31,7 @@ export default class PasswordResetRequest extends React.Component<any, PasswordR
 							<label htmlFor="email">Email</label>
 							<input type="email" className="form-control" id="email" name="email" onChange={() => this.checkForm()} />
 						</div>
-						<button type="submit" className="btn btn-primary btn-pink" disabled={!this.state.formGood || this.state.submitClicked}>Register</button>
+						<button type="submit" className="btn btn-primary btn-pink" disabled={!this.state.formGood || this.state.submitClicked}>Reset password</button>
 					</form>
 				</div>
 			);
