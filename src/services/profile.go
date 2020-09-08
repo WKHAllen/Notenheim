@@ -7,6 +7,29 @@ import (
 	"main/src/services/helper"
 )
 
+// GetProfileInfo gets a user's profile information
+func GetProfileInfo(sessionID string) (string, int64, error) {
+	var email string
+	var joinTimestamp int64
+
+	// Confirm that the session ID exists
+	userID, err := helper.GetUserSession(dbm, sessionID)
+	if err != nil { return "", 0, err }
+
+	// Get profile information
+	sql := `
+		SELECT email, joinTimestamp
+		FROM AppUser
+		WHERE id = ?;`
+	err = dbm.QueryRow(sql, userID).Scan(&email, &joinTimestamp)
+	if err != nil {
+		fmt.Printf("Unexpected error: %v\n", err)
+		return "", 0, fmt.Errorf("An unexpected error occurred")
+	}
+
+	return email, joinTimestamp, nil
+}
+
 // ChangePassword changes a user's password
 func ChangePassword(sessionID string, newPassword string) error {
 	// Confirm that the session ID exists

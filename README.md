@@ -48,6 +48,11 @@ Listed below are all the available REST endpoints. All endpoints contain the att
 * Path: `/api/resetPassword`
 * Parameters: `resetID` (string), `newPassword` (string)
 
+### Get profile info
+
+* Path: `/api/getProfileInfo`
+* Returns: `info: { email (string), joinTimestamp (int) }`
+
 ### Change password
 
 * Path: `/api/changePassword`

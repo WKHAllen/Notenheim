@@ -26,6 +26,7 @@ func LoadRoutes(router *gin.Engine, path string) {
 	api.GET("/resetPassword",        ResetPassword)
 
 	// Profile
+	api.GET("/getProfileInfo", GetProfileInfo)
 	api.GET("/changePassword", ChangePassword)
 
 	// List
