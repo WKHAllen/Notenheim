@@ -1,0 +1,8 @@
+.Success {
+	background-color: green;
+	color: white;
+}
+
+.Success button {
+	box-shadow: none !important;
+}

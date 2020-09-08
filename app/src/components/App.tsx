@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import '../css/App.css';
 import Header from './Header';
+import Success from './Success';
 import Error from './Error';
 import Home                 from './Home';
 import Register             from './Register';
@@ -22,6 +23,7 @@ export default class App extends React.Component {
 				<div className="App">
 					<Header />
 					<div className="App-Body">
+						<Success />
 						<Error />
 						<Switch>
 							<Route exact path="/"                       component={Home} />

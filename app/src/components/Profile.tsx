@@ -1,6 +1,7 @@
 import React from 'react';
 import '../css/Profile.css';
 import { requestAPI } from '../requestAPI';
+import { hideAPISuccess, showAPISuccess } from '../apiSuccess';
 import { hideAPIError, showAPIError } from '../apiError';
 import { getCookie } from '../cookie';
 
@@ -27,6 +28,7 @@ export default class Profile extends React.Component<any, ProfileState> {
 	public componentDidMount() {
 		requestAPI('/getProfileInfo')
 			.then(res => {
+				hideAPISuccess();
 				if (res.error === null) {
 					hideAPIError();
 					this.setState({
@@ -89,8 +91,10 @@ export default class Profile extends React.Component<any, ProfileState> {
 			submitClicked: false
 		});
 
+		hideAPISuccess();
 		if (res.error === null) {
 			hideAPIError();
+			showAPISuccess('Your password has been changed');
 		} else {
 			showAPIError(res.error);
 		}
