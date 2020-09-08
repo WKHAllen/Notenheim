@@ -33,6 +33,8 @@ export default class Login extends React.Component<any, LoginState> {
 					<button type="submit" className="btn btn-primary btn-pink" disabled={this.state.submitClicked}>Register</button>
 				</form>
 				<small>If you do not have an account, please <Link to="/register">register here</Link>.</small>
+				<br />
+				<small>Forgot your password? <Link to="/resetPassword">Reset it here</Link>.</small>
 			</div>
 		);
 	}
