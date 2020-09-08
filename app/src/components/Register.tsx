@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../css/Register.css';
 import { requestAPIForm } from '../requestAPI';
 import { showAPIError, hideAPIError } from '../apiError';
@@ -25,7 +26,7 @@ export default class Register extends React.Component<any, RegisterState> {
 			return (
 				<div className="Register">
 					<h1>Register</h1>
-					<form onSubmit={event => { this.register(event); return false; }}>
+					<form onSubmit={event => { this.register(event); return false; }} className="mb-3">
 						<div className="form-group">
 							<label htmlFor="email">Email</label>
 							<input type="email" className="form-control" id="email" name="email" onChange={() => this.checkPasswords()} />
@@ -40,6 +41,7 @@ export default class Register extends React.Component<any, RegisterState> {
 						</div>
 						<button type="submit" className="btn btn-primary btn-pink" id="register-button" disabled={!this.state.formGood || this.state.submitClicked}>Register</button>
 					</form>
+					<small>If you already have an account, please <Link to="/login">log in here</Link>.</small>
 				</div>
 			);
 		} else {

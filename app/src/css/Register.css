@@ -5,3 +5,7 @@
 .Register p {
 	text-align: justify;
 }
+
+.Register small {
+	color: #835fa6;
+}
