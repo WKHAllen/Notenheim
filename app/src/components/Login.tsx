@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../css/Login.css';
 import { requestAPIForm } from '../requestAPI';
@@ -50,6 +50,7 @@ export default class Login extends React.Component<any, LoginState> {
 		if (res.error === null) {
 			hideAPIError();
 			this.props.history.push('/');
+			window.location.reload();
 		} else {
 			this.setState({
 				submitClicked: false

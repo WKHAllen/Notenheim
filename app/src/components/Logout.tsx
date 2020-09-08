@@ -11,12 +11,14 @@ export default class Logout extends React.Component<any> {
 				.then(res => {
 					if (res.error === null) {
 						this.props.history.push('/');
+						window.location.reload();
 					} else {
 						showAPIError(res.error);
 					}
 				});
 		} else {
 			this.props.history.push('/');
+			window.location.reload();
 		}
 	}
 
