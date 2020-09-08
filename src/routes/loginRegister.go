@@ -27,16 +27,16 @@ func Register(c *gin.Context) {
 
 // Login logs a user in
 func Login(c *gin.Context) {
-	_, err := c.Cookie("sessionID")
+	sessionID, err := c.Cookie("sessionID")
 	if err == nil {
-		helper.JSONSuccess(c)
-		return
+		err = services.Logout(sessionID)
+		if helper.JSONErrorDefault(c, err) { return }
 	}
 
 	params, failure := helper.QueriesJSONError(c, "email", "password")
 	if failure { return }
 
-	sessionID, err := services.Login(params["email"], params["password"])
+	sessionID, err = services.Login(params["email"], params["password"])
 	if helper.JSONErrorDefault(c, err) { return }
 
 	var domain string = "localhost"
