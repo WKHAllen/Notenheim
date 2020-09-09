@@ -53,7 +53,12 @@ export default class Login extends React.Component<any, LoginState> {
 
 		if (res.error === null) {
 			hideAPIError();
-			this.props.history.push('/');
+			const after = new URL(window.location.href).searchParams.get('after');
+			if (after !== null) {
+				this.props.history.push(after);
+			} else {
+				this.props.history.push('/');
+			}
 			window.location.reload();
 		} else {
 			this.setState({

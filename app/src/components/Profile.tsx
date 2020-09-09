@@ -25,6 +25,12 @@ export default class Profile extends React.Component<any, ProfileState> {
 		};
 	}
 
+	public componentWillMount() {
+		if (getCookie('loggedIn') !== 'true') {
+			this.props.history.push('/login?after=/profile');
+		}
+	}
+
 	public componentDidMount() {
 		requestAPI('/getProfileInfo')
 			.then(res => {
@@ -41,9 +47,7 @@ export default class Profile extends React.Component<any, ProfileState> {
 	}
 
 	public render() {
-		if (getCookie('loggedIn') !== 'true') {
-			this.props.history.push('/login');
-		} else if (this.state.profileInfo === null) {
+		if (this.state.profileInfo === null) {
 			return (
 				<div className="Profile">
 					<h1>Profile</h1>
