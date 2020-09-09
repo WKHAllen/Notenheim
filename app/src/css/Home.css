@@ -2,6 +2,10 @@
 	text-align: center;
 }
 
+.Home p {
+	text-align: justify;
+}
+
 .Lists, .Lists * {
 	border-radius: 8px;
 }
