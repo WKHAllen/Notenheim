@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { getCookie } from '../cookie';
 
 interface HomeState {
+	refreshClicked: boolean,
 	lists: {
 		listID: string,
 		title: string,
@@ -18,6 +19,7 @@ export default class Home extends React.Component<any, HomeState> {
 		super(props);
 
 		this.state = {
+			refreshClicked: false,
 			lists: null
 		};
 	}
@@ -51,7 +53,7 @@ export default class Home extends React.Component<any, HomeState> {
 						<ul>
 							<li>
 								<h3>Your lists</h3>
-								<button type="button" className="btn btn-primary btn-pink" onClick={() => this.getLists()}>
+								<button type="button" className="btn btn-primary btn-pink" onClick={() => this.getLists()} disabled={this.state.refreshClicked}>
 									<i className="fas fa-sync-alt" />
 								</button>
 							</li>
@@ -70,8 +72,16 @@ export default class Home extends React.Component<any, HomeState> {
 	}
 
 	private async getLists(): Promise<void> {
+		this.setState({
+			refreshClicked: true
+		});
+
 		requestAPI('/getLists')
 			.then(res => {
+				this.setState({
+					refreshClicked: false
+				});
+
 				if (res.error === null) {
 					this.setState({
 						lists: res.lists
