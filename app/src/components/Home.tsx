@@ -24,16 +24,7 @@ export default class Home extends React.Component<any, HomeState> {
 
 	public componentDidMount() {
 		if (getCookie('loggedIn') === 'true') {
-			requestAPI('/getLists')
-				.then(res => {
-					if (res.error === null) {
-						this.setState({
-							lists: res.lists
-						});
-					} else {
-						showAPIError(res.error);
-					}
-				});
+			this.getLists();
 		}
 	}
 
@@ -48,16 +39,22 @@ export default class Home extends React.Component<any, HomeState> {
 		} else if (this.state.lists === null) {
 			return (
 				<div className="Home">
-					<h1>Your Lists</h1>
+					<h1>Notenheim</h1>
 					<p className="loading">Fetching your lists...</p>
 				</div>
 			);
 		} else {
 			return (
 				<div className="Home">
-					<h1 className="mb-3">Your Lists</h1>
+					<h1 className="mb-3">Notenheim</h1>
 					<div className="Lists">
 						<ul>
+							<li>
+								<h3>Your lists</h3>
+								<button type="button" className="btn btn-primary btn-pink" onClick={() => this.getLists()}>
+									<i className="fas fa-sync-alt" />
+								</button>
+							</li>
 							{this.state.lists.map(item => 
 								<li key={item.listID}>
 									<Link to={`/list/${item.listID}`}>
@@ -70,5 +67,18 @@ export default class Home extends React.Component<any, HomeState> {
 				</div>
 			);
 		}
+	}
+
+	private async getLists(): Promise<void> {
+		requestAPI('/getLists')
+			.then(res => {
+				if (res.error === null) {
+					this.setState({
+						lists: res.lists
+					});
+				} else {
+					showAPIError(res.error);
+				}
+			});
 	}
 }

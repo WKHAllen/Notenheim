@@ -15,7 +15,18 @@
 	background-color: #5100a8;
 	margin: 0;
 	padding: 0;
-	font-size: 16pt;
+	font-size: 14pt;
+}
+
+.Lists ul li:first-child {
+	padding: 16px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.Lists ul li h3 {
+	margin-bottom: 0;
 }
 
 .Lists ul li a {
