@@ -49,7 +49,7 @@ export default class Home extends React.Component<any, HomeState> {
 			return (
 				<div className="Home">
 					<h1 className="mb-3">Notenheim</h1>
-					<div className="Lists">
+					<div className="Home-Lists">
 						<ul>
 							<li>
 								<h2>Your lists</h2>
@@ -60,9 +60,9 @@ export default class Home extends React.Component<any, HomeState> {
 							{this.state.lists.map(item => 
 								<li key={item.listID}>
 									<Link to={`/list/${item.listID}`}>
-										<div className="d-flex List">
+										<div className="d-flex Home-List">
 											<div className="p-2 flex-grow-1">{item.title}</div>
-											<div className="p-2 List-Timestamp">{this.formatTimestamp(item.updateTimestamp)}</div>
+											<div className="p-2 Home-List-Timestamp">{this.formatTimestamp(item.updateTimestamp)}</div>
 										</div>
 									</Link>
 								</li>

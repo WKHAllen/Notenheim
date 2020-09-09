@@ -14,7 +14,7 @@ body {
 	background-color: #d70270;
 }
 
-input:focus, button:focus {
+input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, button:focus {
 	box-shadow: 0 0 0 3pt #734f96 !important;
 }
 
@@ -31,6 +31,24 @@ input:focus, button:focus {
 .btn-pink {
 	background-color: #d70270 !important;
 	border-color: #d70270 !important;
+}
+
+.btn-pink:hover {
+	background-color: #c20366 !important;
+	border-color: #c20366 !important;
+}
+
+.btn-pink:hover {
+	background-color: #ac025a !important;
+	border-color: #ac025a !important;
+}
+
+.btn-icon {
+	padding: 0;
+	width: 36px;
+	height: 36px;
+	text-align: center;
+	margin: auto;
 }
 
 .hidden {
