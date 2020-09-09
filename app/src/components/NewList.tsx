@@ -28,7 +28,7 @@ export default class NewList extends React.Component<any, NewListState> {
 	public render() {
 		return (
 			<div className="NewList">
-				<h1>New List</h1>
+				<h1 className="mb-3">New List</h1>
 				<form onSubmit={event => { this.createNewList(event); return false; }} className="mb-3">
 					<div className="form-group">
 						<label htmlFor="list-name">List name</label>

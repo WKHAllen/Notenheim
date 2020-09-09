@@ -41,21 +41,21 @@ export default class PasswordReset extends React.Component<any, PasswordResetSta
 		if (this.state.validResetID === null) {
 			return (
 				<div className="PasswordReset">
-					<h1>Password Reset</h1>
+					<h1 className="mb-3">Password Reset</h1>
 					<p className="loading">Checking your password reset request...</p>
 				</div>
 			);
 		} else if (!this.state.validResetID) {
 			return (
 				<div className="PasswordReset">
-					<h1>Password Reset</h1>
+					<h1 className="mb-3">Password Reset</h1>
 					<p>We are unable to reset your password: <code>{this.state.errorMessage}</code>. This may be because the link we sent you expired, in which case you should <Link to="/resetPassword">try again</Link>.</p>
 				</div>
 			);
 		} else if (!this.state.resetSuccess) {
 			return (
 				<div className="PasswordReset">
-					<h1>Password Reset</h1>
+					<h1 className="mb-3">Password Reset</h1>
 					<p>Please enter a new password below. You will only be able to reset your password while this link is valid. Do not share this link with anyone.</p>
 					<form onSubmit={event => { this.resetPassword(event); return false; }} className="mb-3">
 						<div className="form-group">
@@ -73,7 +73,7 @@ export default class PasswordReset extends React.Component<any, PasswordResetSta
 		} else {
 			return (
 				<div className="PasswordReset">
-					<h1>Password Reset</h1>
+					<h1 className="mb-3">Password Reset</h1>
 					<p>Success! Your password has been reset. You may now proceed to <Link to="/login">the login page</Link>. You may also delete the email we sent you, as it will serve no further purpose.</p>
 				</div>
 			);

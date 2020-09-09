@@ -25,7 +25,7 @@ export default class Logout extends React.Component<any> {
 	public render() {
 		return (
 			<div className="Logout">
-				<h1>Log Out</h1>
+				<h1 className="mb-3">Log Out</h1>
 				<p>Logging you out...</p>
 			</div>
 		);

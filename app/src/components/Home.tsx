@@ -34,14 +34,14 @@ export default class Home extends React.Component<any, HomeState> {
 		if (getCookie('loggedIn') !== 'true') {
 			return (
 				<div className="Home">
-					<h1>Notenheim</h1>
+					<h1 className="mb-3">Notenheim</h1>
 					<p>Hello! Welcome to Notenheim, a place where you can keep track of all your notes and lists from one place, across all devices. You're not logged in, but you can do so <Link to="/login">here</Link>. If you do not have an account, you can create one <Link to="/register">here</Link>.</p>
 				</div>
 			);
 		} else if (this.state.lists === null) {
 			return (
 				<div className="Home">
-					<h1>Notenheim</h1>
+					<h1 className="mb-3">Notenheim</h1>
 					<p className="loading">Fetching your lists...</p>
 				</div>
 			);
@@ -53,7 +53,7 @@ export default class Home extends React.Component<any, HomeState> {
 						<ul>
 							<li>
 								<h2>Your lists</h2>
-								<button type="button" className="btn btn-primary btn-pink" onClick={() => this.getLists()} disabled={this.state.refreshClicked}>
+								<button type="button" className="btn btn-primary btn-pink btn-icon" onClick={() => this.getLists()} disabled={this.state.refreshClicked}>
 									<i className="fas fa-sync-alt" />
 								</button>
 							</li>

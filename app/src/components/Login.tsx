@@ -22,7 +22,7 @@ export default class Login extends React.Component<any, LoginState> {
 	public render() {
 		return (
 			<div className="Login">
-				<h1>Login</h1>
+				<h1 className="mb-3">Login</h1>
 				<form onSubmit={event => { this.login(event); return false; }} className="mb-3">
 					<div className="form-group">
 						<label htmlFor="email">Email</label>

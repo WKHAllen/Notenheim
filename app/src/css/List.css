@@ -51,10 +51,6 @@
 	padding: 0 !important;
 }
 
-/* .ListItem-Check-Container {
-	margin-left: 12px;
-} */
-
 .ListItem-Check {
 	transform: scale(2);
 	-ms-transform: scale(2); /* IE */

@@ -25,7 +25,7 @@ export default class Register extends React.Component<any, RegisterState> {
 		if (!this.state.registerSuccess) {
 			return (
 				<div className="Register">
-					<h1>Register</h1>
+					<h1 className="mb-3">Register</h1>
 					<form onSubmit={event => { this.register(event); return false; }} className="mb-3">
 						<div className="form-group">
 							<label htmlFor="email">Email</label>
@@ -47,7 +47,7 @@ export default class Register extends React.Component<any, RegisterState> {
 		} else {
 			return (
 				<div className="Register">
-					<h1>Register</h1>
+					<h1 className="mb-3">Register</h1>
 					<p>Congratulations! You have registered for Notenheim. In the next few minutes you will receive an email containing a link that will confirm your registration. All you need to do is click the link in the email and your account will be ready! Please do so soon, as the link will expire after one hour.</p>
 				</div>
 			)

@@ -41,7 +41,7 @@ export default class List extends React.Component<any, ListState> {
 		if (this.state.listInfo === null) {
 			return (
 				<div className="List">
-					<h1>List</h1>
+					<h1 className="mb-3">List</h1>
 					<p className="loading">Getting list data...</p>
 				</div>
 			);
@@ -79,7 +79,7 @@ export default class List extends React.Component<any, ListState> {
 								<li key={item.listItemID}>
 									<div className="d-flex ListItem">
 										<div className="p-2">
-											<div className="form-check ListItem-Check-Container">
+											<div className="form-check">
 												<input className="form-check-input ListItem-Check" type="checkbox" id={`checked-${item.listItemID}`} defaultChecked={item.checked} />
 											</div>
 										</div>

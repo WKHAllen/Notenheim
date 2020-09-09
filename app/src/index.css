@@ -48,7 +48,6 @@ input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, but
 	width: 36px;
 	height: 36px;
 	text-align: center;
-	margin: auto;
 }
 
 .hidden {

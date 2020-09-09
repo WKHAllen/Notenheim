@@ -50,14 +50,14 @@ export default class Profile extends React.Component<any, ProfileState> {
 		if (this.state.profileInfo === null) {
 			return (
 				<div className="Profile">
-					<h1>Profile</h1>
+					<h1 className="mb-3">Profile</h1>
 					<p className="loading">Getting profile data...</p>
 				</div>
 			);
 		} else {
 			return (
 				<div className="Profile">
-					<h1>Profile</h1>
+					<h1 className="mb-3">Profile</h1>
 					<ul>
 						<li>{this.state.profileInfo.email}</li>
 						<li>{new Date(this.state.profileInfo.joinTimestamp * 1000).toDateString()}</li>
