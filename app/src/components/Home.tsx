@@ -52,7 +52,7 @@ export default class Home extends React.Component<any, HomeState> {
 					<div className="Lists">
 						<ul>
 							<li>
-								<h3>Your lists</h3>
+								<h2>Your lists</h2>
 								<button type="button" className="btn btn-primary btn-pink" onClick={() => this.getLists()} disabled={this.state.refreshClicked}>
 									<i className="fas fa-sync-alt" />
 								</button>
@@ -60,7 +60,10 @@ export default class Home extends React.Component<any, HomeState> {
 							{this.state.lists.map(item => 
 								<li key={item.listID}>
 									<Link to={`/list/${item.listID}`}>
-										{item.title}
+										<div className="d-flex List">
+											<div className="p-2 flex-grow-1">{item.title}</div>
+											<div className="p-2 List-Timestamp">{this.formatTimestamp(item.updateTimestamp)}</div>
+										</div>
 									</Link>
 								</li>
 							)}
@@ -90,5 +93,22 @@ export default class Home extends React.Component<any, HomeState> {
 					showAPIError(res.error);
 				}
 			});
+	}
+
+	private formatTimestamp(timestamp: number): string {
+		const now = Math.floor(new Date().getTime() / 1000);
+		if (now - timestamp === 0) {
+			return 'now';
+		} else if (now - timestamp < 60) {
+			return `${now - timestamp}s`;
+		} else if (now - timestamp < 60 * 60) {
+			return `${Math.floor((now - timestamp) / 60)}m`;
+		} else if (now - timestamp < 60 * 60 * 24) {
+			return `${Math.floor((now - timestamp) / (60 * 60))}h`;
+		} else if (now - timestamp < 60 * 60 * 24 * 7) {
+			return `${Math.floor((now - timestamp) / (60 * 60 * 24))}d`;
+		} else {
+			return `${Math.floor((now - timestamp) / (60 * 60 * 24 * 7))}w`;
+		}
 	}
 }

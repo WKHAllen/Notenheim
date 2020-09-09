@@ -25,7 +25,7 @@
 	align-items: center;
 }
 
-.Lists ul li h3 {
+.Lists ul li h2 {
 	margin-bottom: 0;
 }
 
@@ -34,7 +34,7 @@
 	display: block;
 	width: 100%;
 	height: 100%;
-	padding: 16px;
+	padding: 8px;
 	color: white;
 	background-color: #5100a8;
 	transition: all 0.4s ease 0s;
@@ -46,4 +46,13 @@
 
 .Lists ul li a:active {
 	background-color: #a8006a;
+}
+
+.List {
+	text-align: justify;
+}
+
+.List-Timestamp {
+	white-space: nowrap;
+	color: #7f8faf;
 }
