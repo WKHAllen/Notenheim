@@ -61,9 +61,6 @@ export default class NewList extends React.Component<any, NewListState> {
 			hideAPIError();
 			this.props.history.push(`/list/${res.listID}`);
 		} else {
-			this.setState({
-				submitClicked: false
-			});
 			showAPIError(res.error);
 		}
 	}
