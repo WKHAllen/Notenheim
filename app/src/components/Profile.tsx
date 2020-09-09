@@ -61,6 +61,10 @@ export default class Profile extends React.Component<any, ProfileState> {
 					<h3>Change your password</h3>
 					<form onSubmit={event => { this.changePassword(event); return false; }} className="mb-3">
 						<div className="form-group">
+							<label htmlFor="old-password">Current password</label>
+							<input type="password" className="form-control" id="old-password" name="old-password" maxLength={255} onChange={() => this.checkForm()} />
+						</div>
+						<div className="form-group">
 							<label htmlFor="password">New password</label>
 							<input type="password" className="form-control" id="password" name="password" maxLength={255} onChange={() => this.checkForm()} />
 						</div>
@@ -84,6 +88,7 @@ export default class Profile extends React.Component<any, ProfileState> {
 
 		const formData = new FormData(e.currentTarget);
 		const res = await requestAPI('/changePassword', {
+			oldPassword: formData.get('old-password'),
 			newPassword: formData.get('password')
 		});
 
@@ -101,11 +106,12 @@ export default class Profile extends React.Component<any, ProfileState> {
 	}
 
 	private async checkForm(): Promise<void> {
+		const oldPassword       = (document.getElementById('old-password')     as HTMLInputElement).value;
 		const password          = (document.getElementById('password')         as HTMLInputElement).value;
 		const confirmedPassword = (document.getElementById('confirm-password') as HTMLInputElement).value;
 
 		this.setState({
-			formGood: password === confirmedPassword && password.length >= 8
+			formGood: oldPassword.length >= 8 && password === confirmedPassword && password.length >= 8
 		});
 	}
 }

@@ -29,13 +29,13 @@ func GetProfileInfo(c *gin.Context) {
 
 // ChangePassword changes the user's password
 func ChangePassword(c *gin.Context) {
-	params, failure := helper.QueriesJSONError(c, "newPassword")
+	params, failure := helper.QueriesJSONError(c, "oldPassword", "newPassword")
 	if failure { return }
 
 	sessionID, failure := helper.GetSessionID(c)
 	if failure { return }
 
-	err := services.ChangePassword(sessionID, params["newPassword"])
+	err := services.ChangePassword(sessionID, params["oldPassword"], params["newPassword"])
 	if helper.JSONErrorDefault(c, err) { return }
 
 	helper.JSONSuccess(c)
