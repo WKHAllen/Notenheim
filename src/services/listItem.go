@@ -3,6 +3,7 @@ package services
 import (
 	"fmt"
 
+	"main/src"
 	app "main/src"
 	"main/src/services/helper"
 )
@@ -35,6 +36,11 @@ func NewListItem(sessionID string, listID string) (string, error) {
 	err = helper.UnexpectedError(dbm, sql, listItemID, listID, "", listID, false, now, now)
 	if err != nil { return "", err }
 
+	// Set the list's update timestamp
+	sql = "UPDATE List SET updateTimestamp = ? WHERE id = ?;"
+	err = helper.UnexpectedError(dbm, sql, now, listID)
+	if err != nil { return "", err }
+
 	return listItemID, nil
 }
 
@@ -61,9 +67,15 @@ func EditListItem(sessionID string, listItemID string, newContent string) error 
 		return fmt.Errorf("Invalid list item ID")
 	}
 
-	// Edit list item content
-	sql = "UPDATE ListItem SET content = ? WHERE id = ?;"
-	err = helper.UnexpectedError(dbm, sql, newContent, listItemID)
+	// Edit list item content and update timestamp
+	now := app.GetTime()
+	sql = "UPDATE ListItem SET content = ?, updateTimestamp = ? WHERE id = ?;"
+	err = helper.UnexpectedError(dbm, sql, newContent, now, listItemID)
+	if err != nil { return err }
+
+	// Set the list's update timestamp
+	sql = "UPDATE List SET updateTimestamp = ? WHERE id = ?;"
+	err = helper.UnexpectedError(dbm, sql, now, listID)
 	if err != nil { return err }
 
 	return nil
@@ -92,9 +104,15 @@ func CheckListItem(sessionID string, listItemID string, checked bool) error {
 		return fmt.Errorf("Invalid list item ID")
 	}
 
-	// Check/uncheck the list item
-	sql = "UPDATE ListItem SET checked = ? WHERE id = ?;"
-	err = helper.UnexpectedError(dbm, sql, checked, listItemID)
+	// Check/uncheck the list item and set the update timestamp
+	now := src.GetTime()
+	sql = "UPDATE ListItem SET checked = ?, updateTimestamp = ? WHERE id = ?;"
+	err = helper.UnexpectedError(dbm, sql, checked, now, listItemID)
+	if err != nil { return err }
+
+	// Set the list's update timestamp
+	sql = "UPDATE List SET updateTimestamp = ? WHERE id = ?;"
+	err = helper.UnexpectedError(dbm, sql, now, listID)
 	if err != nil { return err }
 
 	return nil
@@ -158,6 +176,12 @@ func MoveListItem(sessionID string, listItemID string, direction string) error {
 	err = helper.UnexpectedError(dbm, sql, position, listID, newPosition, listItemID)
 	if err != nil { return err }
 
+	// Set the list's update timestamp
+	now := app.GetTime()
+	sql = "UPDATE List SET updateTimestamp = ? WHERE id = ?;"
+	err = helper.UnexpectedError(dbm, sql, now, listID)
+	if err != nil { return err }
+
 	return nil
 }
 
@@ -193,6 +217,12 @@ func DeleteListItem(sessionID string, listItemID string) error {
 	// Alter list item positions
 	sql = "UPDATE ListItem SET position = position - 1 WHERE listID = ? AND position > ?;"
 	err = helper.UnexpectedError(dbm, sql, listID, position)
+	if err != nil { return err }
+
+	// Set the list's update timestamp
+	now := app.GetTime()
+	sql = "UPDATE List SET updateTimestamp = ? WHERE id = ?;"
+	err = helper.UnexpectedError(dbm, sql, now, listID)
 	if err != nil { return err }
 
 	return nil

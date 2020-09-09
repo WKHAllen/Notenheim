@@ -121,9 +121,9 @@ func RenameList(sessionID string, listID string, newName string) error {
 	// Set the list title
 	sql = `
 		UPDATE List
-		SET title = ?
+		SET title = ?, updateTimestamp = ?
 		WHERE id = ? AND userID = ?;`
-	err = helper.UnexpectedError(dbm, sql, newName, listID, userID)
+	err = helper.UnexpectedError(dbm, sql, newName, app.GetTime(), listID, userID)
 	if err != nil { return err }
 
 	return nil
