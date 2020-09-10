@@ -12,7 +12,7 @@ export default class Success extends React.Component<SuccessProps> {
 			<div id="success" className="alert alert-primary alert-dismissible fade show Success hidden" role="alert">
 				Success: <span id="success-message">{this.props.message}</span>
 				<button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={hideAPISuccess}>
-					<span aria-hidden="true">&times;</span>
+					<span aria-hidden="true" className="times">&times;</span>
 				</button>
 			</div>
 		);

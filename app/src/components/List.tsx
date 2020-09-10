@@ -9,6 +9,7 @@ interface ListState {
 	editingName: boolean,
 	editNameFormGood: boolean,
 	editNameSubmitClicked: boolean,
+	deleteListClicked: boolean,
 	listInfo: {
 		title: string,
 		items: {
@@ -29,6 +30,7 @@ export default class List extends React.Component<any, ListState> {
 			editingName: false,
 			editNameFormGood: false,
 			editNameSubmitClicked: false,
+			deleteListClicked: false,
 			listInfo: null
 		};
 	}
@@ -68,7 +70,7 @@ export default class List extends React.Component<any, ListState> {
 							</form>
 						</div>
 					:
-						<div className="hidden"></div>
+						null
 					}
 					
 					<div className="ListItems">
@@ -91,7 +93,7 @@ export default class List extends React.Component<any, ListState> {
 										</button>
 									</div>
 									<div>
-										<button type="button" className="btn btn-primary btn-pink btn-icon">
+										<button type="button" className="btn btn-primary btn-pink btn-icon" data-toggle="modal" data-target="#delete-list-modal">
 											<i className="fas fa-trash" />
 										</button>
 									</div>
@@ -117,6 +119,25 @@ export default class List extends React.Component<any, ListState> {
 								</li>
 							)}
 						</ul>
+					</div>
+					<div className="modal fade" id="delete-list-modal" tabIndex={-1} role="dialog" aria-labelledby="delete-list-modal-label" aria-hidden="true">
+						<div className="modal-dialog" role="document">
+							<div className="modal-content">
+								<div className="modal-header">
+									<h5 className="modal-title" id="delete-list-modal-label">Delete list</h5>
+									<button type="button" className="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true" className="times">&times;</span>
+									</button>
+								</div>
+								<div className="modal-body">
+									Are you sure you want to delete this list?
+								</div>
+								<div className="modal-footer">
+									<button type="button" className="btn btn-purple" data-dismiss="modal">Cancel</button>
+									<button type="button" className="btn btn-pink" onClick={() => this.deleteList()} data-dismiss="modal">Delete</button>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			);
@@ -191,6 +212,27 @@ export default class List extends React.Component<any, ListState> {
 
 		this.setState({
 			editNameFormGood: listName.length >= 1
+		});
+	}
+
+	private async deleteList(): Promise<void> {
+		this.setState({
+			deleteListClicked: true
+		});
+
+		requestAPI('/deleteList', {
+			listID: this.props.match.params.listID
+		}).then(res => {
+			this.setState({
+				deleteListClicked: false
+			});
+
+			if (res.error === null) {
+				hideAPIError();
+				this.props.history.push('/');
+			} else {
+				showAPIError(res.error);
+			}
 		});
 	}
 }

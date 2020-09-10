@@ -14,23 +14,26 @@ body {
 	background-color: #d70270;
 }
 
-input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, button:focus {
-	box-shadow: 0 0 0 3pt #734f96 !important;
+input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, .btn:focus {
+	box-shadow: 0 0 0 3pt #7820d0 !important;
 }
 
 .btn-blue {
 	background-color: #0038a8 !important;
 	border-color: #0038a8 !important;
+	color: white !important;
 }
 
 .btn-purple {
 	background-color: #734f96 !important;
 	border-color: #734f96 !important;
+	color: white !important;
 }
 
 .btn-pink {
 	background-color: #d70270 !important;
 	border-color: #d70270 !important;
+	color: white !important;
 }
 
 .btn-pink:hover {
@@ -56,4 +59,8 @@ input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, but
 
 .loading {
 	text-align: center !important;
+}
+
+.times {
+	color: white !important;
 }

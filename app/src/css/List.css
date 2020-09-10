@@ -60,3 +60,15 @@
 	margin-top: -0.43rem;
 	margin-left: -0.3rem;
 }
+
+#delete-list-modal .modal-content {
+	background-color: #002888;
+}
+
+#delete-list-modal .modal-header {
+	border-bottom: none;
+}
+
+#delete-list-modal .modal-footer {
+	border-top: none;
+}
