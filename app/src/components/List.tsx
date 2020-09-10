@@ -251,13 +251,57 @@ export default class List extends React.Component<any, ListState> {
 
 	private async updateList(newList: ListItemWithID[]): Promise<void> {
 		if (this.state.listInfo !== null) {
+			const oldList = this.state.listInfo.items;
+
 			this.setState({
 				listInfo: {
 					title: this.state.listInfo.title,
 					items: newList
 				}
 			});
+
+			const [listItemID, newPosition] = this.getNewItemPosition(oldList, newList);
+			if (listItemID !== '' && newPosition !== -1) {
+				const res = await requestAPI('/moveListItem', {
+					listItemID,
+					newPosition
+				});
+
+				if (res.error === null) {
+					hideAPIError();
+				} else {
+					showAPIError(res.error);
+				}
+			}
 		}
+	}
+
+	private getNewItemPosition(oldList: ListItemWithID[], newList: ListItemWithID[]): [string, number] {
+		let startIndex = -1;
+		let stopIndex = -1;
+		for (let i = 0; i < oldList.length; i++) {
+			if (startIndex === -1 && oldList[i].listItemID !== newList[i].listItemID) {
+				startIndex = i;
+			}
+			if (startIndex !== -1 && stopIndex === -1 && oldList[i].listItemID === newList[i].listItemID) {
+				stopIndex = i - 1;
+			}
+		}
+
+		if (startIndex === -1) {
+			return ['', -1];
+		}
+		if (stopIndex === -1) {
+			stopIndex = oldList.length - 1;
+		}
+
+		if (oldList[startIndex] === newList[stopIndex]) {
+			return [newList[stopIndex].listItemID, stopIndex];
+		} else if (oldList[stopIndex] === newList[startIndex]) {
+			return [newList[startIndex].listItemID, startIndex];
+		}
+
+		return ['', -1];
 	}
 
 	private async newListItem(e: React.FormEvent<HTMLFormElement>): Promise<void> {

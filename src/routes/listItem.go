@@ -2,6 +2,7 @@ package routes
 
 import (
 	"net/http"
+	"strconv"
 
 	"main/src/routes/helper"
 	"main/src/services"
@@ -69,12 +70,13 @@ func CheckListItem(c *gin.Context) {
 
 // MoveListItem moves a list item up or down
 func MoveListItem(c *gin.Context) {
-	params, failure := helper.QueriesJSONError(c, "listItemID", "direction")
+	params, failure := helper.QueriesJSONError(c, "listItemID", "newPosition")
 	if failure { return }
 
-	if params["direction"] != "down" && params["direction"] != "up" {
+	newPosition, err := strconv.Atoi(params["newPosition"])
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
-			"error": "Parameter 'direction' must be 'up' or 'down'",
+			"error": "Parameter 'newPosition' must be an integer",
 		})
 		return
 	}
@@ -82,7 +84,7 @@ func MoveListItem(c *gin.Context) {
 	sessionID, failure := helper.GetSessionID(c)
 	if failure { return }
 
-	err := services.MoveListItem(sessionID, params["listItemID"], params["direction"])
+	err = services.MoveListItem(sessionID, params["listItemID"], newPosition)
 	if helper.JSONErrorDefault(c, err) { return }
 
 	helper.JSONSuccess(c)

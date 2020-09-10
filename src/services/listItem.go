@@ -119,7 +119,7 @@ func CheckListItem(sessionID string, listItemID string, checked bool) error {
 }
 
 // MoveListItem moves a list item up or down
-func MoveListItem(sessionID string, listItemID string, direction string) error {
+func MoveListItem(sessionID string, listItemID string, newPosition int) error {
 	var listID string
 	var position int
 	var title string
@@ -134,6 +134,11 @@ func MoveListItem(sessionID string, listItemID string, direction string) error {
 	err = dbm.QueryRow(sql, listItemID).Scan(&listID, &position)
 	if err != nil {
 		return fmt.Errorf("Invalid list item ID")
+	}
+
+	// Check that the current position and new position are not the same
+	if position == newPosition {
+		return nil
 	}
 
 	// Confirm that the list ID is valid
@@ -151,19 +156,23 @@ func MoveListItem(sessionID string, listItemID string, direction string) error {
 		return fmt.Errorf("An unexpected error occurred")
 	}
 
-	// Set new position value
-	var newPosition int
-	switch (direction) {
-		case "down":
-			if position == 0 {
-				return fmt.Errorf("Cannot move list item down")
-			}
-			newPosition = position - 1
-		case "up":
-			if position == maxPosition {
-				return fmt.Errorf("Cannot move list item up")
-			}
-			newPosition = position + 1
+	// Check that the new position is valid
+	if newPosition < 0 || newPosition > maxPosition {
+		return fmt.Errorf("Invalid new position")
+	}
+
+	// Determine which items need to move and in which direction
+	var startPosition int
+	var stopPosition int
+	var moveOperator string
+	if newPosition < position {
+		startPosition = newPosition
+		stopPosition = position
+		moveOperator = "+"
+	} else {
+		startPosition = position
+		stopPosition = newPosition
+		moveOperator = "-"
 	}
 
 	// Move list item to desired position
@@ -172,8 +181,8 @@ func MoveListItem(sessionID string, listItemID string, direction string) error {
 	if err != nil { return err }
 
 	// Move new position item to original item location
-	sql = "UPDATE ListItem SET position = ? WHERE listID = ? AND position = ? AND id != ?;"
-	err = helper.UnexpectedError(dbm, sql, position, listID, newPosition, listItemID)
+	sql = fmt.Sprintf("UPDATE ListItem SET position = position %s 1 WHERE listID = ? AND position >= ? AND position <= ? AND id != ?;", moveOperator)
+	err = helper.UnexpectedError(dbm, sql, listID, startPosition, stopPosition, listItemID)
 	if err != nil { return err }
 
 	// Set the list's update timestamp
