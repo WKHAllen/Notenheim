@@ -35,7 +35,7 @@ export default class Home extends React.Component<any, HomeState> {
 			return (
 				<div className="Home">
 					<h1 className="mb-3">Notenheim</h1>
-					<p>Hello! Welcome to Notenheim, a place where you can keep track of all your notes and lists from one place, across all devices. You're not logged in, but you can do so <Link to="/login">here</Link>. If you do not have an account, you can create one <Link to="/register">here</Link>.</p>
+					<p>Hello! Welcome to Notenheim. Through this app, you can keep track of all your notes and lists from one place, across all devices. If you have an account, you can <Link to="/login">sign in here</Link>. If you do not, you can <Link to="/register">create one here</Link>.</p>
 				</div>
 			);
 		} else if (this.state.lists === null) {
