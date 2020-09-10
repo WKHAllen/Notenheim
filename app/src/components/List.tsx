@@ -95,7 +95,7 @@ export default class List extends React.Component<any, ListState> {
 									<div className="d-flex ListItem">
 										<div className="p-2">
 											<div className="form-check">
-												<input className="form-check-input ListItem-Check" type="checkbox" id={`checked-${item.listItemID}`} defaultChecked={item.checked} />
+												<input className="form-check-input ListItem-Check" type="checkbox" id={`checked-${item.listItemID}`} defaultChecked={item.checked} onChange={() => this.checkListItem(item.listItemID)} />
 											</div>
 										</div>
 										<div className="p-2 flex-grow-1">
@@ -191,22 +191,22 @@ export default class List extends React.Component<any, ListState> {
 			refreshClicked: true
 		});
 
-		requestAPI('/listInfo', {
+		const res = await requestAPI('/listInfo', {
 			listID: this.props.match.params.listID
-		}).then(res => {
-			if (res.error === null) {
-				hideAPIError();
-				this.setState({
-					refreshClicked: false,
-					listInfo: res.info
-				});
-			} else {
-				this.setState({
-					refreshClicked: false
-				});
-				showAPIError(res.error);
-			}
 		});
+
+		if (res.error === null) {
+			hideAPIError();
+			this.setState({
+				refreshClicked: false,
+				listInfo: res.info
+			});
+		} else {
+			this.setState({
+				refreshClicked: false
+			});
+			showAPIError(res.error);
+		}
 	}
 
 	private async newListItem(e: React.FormEvent<HTMLFormElement>): Promise<void> {
@@ -292,19 +292,34 @@ export default class List extends React.Component<any, ListState> {
 			deleteListClicked: true
 		});
 
-		requestAPI('/deleteList', {
+		const res = await requestAPI('/deleteList', {
 			listID: this.props.match.params.listID
-		}).then(res => {
-			this.setState({
-				deleteListClicked: false
-			});
-
-			if (res.error === null) {
-				hideAPIError();
-				this.props.history.push('/');
-			} else {
-				showAPIError(res.error);
-			}
 		});
+
+		this.setState({
+			deleteListClicked: false
+		});
+
+		if (res.error === null) {
+			hideAPIError();
+			this.props.history.push('/');
+		} else {
+			showAPIError(res.error);
+		}
+	}
+
+	private async checkListItem(listItemID: string): Promise<void> {
+		const checked = (document.getElementById(`checked-${listItemID}`) as HTMLInputElement).checked;
+		
+		const res = await requestAPI('/checkListItem', {
+			listItemID,
+			checked
+		});
+
+		if (res.error === null) {
+			hideAPIError();
+		} else {
+			showAPIError(res.error);
+		}
 	}
 }
