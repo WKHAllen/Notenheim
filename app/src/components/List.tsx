@@ -6,6 +6,8 @@ import { hideAPIError, showAPIError } from '../apiError';
 
 interface ListState {
 	refreshClicked: boolean,
+	newItemFormGood: boolean,
+	newItemSubmitClicked: boolean,
 	editNameFormGood: boolean,
 	editNameSubmitClicked: boolean,
 	deleteListClicked: boolean,
@@ -26,6 +28,8 @@ export default class List extends React.Component<any, ListState> {
 
 		this.state = {
 			refreshClicked: false,
+			newItemFormGood: false,
+			newItemSubmitClicked: false,
 			editNameFormGood: true,
 			editNameSubmitClicked: false,
 			deleteListClicked: false,
@@ -70,7 +74,7 @@ export default class List extends React.Component<any, ListState> {
 										</button>
 									</div>
 									<div>
-										<button type="button" className="btn btn-primary btn-pink btn-icon">
+										<button type="button" className="btn btn-primary btn-pink btn-icon" data-toggle="modal" data-target="#new-list-item-modal" onClick={() => { (document.getElementById('new-item-content') as HTMLInputElement).value = '' }}>
 											<i className="fas fa-plus" />
 										</button>
 									</div>
@@ -106,6 +110,31 @@ export default class List extends React.Component<any, ListState> {
 								</li>
 							)}
 						</ul>
+					</div>
+					{/* New list item modal */}
+					<div className="modal fade ListModal" id="new-list-item-modal" tabIndex={-1} role="dialog" aria-labelledby="new-list-item-label" aria-hidden="true">
+						<div className="modal-dialog" role="document">
+							<div className="modal-content">
+								<div className="modal-header">
+									<h5 className="modal-title" id="new-list-item-label">New item</h5>
+									<button type="button" className="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true" className="times">&times;</span>
+									</button>
+								</div>
+								<div className="modal-body">
+									<form onSubmit={event => { this.newListItem(event); return false; }} className="mb-3">
+										<div className="form-group">
+											<label htmlFor="list-name">Item</label>
+											<input type="text" className="form-control" id="new-item-content" name="new-item-content" maxLength={1023} onChange={() => this.checkNewItemForm()} />
+										</div>
+									</form>
+								</div>
+								<div className="modal-footer">
+									<button type="button" className="btn btn-purple" data-dismiss="modal" id="cancel-new-item-button">Cancel</button>
+									<button type="submit" className="btn btn-pink" data-dismiss="modal" disabled={!this.state.newItemFormGood || this.state.newItemSubmitClicked}>Create item</button>
+								</div>
+							</div>
+						</div>
 					</div>
 					{/* Edit list name modal */}
 					<div className="modal fade ListModal" id="edit-list-name-modal" tabIndex={-1} role="dialog" aria-labelledby="edit-list-name-label" aria-hidden="true">
@@ -177,6 +206,49 @@ export default class List extends React.Component<any, ListState> {
 				});
 				showAPIError(res.error);
 			}
+		});
+	}
+
+	private async newListItem(e: React.FormEvent<HTMLFormElement>): Promise<void> {
+		document.getElementById('cancel-new-item-button')?.click();
+
+		e.preventDefault();
+
+		this.setState({
+			newItemSubmitClicked: true
+		});
+
+		const formData = new FormData(e.currentTarget);
+		const res1 = await requestAPI('/newListItem', {
+			listID: this.props.match.params.listID
+		});
+
+		if (res1.error === null) {
+			hideAPIError();
+			
+			const res2 = await requestAPI('/editListItem', {
+				listItemID: res1.listItemID,
+				newContent: formData.get('new-item-content')
+			});
+
+			this.setState({
+				newItemSubmitClicked: false
+			});
+			if (res2.error === null) {
+				this.getListInfo();
+			} else {
+				showAPIError(res2.error);
+			}
+		} else {
+			showAPIError(res1.error);
+		}
+	}
+
+	private async checkNewItemForm(): Promise<void> {
+		const itemContent = (document.getElementById('new-item-content') as HTMLInputElement).value;
+
+		this.setState({
+			newItemFormGood: itemContent.length >= 1
 		});
 	}
 
