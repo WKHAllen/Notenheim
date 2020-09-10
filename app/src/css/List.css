@@ -61,14 +61,14 @@
 	margin-left: -0.3rem;
 }
 
-#delete-list-modal .modal-content {
+.ListModal .modal-content {
 	background-color: #002888;
 }
 
-#delete-list-modal .modal-header {
+.ListModal .modal-header {
 	border-bottom: none;
 }
 
-#delete-list-modal .modal-footer {
+.ListModal .modal-footer {
 	border-top: none;
 }

@@ -6,7 +6,6 @@ import { hideAPIError, showAPIError } from '../apiError';
 
 interface ListState {
 	refreshClicked: boolean,
-	editingName: boolean,
 	editNameFormGood: boolean,
 	editNameSubmitClicked: boolean,
 	deleteListClicked: boolean,
@@ -27,8 +26,7 @@ export default class List extends React.Component<any, ListState> {
 
 		this.state = {
 			refreshClicked: false,
-			editingName: false,
-			editNameFormGood: false,
+			editNameFormGood: true,
 			editNameSubmitClicked: false,
 			deleteListClicked: false,
 			listInfo: null
@@ -57,22 +55,6 @@ export default class List extends React.Component<any, ListState> {
 			return (
 				<div className="List">
 					<h1 className="mb-3">{this.state.listInfo.title}</h1>
-					{this.state.editingName ?
-						<div>
-							<h3>Rename list</h3>
-							<form onSubmit={event => { this.editListName(event); return false; }} className="mb-3">
-								<div className="form-group">
-									<label htmlFor="list-name">List name</label>
-									<input type="text" className="form-control" id="list-name" name="list-name" maxLength={255} onChange={() => this.checkEditNameForm()} defaultValue={this.state.listInfo.title} />
-								</div>
-								<button type="submit" className="btn btn-primary btn-pink mr-2" disabled={!this.state.editNameFormGood || this.state.editNameSubmitClicked}>Change name</button>
-								<button type="button" className="btn btn-primary btn-purple" onClick={() => this.disableNameEditing()}>Cancel</button>
-							</form>
-						</div>
-					:
-						null
-					}
-					
 					<div className="ListItems">
 						<ul>
 							<li>
@@ -88,7 +70,12 @@ export default class List extends React.Component<any, ListState> {
 										</button>
 									</div>
 									<div>
-										<button type="button" className="btn btn-primary btn-pink btn-icon" onClick={() => this.enableNameEditing()} disabled={this.state.editingName}>
+										<button type="button" className="btn btn-primary btn-pink btn-icon">
+											<i className="fas fa-plus" />
+										</button>
+									</div>
+									<div>
+										<button type="button" className="btn btn-primary btn-pink btn-icon" data-toggle="modal" data-target="#edit-list-name-modal">
 											<i className="fas fa-edit" />
 										</button>
 									</div>
@@ -120,7 +107,33 @@ export default class List extends React.Component<any, ListState> {
 							)}
 						</ul>
 					</div>
-					<div className="modal fade" id="delete-list-modal" tabIndex={-1} role="dialog" aria-labelledby="delete-list-modal-label" aria-hidden="true">
+					{/* Edit list name modal */}
+					<div className="modal fade ListModal" id="edit-list-name-modal" tabIndex={-1} role="dialog" aria-labelledby="edit-list-name-label" aria-hidden="true">
+						<div className="modal-dialog" role="document">
+							<div className="modal-content">
+								<div className="modal-header">
+									<h5 className="modal-title" id="edit-list-name-label">Rename list</h5>
+									<button type="button" className="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true" className="times">&times;</span>
+									</button>
+								</div>
+								<div className="modal-body">
+									<form onSubmit={event => { this.editListName(event); return false; }} className="mb-3">
+										<div className="form-group">
+											<label htmlFor="list-name">List name</label>
+											<input type="text" className="form-control" id="list-name" name="list-name" maxLength={255} onChange={() => this.checkEditNameForm()} defaultValue={this.state.listInfo.title} />
+										</div>
+									</form>
+								</div>
+								<div className="modal-footer">
+									<button type="button" className="btn btn-purple" data-dismiss="modal" id="cancel-list-rename-button">Cancel</button>
+									<button type="submit" className="btn btn-pink" data-dismiss="modal" disabled={!this.state.editNameFormGood || this.state.editNameSubmitClicked}>Change name</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					{/* Delete list modal */}
+					<div className="modal fade ListModal" id="delete-list-modal" tabIndex={-1} role="dialog" aria-labelledby="delete-list-modal-label" aria-hidden="true">
 						<div className="modal-dialog" role="document">
 							<div className="modal-content">
 								<div className="modal-header">
@@ -167,19 +180,9 @@ export default class List extends React.Component<any, ListState> {
 		});
 	}
 
-	private async enableNameEditing(): Promise<void> {
-		this.setState({
-			editingName: true
-		});
-	}
-
-	private async disableNameEditing(): Promise<void> {
-		this.setState({
-			editingName: false
-		});
-	}
-
 	private async editListName(e: React.FormEvent<HTMLFormElement>): Promise<void> {
+		document.getElementById('cancel-list-rename-button')?.click();
+
 		e.preventDefault();
 
 		this.setState({
@@ -198,9 +201,6 @@ export default class List extends React.Component<any, ListState> {
 
 		if (res.error === null) {
 			hideAPIError();
-			this.setState({
-				editingName: false
-			});
 			this.getListInfo();
 		} else {
 			showAPIError(res.error);
