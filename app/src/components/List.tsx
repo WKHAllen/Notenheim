@@ -1,8 +1,34 @@
 import React from 'react';
+import { ReactSortable } from 'react-sortablejs';
 import '../css/List.css';
 import { requestAPI } from '../requestAPI';
 import { getCookie } from '../cookie';
 import { hideAPIError, showAPIError } from '../apiError';
+
+interface ListItem {
+	listItemID: string,
+	content: string,
+	position: number,
+	checked: boolean
+}
+
+interface ListItemWithID {
+	id: string,
+	listItemID: string,
+	content: string,
+	position: number,
+	checked: boolean
+}
+
+interface ListInfo {
+	title: string,
+	items: ListItem[]
+}
+
+interface ListInfoWithIDs {
+	title: string,
+	items: ListItemWithID[]
+}
 
 interface ListState {
 	refreshClicked: boolean,
@@ -11,15 +37,7 @@ interface ListState {
 	editNameFormGood: boolean,
 	editNameSubmitClicked: boolean,
 	deleteListClicked: boolean,
-	listInfo: {
-		title: string,
-		items: {
-			listItemID: string,
-			content: string,
-			position: number,
-			checked: boolean
-		}[]
-	} | null
+	listInfo: ListInfoWithIDs | null
 }
 
 export default class List extends React.Component<any, ListState> {
@@ -90,25 +108,27 @@ export default class List extends React.Component<any, ListState> {
 									</div>
 								</div>
 							</li>
-							{this.state.listInfo.items.map(item => 
-								<li key={item.listItemID}>
-									<div className="d-flex ListItem">
-										<div className="p-2">
-											<div className="form-check">
-												<input className="form-check-input ListItem-Check" type="checkbox" id={`checked-${item.listItemID}`} onChange={() => this.checkListItem(item.listItemID)} checked={item.checked} />
+							<ReactSortable list={this.state.listInfo.items} setList={newList => this.updateList(newList)}>
+								{this.state.listInfo.items.map(item => 
+									<li key={item.listItemID}>
+										<div className="d-flex ListItem">
+											<div className="p-2">
+												<div className="form-check">
+													<input className="form-check-input ListItem-Check" type="checkbox" id={`checked-${item.listItemID}`} onChange={() => this.checkListItem(item.listItemID)} checked={item.checked} />
+												</div>
+											</div>
+											<div className="p-2 flex-grow-1">
+												{item.content}
+											</div>
+											<div className="p-2 ListItem-Control">
+												<button type="button" className="btn btn-primary btn-pink btn-icon">
+													<i className="fas fa-ellipsis-h" />
+												</button>
 											</div>
 										</div>
-										<div className="p-2 flex-grow-1">
-											{item.content}
-										</div>
-										<div className="p-2 ListItem-Control">
-											<button type="button" className="btn btn-primary btn-pink btn-icon">
-												<i className="fas fa-ellipsis-h" />
-											</button>
-										</div>
-									</div>
-								</li>
-							)}
+									</li>
+								)}
+							</ReactSortable>
 						</ul>
 					</div>
 					{/* New list item modal */}
@@ -187,7 +207,6 @@ export default class List extends React.Component<any, ListState> {
 	}
 
 	private async getListInfo(): Promise<void> {
-
 		this.setState({
 			refreshClicked: true
 		});
@@ -198,15 +217,46 @@ export default class List extends React.Component<any, ListState> {
 
 		if (res.error === null) {
 			hideAPIError();
+			const listInfo = this.addListInfoIDs(res.info);
 			this.setState({
 				refreshClicked: false,
-				listInfo: res.info
+				listInfo
 			});
 		} else {
 			this.setState({
 				refreshClicked: false
 			});
 			showAPIError(res.error);
+		}
+	}
+
+	private addListInfoIDs(listInfo: ListInfo): ListInfoWithIDs {
+		let listInfoWithIDs: ListInfoWithIDs = {
+			title: listInfo.title,
+			items: []
+		};
+
+		for (const listItem of listInfo.items) {
+			listInfoWithIDs.items.push({
+				id: listItem.listItemID,
+				listItemID: listItem.listItemID,
+				content: listItem.content,
+				position: listItem.position,
+				checked: listItem.checked
+			});
+		}
+
+		return listInfoWithIDs;
+	}
+
+	private async updateList(newList: ListItemWithID[]): Promise<void> {
+		if (this.state.listInfo !== null) {
+			this.setState({
+				listInfo: {
+					title: this.state.listInfo.title,
+					items: newList
+				}
+			});
 		}
 	}
 
