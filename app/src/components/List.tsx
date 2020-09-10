@@ -95,7 +95,7 @@ export default class List extends React.Component<any, ListState> {
 									<div className="d-flex ListItem">
 										<div className="p-2">
 											<div className="form-check">
-												<input className="form-check-input ListItem-Check" type="checkbox" id={`checked-${item.listItemID}`} defaultChecked={item.checked} onChange={() => this.checkListItem(item.listItemID)} />
+												<input className="form-check-input ListItem-Check" type="checkbox" id={`checked-${item.listItemID}`} onChange={() => this.checkListItem(item.listItemID)} checked={item.checked} />
 											</div>
 										</div>
 										<div className="p-2 flex-grow-1">
@@ -187,6 +187,7 @@ export default class List extends React.Component<any, ListState> {
 	}
 
 	private async getListInfo(): Promise<void> {
+
 		this.setState({
 			refreshClicked: true
 		});
@@ -310,6 +311,7 @@ export default class List extends React.Component<any, ListState> {
 
 	private async checkListItem(listItemID: string): Promise<void> {
 		const checked = (document.getElementById(`checked-${listItemID}`) as HTMLInputElement).checked;
+		this.setCheckState(listItemID, checked);
 		
 		const res = await requestAPI('/checkListItem', {
 			listItemID,
@@ -320,6 +322,21 @@ export default class List extends React.Component<any, ListState> {
 			hideAPIError();
 		} else {
 			showAPIError(res.error);
+		}
+	}
+
+	private async setCheckState(listItemID: string, checked: boolean): Promise<void> {
+		if (this.state.listInfo !== null) {
+			const listInfo = this.state.listInfo;
+			for (let i = 0; i < listInfo.items.length; i++) {
+				if (listInfo.items[i].listItemID === listItemID) {
+					listInfo.items[i].checked = checked;
+				}
+			}
+
+			this.setState({
+				listInfo
+			});
 		}
 	}
 }
