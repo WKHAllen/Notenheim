@@ -98,7 +98,7 @@ export default class List extends React.Component<any, ListState> {
 										</button>
 									</div>
 									<div>
-										<button type="button" className="btn btn-primary btn-pink btn-icon" data-toggle="modal" data-target="#new-list-item-modal" onClick={() => { (document.getElementById('new-item-content') as HTMLInputElement).value = '' }}>
+										<button type="button" className="btn btn-primary btn-pink btn-icon" data-toggle="modal" data-target="#new-list-item-modal" onClick={() => { (document.getElementById('new-item-content') as HTMLInputElement).value = ''; this.setState({ newItemFormGood: false }); }}>
 											<i className="fas fa-plus" />
 										</button>
 									</div>
@@ -148,16 +148,14 @@ export default class List extends React.Component<any, ListState> {
 									</button>
 								</div>
 								<div className="modal-body">
-									<form onSubmit={event => { this.newListItem(event); return false; }} className="mb-3">
-										<div className="form-group">
-											<label htmlFor="list-name">Item</label>
-											<input type="text" className="form-control" id="new-item-content" name="new-item-content" maxLength={1023} onChange={() => this.checkNewItemForm()} />
-										</div>
-									</form>
+									<div className="form-group">
+										<label htmlFor="list-name">Item</label>
+										<input type="text" className="form-control" id="new-item-content" name="new-item-content" maxLength={1023} onChange={() => this.checkNewItemForm()} onKeyDown={event => this.detectSubmit(event, 'new-item-button')} />
+									</div>
 								</div>
 								<div className="modal-footer">
-									<button type="button" className="btn btn-purple" data-dismiss="modal" id="cancel-new-item-button">Cancel</button>
-									<button type="submit" className="btn btn-pink" data-dismiss="modal" disabled={!this.state.newItemFormGood || this.state.newItemSubmitClicked}>Create item</button>
+									<button type="button" className="btn btn-purple" data-dismiss="modal">Cancel</button>
+									<button type="button" className="btn btn-pink" data-dismiss="modal" id="new-item-button" onClick={() => this.newListItem()} disabled={!this.state.newItemFormGood || this.state.newItemSubmitClicked}>Create item</button>
 								</div>
 							</div>
 						</div>
@@ -173,16 +171,14 @@ export default class List extends React.Component<any, ListState> {
 									</button>
 								</div>
 								<div className="modal-body">
-									<form onSubmit={event => { this.editListName(event); return false; }} className="mb-3">
-										<div className="form-group">
-											<label htmlFor="list-name">List name</label>
-											<input type="text" className="form-control" id="list-name" name="list-name" maxLength={255} onChange={() => this.checkEditNameForm()} defaultValue={this.state.listInfo.title} />
-										</div>
-									</form>
+									<div className="form-group">
+										<label htmlFor="list-name">List name</label>
+										<input type="text" className="form-control" id="list-name" name="list-name" maxLength={255} onChange={() => this.checkEditNameForm()} defaultValue={this.state.listInfo.title} onKeyDown={event => this.detectSubmit(event, 'list-rename-button')} />
+									</div>
 								</div>
 								<div className="modal-footer">
-									<button type="button" className="btn btn-purple" data-dismiss="modal" id="cancel-list-rename-button">Cancel</button>
-									<button type="submit" className="btn btn-pink" data-dismiss="modal" disabled={!this.state.editNameFormGood || this.state.editNameSubmitClicked}>Change name</button>
+									<button type="button" className="btn btn-purple" data-dismiss="modal">Cancel</button>
+									<button type="button" className="btn btn-pink" data-dismiss="modal" id="list-rename-button" onClick={() => this.editListName()} disabled={!this.state.editNameFormGood || this.state.editNameSubmitClicked}>Change name</button>
 								</div>
 							</div>
 						</div>
@@ -334,16 +330,12 @@ export default class List extends React.Component<any, ListState> {
 		return ['', -1];
 	}
 
-	private async newListItem(e: React.FormEvent<HTMLFormElement>): Promise<void> {
-		document.getElementById('cancel-new-item-button')?.click();
-
-		e.preventDefault();
-
+	private async newListItem(): Promise<void> {
 		this.setState({
 			newItemSubmitClicked: true
 		});
 
-		const formData = new FormData(e.currentTarget);
+		const newItemContent = (document.getElementById('new-item-content') as HTMLInputElement).value;
 		const res1 = await requestAPI('/newListItem', {
 			listID: this.props.match.params.listID
 		});
@@ -353,7 +345,7 @@ export default class List extends React.Component<any, ListState> {
 			
 			const res2 = await requestAPI('/editListItem', {
 				listItemID: res1.listItemID,
-				newContent: formData.get('new-item-content')
+				newContent: newItemContent
 			});
 
 			this.setState({
@@ -377,19 +369,15 @@ export default class List extends React.Component<any, ListState> {
 		});
 	}
 
-	private async editListName(e: React.FormEvent<HTMLFormElement>): Promise<void> {
-		document.getElementById('cancel-list-rename-button')?.click();
-
-		e.preventDefault();
-
+	private async editListName(): Promise<void> {
 		this.setState({
 			editNameSubmitClicked: true
 		});
 
-		const formData = new FormData(e.currentTarget);
+		const listName = (document.getElementById('list-name') as HTMLInputElement).value;
 		const res = await requestAPI('/renameList', {
 			listID: this.props.match.params.listID,
-			newName: formData.get('list-name')
+			newName: listName
 		});
 
 		this.setState({
@@ -509,8 +497,9 @@ export default class List extends React.Component<any, ListState> {
 	}
 
 	private detectSubmit(event: React.KeyboardEvent<HTMLInputElement>, submitButtonID: string) {
-		if (event.keyCode === 13) {
-			(document.getElementById(submitButtonID) as HTMLButtonElement).click();
+		const submitButton = (document.getElementById(submitButtonID) as HTMLButtonElement);
+		if (event.keyCode === 13 && !submitButton.disabled) {
+			submitButton.click();
 		}
 	}
 }
