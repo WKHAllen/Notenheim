@@ -24,9 +24,33 @@ input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, .bt
 	color: white !important;
 }
 
+.btn-blue:hover {
+	background-color: #0f3789 !important;
+	border-color: #0f3789 !important;
+	color: white !important;
+}
+
+.btn-blue:active {
+	background-color: #0e2c69 !important;
+	border-color: #0e2c69 !important;
+	color: white !important;
+}
+
 .btn-purple {
 	background-color: #734f96 !important;
 	border-color: #734f96 !important;
+	color: white !important;
+}
+
+.btn-purple:hover {
+	background-color: #5b3f76 !important;
+	border-color: #5b3f76 !important;
+	color: white !important;
+}
+
+.btn-purple:active {
+	background-color: #513769 !important;
+	border-color: #513769 !important;
 	color: white !important;
 }
 
