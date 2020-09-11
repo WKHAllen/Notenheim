@@ -29,7 +29,7 @@ export default class Register extends React.Component<any, RegisterState> {
 					<form onSubmit={event => { this.register(event); return false; }} className="mb-3">
 						<div className="form-group">
 							<label htmlFor="email">Email</label>
-							<input type="email" className="form-control" id="email" name="email" maxLength={63} onChange={() => this.checkForm()} />
+							<input type="email" className="form-control" id="email" name="email" maxLength={63} onChange={() => this.checkForm()} autoFocus />
 						</div>
 						<div className="form-group">
 							<label htmlFor="password">Password</label>

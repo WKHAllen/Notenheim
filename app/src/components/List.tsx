@@ -100,12 +100,12 @@ export default class List extends React.Component<any, ListState> {
 										</button>
 									</div>
 									<div>
-										<button type="button" className="btn btn-primary btn-pink btn-icon" data-toggle="modal" data-target="#new-list-item-modal" onClick={() => { (document.getElementById('new-item-content') as HTMLInputElement).value = ''; this.setState({ newItemFormGood: false }); }}>
+										<button type="button" className="btn btn-primary btn-pink btn-icon" data-toggle="modal" data-target="#new-list-item-modal" onClick={() => this.prepareNewItemModal()}>
 											<i className="fas fa-plus" />
 										</button>
 									</div>
 									<div>
-										<button type="button" className="btn btn-primary btn-pink btn-icon" data-toggle="modal" data-target="#edit-list-name-modal">
+										<button type="button" className="btn btn-primary btn-pink btn-icon" data-toggle="modal" data-target="#edit-list-name-modal" onClick={() => this.focusInput('list-name')}>
 											<i className="fas fa-edit" />
 										</button>
 									</div>
@@ -129,7 +129,7 @@ export default class List extends React.Component<any, ListState> {
 												{item.content}
 											</div>
 											<div className="p-2 ListItem-Control">
-												<button type="button" className="btn btn-primary btn-pink btn-icon" data-toggle="modal" data-target="#edit-delete-item-modal" onClick={() => this.setState({ editingItemID: item.listItemID })}>
+												<button type="button" className="btn btn-primary btn-pink btn-icon" data-toggle="modal" data-target="#edit-delete-item-modal" onClick={() => { this.focusInput('item-content'); this.setState({ editingItemID: item.listItemID }) }}>
 													<i className="fas fa-ellipsis-h" />
 												</button>
 											</div>
@@ -422,6 +422,12 @@ export default class List extends React.Component<any, ListState> {
 		}
 	}
 
+	private async prepareNewItemModal(): Promise<void> {
+		this.setState({ newItemFormGood: false });
+		(document.getElementById('new-item-content') as HTMLInputElement).value = '';
+		this.focusInput('new-item-content');
+	}
+
 	private async checkListItem(listItemID: string): Promise<void> {
 		const checked = (document.getElementById(`checked-${listItemID}`) as HTMLInputElement).checked;
 		this.setCheckState(listItemID, checked);
@@ -518,10 +524,14 @@ export default class List extends React.Component<any, ListState> {
 		}
 	}
 
-	private detectSubmit(event: React.KeyboardEvent<HTMLInputElement>, submitButtonID: string) {
+	private detectSubmit(event: React.KeyboardEvent<HTMLInputElement>, submitButtonID: string): void {
 		const submitButton = (document.getElementById(submitButtonID) as HTMLButtonElement);
 		if (event.keyCode === 13 && !submitButton.disabled) {
 			submitButton.click();
 		}
+	}
+
+	private focusInput(inputID: string): void {
+		setTimeout(() => (document.getElementById(inputID) as HTMLInputElement).focus(), 500);
 	}
 }

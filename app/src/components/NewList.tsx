@@ -32,7 +32,7 @@ export default class NewList extends React.Component<any, NewListState> {
 				<form onSubmit={event => { this.createNewList(event); return false; }} className="mb-3">
 					<div className="form-group">
 						<label htmlFor="list-name">List name</label>
-						<input type="text" className="form-control" id="list-name" name="list-name" maxLength={255} onChange={() => this.checkForm()} />
+						<input type="text" className="form-control" id="list-name" name="list-name" maxLength={255} onChange={() => this.checkForm()} autoFocus />
 						<small className="form-text text-muted">You can change this later.</small>
 					</div>
 					<button type="submit" className="btn btn-primary btn-pink" disabled={!this.state.formGood || this.state.submitClicked}>Create list</button>
