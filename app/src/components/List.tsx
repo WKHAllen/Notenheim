@@ -13,7 +13,7 @@ interface ListItem {
 }
 
 interface ListItemWithID {
-	id: string,
+	id: number,
 	listItemID: string,
 	content: string,
 	position: number,
@@ -116,14 +116,14 @@ export default class List extends React.Component<any, ListState> {
 									</div>
 								</div>
 							</li>
-							<ReactSortable list={this.state.listInfo.items} setList={newList => this.updateList(newList)}>
+							<ReactSortable list={this.state.listInfo.items} setList={newList => this.updateList(newList)} animation={300}>
 								{this.state.listInfo.items.map(item => 
 									<li key={item.listItemID}>
 										<div className="d-flex ListItem">
 											<div className="p-2">
 												<label className="checkbox-container">
 													<input type="checkbox" id={`checked-${item.listItemID}`} onChange={() => this.checkListItem(item.listItemID)} checked={item.checked} />
-													<span className="checkmark"></span>
+													<span className="checkmark" />
 												</label>
 											</div>
 											<div className="p-2 flex-grow-1">
@@ -265,9 +265,10 @@ export default class List extends React.Component<any, ListState> {
 			items: []
 		};
 
+		let idx = 0;
 		for (const listItem of listInfo.items) {
 			listInfoWithIDs.items.push({
-				id: listItem.listItemID,
+				id: idx++,
 				listItemID: listItem.listItemID,
 				content: listItem.content,
 				position: listItem.position,
