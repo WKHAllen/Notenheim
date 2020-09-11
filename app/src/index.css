@@ -14,6 +14,26 @@ body {
 	background-color: #d70270;
 }
 
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-track {
+	background-color: #300063;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #4700c2;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: #2800ab;
+}
+
+::-webkit-scrollbar-thumb:active {
+	background-color: #2500a0;
+}
+
 input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, .btn:focus {
 	box-shadow: 0 0 0 3pt #7820d0 !important;
 }
