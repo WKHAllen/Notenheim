@@ -40,6 +40,7 @@ interface ListState {
 	editItemFormGood: boolean,
 	editItemSubmitClicked: boolean,
 	editingItemID: string,
+	deleteListItemClicked: boolean,
 	listInfo: ListInfoWithIDs | null
 }
 
@@ -57,6 +58,7 @@ export default class List extends React.Component<any, ListState> {
 			editItemFormGood: true,
 			editItemSubmitClicked: false,
 			editingItemID: '',
+			deleteListItemClicked: false,
 			listInfo: null
 		};
 	}
@@ -198,7 +200,7 @@ export default class List extends React.Component<any, ListState> {
 								</div>
 								<div className="modal-footer">
 									<button type="button" className="btn btn-purple" data-dismiss="modal">Cancel</button>
-									<button type="button" className="btn btn-pink" onClick={() => this.deleteList()} data-dismiss="modal">Delete</button>
+									<button type="button" className="btn btn-pink" onClick={() => this.deleteList()} data-dismiss="modal" disabled={this.state.deleteListClicked}>Delete</button>
 								</div>
 							</div>
 						</div>
@@ -222,7 +224,7 @@ export default class List extends React.Component<any, ListState> {
 								<div className="modal-footer">
 									<button type="button" className="btn btn-blue" data-dismiss="modal">Cancel</button>
 									<button type="button" className="btn btn-purple" data-dismiss="modal" id="edit-item-button" onClick={() => this.editListItem()} disabled={!this.state.editItemFormGood || this.state.editItemSubmitClicked}>Edit</button>
-									<button type="button" className="btn btn-pink" data-dismiss="modal">Delete</button>
+									<button type="button" className="btn btn-pink" data-dismiss="modal" onClick={() => this.deleteListItem()}>Delete</button>
 								</div>
 							</div>
 						</div>
@@ -409,15 +411,14 @@ export default class List extends React.Component<any, ListState> {
 			listID: this.props.match.params.listID
 		});
 
-		this.setState({
-			deleteListClicked: false
-		});
-
 		if (res.error === null) {
 			hideAPIError();
 			this.props.history.push('/');
 		} else {
 			showAPIError(res.error);
+			this.setState({
+				deleteListClicked: false
+			});
 		}
 	}
 
@@ -486,6 +487,27 @@ export default class List extends React.Component<any, ListState> {
 
 		this.setState({
 			editItemSubmitClicked: false
+		});
+
+		if (res.error === null) {
+			hideAPIError();
+			this.getListInfo();
+		} else {
+			showAPIError(res.error);
+		}
+	}
+
+	private async deleteListItem(): Promise<void> {
+		this.setState({
+			deleteListItemClicked: true
+		});
+
+		const res = await requestAPI('/deleteListItem', {
+			listItemID: this.state.editingItemID
+		});
+	
+		this.setState({
+			deleteListItemClicked: false
 		});
 
 		if (res.error === null) {
