@@ -56,3 +56,7 @@
 	white-space: nowrap;
 	color: #7f8faf;
 }
+
+.Home-List-Buttons > *:not(:first-child) {
+	margin-left: 16px;
+}
