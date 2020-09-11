@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReactSortable } from 'react-sortablejs';
+import { arrayMove, SortableContainer, SortableElement, SortEnd, SortEvent } from 'react-sortable-hoc';
 import '../css/List.css';
 import { requestAPI } from '../requestAPI';
 import { getCookie } from '../cookie';
@@ -12,22 +12,9 @@ interface ListItem {
 	checked: boolean
 }
 
-interface ListItemWithID {
-	id: number,
-	listItemID: string,
-	content: string,
-	position: number,
-	checked: boolean
-}
-
 interface ListInfo {
 	title: string,
 	items: ListItem[]
-}
-
-interface ListInfoWithIDs {
-	title: string,
-	items: ListItemWithID[]
 }
 
 interface ListState {
@@ -41,8 +28,47 @@ interface ListState {
 	editItemSubmitClicked: boolean,
 	editingItemID: string,
 	deleteListItemClicked: boolean,
-	listInfo: ListInfoWithIDs | null
+	listInfo: ListInfo | null
 }
+
+type CheckboxUpdateHandler = (listItemID: string) => void;
+type EditDeleteOnClickHandler = (listItemID: string) => void;
+
+const SortableListItem = SortableElement(({ item, checkboxUpdate, editDeleteOnClick }: { item: ListItem, checkboxUpdate: CheckboxUpdateHandler, editDeleteOnClick: EditDeleteOnClickHandler }) => (
+	<li>
+		<div className="d-flex ListItem">
+			<div className="p-2">
+				<label className="checkbox-container">
+					<input type="checkbox" id={`checked-${item.listItemID}`} onChange={() => checkboxUpdate(item.listItemID)} checked={item.checked} />
+					<span className="checkmark" />
+				</label>
+			</div>
+			<div className="p-2 flex-grow-1">
+				{item.content}
+			</div>
+			<div className="p-2 ListItem-Control">
+				<button type="button" className="btn btn-pink btn-icon" data-toggle="modal" data-target="#edit-delete-item-modal" onClick={() => editDeleteOnClick(item.listItemID)}>
+					<i className="fas fa-ellipsis-h" />
+				</button>
+			</div>
+		</div>
+	</li>
+));
+
+const SortableList = SortableContainer(({ items, checkboxUpdate, editDeleteOnClick }: { items: ListItem[], checkboxUpdate: CheckboxUpdateHandler, editDeleteOnClick: EditDeleteOnClickHandler }) => {
+	return (
+		<ul>
+			{items.map((item, index) => 
+				<SortableListItem
+					key={`list-item-${index}`}
+					index={index}
+					item={item}
+					checkboxUpdate={checkboxUpdate}
+					editDeleteOnClick={editDeleteOnClick} />
+			)}
+		</ul>
+	);
+});
 
 export default class List extends React.Component<any, ListState> {
 	constructor(props: any) {
@@ -116,28 +142,13 @@ export default class List extends React.Component<any, ListState> {
 									</div>
 								</div>
 							</li>
-							<ReactSortable list={this.state.listInfo.items} setList={newList => this.updateList(newList)} animation={300}>
-								{this.state.listInfo.items.map(item => 
-									<li key={item.listItemID}>
-										<div className="d-flex ListItem">
-											<div className="p-2">
-												<label className="checkbox-container">
-													<input type="checkbox" id={`checked-${item.listItemID}`} onChange={() => this.checkListItem(item.listItemID)} checked={item.checked} />
-													<span className="checkmark" />
-												</label>
-											</div>
-											<div className="p-2 flex-grow-1">
-												{item.content}
-											</div>
-											<div className="p-2 ListItem-Control">
-												<button type="button" className="btn btn-pink btn-icon" data-toggle="modal" data-target="#edit-delete-item-modal" onClick={() => { this.focusInput('item-content'); this.setState({ editingItemID: item.listItemID }) }}>
-													<i className="fas fa-ellipsis-h" />
-												</button>
-											</div>
-										</div>
-									</li>
-								)}
-							</ReactSortable>
+							<SortableList
+								items={this.state.listInfo.items}
+								onSortEnd={(end, event) => this.updateList(end, event)}
+								distance={5}
+								useWindowAsScrollContainer={true}
+								checkboxUpdate={listItemID => this.checkListItem(listItemID)}
+								editDeleteOnClick={listItemID => { this.focusInput('item-content'); this.setState({ editingItemID: listItemID }) }} />
 						</ul>
 					</div>
 					{/* New list item modal */}
@@ -246,10 +257,9 @@ export default class List extends React.Component<any, ListState> {
 
 		if (res.error === null) {
 			hideAPIError();
-			const listInfo = this.addListInfoIDs(res.info);
 			this.setState({
 				refreshClicked: false,
-				listInfo
+				listInfo: res.info
 			});
 		} else {
 			this.setState({
@@ -259,29 +269,11 @@ export default class List extends React.Component<any, ListState> {
 		}
 	}
 
-	private addListInfoIDs(listInfo: ListInfo): ListInfoWithIDs {
-		let listInfoWithIDs: ListInfoWithIDs = {
-			title: listInfo.title,
-			items: []
-		};
-
-		let idx = 0;
-		for (const listItem of listInfo.items) {
-			listInfoWithIDs.items.push({
-				id: idx++,
-				listItemID: listItem.listItemID,
-				content: listItem.content,
-				position: listItem.position,
-				checked: listItem.checked
-			});
-		}
-
-		return listInfoWithIDs;
-	}
-
-	private async updateList(newList: ListItemWithID[]): Promise<void> {
+	// private async updateList(newList: ListItem[]): Promise<void> {
+	private async updateList(end: SortEnd, event: SortEvent): Promise<void> {
 		if (this.state.listInfo !== null) {
 			const oldList = this.state.listInfo.items;
+			const newList = arrayMove(this.state.listInfo.items, end.oldIndex, end.newIndex);
 
 			this.setState({
 				listInfo: {
@@ -290,48 +282,18 @@ export default class List extends React.Component<any, ListState> {
 				}
 			});
 
-			const [listItemID, newPosition] = this.getNewItemPosition(oldList, newList);
-			if (listItemID !== '' && newPosition !== -1) {
-				const res = await requestAPI('/moveListItem', {
-					listItemID,
-					newPosition
-				});
+			const listItemID = oldList[end.oldIndex].listItemID;
+			const res = await requestAPI('/moveListItem', {
+				listItemID,
+				newPosition: end.newIndex
+			});
 
-				if (res.error === null) {
-					hideAPIError();
-				} else {
-					showAPIError(res.error);
-				}
+			if (res.error === null) {
+				hideAPIError();
+			} else {
+				showAPIError(res.error);
 			}
 		}
-	}
-
-	private getNewItemPosition(oldList: ListItemWithID[], newList: ListItemWithID[]): [string, number] {
-		let startIndex = -1;
-		let stopIndex = -1;
-		for (let i = 0; i < oldList.length; i++) {
-			if (startIndex === -1 && oldList[i].listItemID !== newList[i].listItemID) {
-				startIndex = i;
-			}
-			if (startIndex !== -1 && stopIndex === -1 && oldList[i].listItemID === newList[i].listItemID) {
-				stopIndex = i - 1;
-			}
-		}
-
-		if (startIndex === -1) {
-			return ['', -1];
-		}
-		if (stopIndex === -1) {
-			stopIndex = oldList.length - 1;
-		}
-
-		if (oldList[startIndex] === newList[stopIndex]) {
-			return [newList[stopIndex].listItemID, stopIndex];
-		} else if (oldList[stopIndex] === newList[startIndex]) {
-			return [newList[startIndex].listItemID, startIndex];
-		}
-
-		return ['', -1];
 	}
 
 	private async newListItem(): Promise<void> {
