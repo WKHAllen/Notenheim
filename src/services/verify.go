@@ -117,7 +117,7 @@ func PruneVerification(verifyID string) {
 		}
 
 		// Remove the user who created the verification request
-		sql = "DELETE FROM AppUser WHERE email = ?;"
+		sql = "DELETE FROM AppUser WHERE email = ? AND verified = FALSE;"
 		err = dbm.Execute(sql, email)
 		if err != nil {
 			fmt.Printf("Unexpected error: %v\n", err)
