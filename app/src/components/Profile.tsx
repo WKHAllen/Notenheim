@@ -76,7 +76,7 @@ export default class Profile extends React.Component<any, ProfileState> {
 							<label htmlFor="confirm-password">Confirm new password</label>
 							<input type="password" className="form-control" id="confirm-password" name="confirm-password" maxLength={255} onChange={() => this.checkForm()} />
 						</div>
-						<button type="submit" className="btn btn-primary btn-pink" disabled={!this.state.formGood || this.state.submitClicked}>Change password</button>
+						<button type="submit" className="btn btn-pink" disabled={!this.state.formGood || this.state.submitClicked}>Change password</button>
 					</form>
 				</div>
 			);

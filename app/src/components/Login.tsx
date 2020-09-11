@@ -32,7 +32,7 @@ export default class Login extends React.Component<any, LoginState> {
 						<label htmlFor="password">Password</label>
 						<input type="password" className="form-control" id="password" name="password" maxLength={255} onChange={() => this.checkForm()} />
 					</div>
-					<button type="submit" className="btn btn-primary btn-pink" disabled={!this.state.formGood || this.state.submitClicked}>Login</button>
+					<button type="submit" className="btn btn-pink" disabled={!this.state.formGood || this.state.submitClicked}>Login</button>
 				</form>
 				<small>If you do not have an account, please <Link to="/register">register here</Link>.</small>
 				<br />

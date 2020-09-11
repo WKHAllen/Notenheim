@@ -39,7 +39,7 @@ export default class Register extends React.Component<any, RegisterState> {
 							<label htmlFor="confirm-password">Confirm password</label>
 							<input type="password" className="form-control" id="confirm-password" name="confirm-password" maxLength={255} onChange={() => this.checkForm()} />
 						</div>
-						<button type="submit" className="btn btn-primary btn-pink" disabled={!this.state.formGood || this.state.submitClicked}>Register</button>
+						<button type="submit" className="btn btn-pink" disabled={!this.state.formGood || this.state.submitClicked}>Register</button>
 					</form>
 					<small>If you already have an account, please <Link to="/login">log in here</Link>.</small>
 				</div>

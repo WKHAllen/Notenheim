@@ -54,10 +54,10 @@ export default class Home extends React.Component<any, HomeState> {
 							<li>
 								<h2>Your lists</h2>
 								<div className="Home-List-Buttons">
-									<button type="button" className="btn btn-primary btn-pink btn-icon" onClick={() => this.props.history.push('/new')}>
+									<button type="button" className="btn btn-pink btn-icon" onClick={() => this.props.history.push('/new')}>
 										<i className="fas fa-plus" />
 									</button>
-									<button type="button" className="btn btn-primary btn-pink btn-icon" onClick={() => this.getLists()} disabled={this.state.refreshClicked}>
+									<button type="button" className="btn btn-pink btn-icon" onClick={() => this.getLists()} disabled={this.state.refreshClicked}>
 										<i className="fas fa-sync-alt" />
 									</button>
 								</div>

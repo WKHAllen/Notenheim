@@ -90,27 +90,27 @@ export default class List extends React.Component<any, ListState> {
 							<li>
 								<div className="List-Buttons">
 									<div>
-										<button type="button" className="btn btn-primary btn-pink btn-icon" onClick={() => this.props.history.push('/')}>
+										<button type="button" className="btn btn-pink btn-icon" onClick={() => this.props.history.push('/')}>
 											<i className="fas fa-chevron-left" />
 										</button>
 									</div>
 									<div>
-										<button type="button" className="btn btn-primary btn-pink btn-icon" onClick={() => this.getListInfo()} disabled={this.state.refreshClicked}>
+										<button type="button" className="btn btn-pink btn-icon" onClick={() => this.getListInfo()} disabled={this.state.refreshClicked}>
 											<i className="fas fa-sync-alt" />
 										</button>
 									</div>
 									<div>
-										<button type="button" className="btn btn-primary btn-pink btn-icon" data-toggle="modal" data-target="#new-list-item-modal" onClick={() => this.prepareNewItemModal()}>
+										<button type="button" className="btn btn-pink btn-icon" data-toggle="modal" data-target="#new-list-item-modal" onClick={() => this.prepareNewItemModal()}>
 											<i className="fas fa-plus" />
 										</button>
 									</div>
 									<div>
-										<button type="button" className="btn btn-primary btn-pink btn-icon" data-toggle="modal" data-target="#edit-list-name-modal" onClick={() => this.focusInput('list-name')}>
+										<button type="button" className="btn btn-pink btn-icon" data-toggle="modal" data-target="#edit-list-name-modal" onClick={() => this.focusInput('list-name')}>
 											<i className="fas fa-edit" />
 										</button>
 									</div>
 									<div>
-										<button type="button" className="btn btn-primary btn-pink btn-icon" data-toggle="modal" data-target="#delete-list-modal">
+										<button type="button" className="btn btn-pink btn-icon" data-toggle="modal" data-target="#delete-list-modal">
 											<i className="fas fa-trash" />
 										</button>
 									</div>
@@ -129,7 +129,7 @@ export default class List extends React.Component<any, ListState> {
 												{item.content}
 											</div>
 											<div className="p-2 ListItem-Control">
-												<button type="button" className="btn btn-primary btn-pink btn-icon" data-toggle="modal" data-target="#edit-delete-item-modal" onClick={() => { this.focusInput('item-content'); this.setState({ editingItemID: item.listItemID }) }}>
+												<button type="button" className="btn btn-pink btn-icon" data-toggle="modal" data-target="#edit-delete-item-modal" onClick={() => { this.focusInput('item-content'); this.setState({ editingItemID: item.listItemID }) }}>
 													<i className="fas fa-ellipsis-h" />
 												</button>
 											</div>
