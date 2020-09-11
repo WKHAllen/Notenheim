@@ -121,9 +121,10 @@ export default class List extends React.Component<any, ListState> {
 									<li key={item.listItemID}>
 										<div className="d-flex ListItem">
 											<div className="p-2">
-												<div className="form-check">
-													<input className="form-check-input ListItem-Check" type="checkbox" id={`checked-${item.listItemID}`} onChange={() => this.checkListItem(item.listItemID)} checked={item.checked} />
-												</div>
+												<label className="checkbox-container">
+													<input type="checkbox" id={`checked-${item.listItemID}`} onChange={() => this.checkListItem(item.listItemID)} checked={item.checked} />
+													<span className="checkmark"></span>
+												</label>
 											</div>
 											<div className="p-2 flex-grow-1">
 												{item.content}
