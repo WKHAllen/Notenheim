@@ -37,6 +37,9 @@ interface ListState {
 	editNameFormGood: boolean,
 	editNameSubmitClicked: boolean,
 	deleteListClicked: boolean,
+	editItemFormGood: boolean,
+	editItemSubmitClicked: boolean,
+	editingItemID: string,
 	listInfo: ListInfoWithIDs | null
 }
 
@@ -51,6 +54,9 @@ export default class List extends React.Component<any, ListState> {
 			editNameFormGood: true,
 			editNameSubmitClicked: false,
 			deleteListClicked: false,
+			editItemFormGood: true,
+			editItemSubmitClicked: false,
+			editingItemID: '',
 			listInfo: null
 		};
 	}
@@ -121,7 +127,7 @@ export default class List extends React.Component<any, ListState> {
 												{item.content}
 											</div>
 											<div className="p-2 ListItem-Control">
-												<button type="button" className="btn btn-primary btn-pink btn-icon">
+												<button type="button" className="btn btn-primary btn-pink btn-icon" data-toggle="modal" data-target="#edit-delete-item-modal" onClick={() => this.setState({ editingItemID: item.listItemID })}>
 													<i className="fas fa-ellipsis-h" />
 												</button>
 											</div>
@@ -197,6 +203,30 @@ export default class List extends React.Component<any, ListState> {
 								<div className="modal-footer">
 									<button type="button" className="btn btn-purple" data-dismiss="modal">Cancel</button>
 									<button type="button" className="btn btn-pink" onClick={() => this.deleteList()} data-dismiss="modal">Delete</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					{/* Edit/delete list item modal */}
+					<div className="modal fade ListModal" id="edit-delete-item-modal" tabIndex={-1} role="dialog" aria-labelledby="edit-delete-item-modal-label" aria-hidden="true">
+						<div className="modal-dialog" role="document">
+							<div className="modal-content">
+								<div className="modal-header">
+									<h5 className="modal-title" id="edit-delete-item-modal-label">Edit item</h5>
+									<button type="button" className="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true" className="times">&times;</span>
+									</button>
+								</div>
+								<div className="modal-body">
+									<div className="form-group">
+										<label htmlFor="item-content">Item content</label>
+										<input type="text" className="form-control" id="item-content" name="item-content" maxLength={1023} onChange={() => this.checkEditItemForm()} defaultValue={this.getItemContent(this.state.editingItemID)} onKeyDown={event => this.detectSubmit(event, 'edit-item-button')} />
+									</div>
+								</div>
+								<div className="modal-footer">
+									<button type="button" className="btn btn-blue" data-dismiss="modal">Cancel</button>
+									<button type="button" className="btn btn-purple" data-dismiss="modal" id="edit-item-button" onClick={() => this.editListItem()} disabled={!this.state.editItemFormGood || this.state.editItemSubmitClicked}>Edit</button>
+									<button type="button" className="btn btn-pink" data-dismiss="modal">Delete</button>
 								</div>
 							</div>
 						</div>
@@ -431,6 +461,56 @@ export default class List extends React.Component<any, ListState> {
 			this.setState({
 				listInfo
 			});
+		}
+	}
+
+	private getItemContent(listItemID: string): string {
+		if (this.state.listInfo !== null) {
+			for (const item of this.state.listInfo.items) {
+				if (item.listItemID === listItemID) {
+					return item.content;
+				}
+			}
+			return '';
+		} else {
+			return '';
+		}
+	}
+
+	private async checkEditItemForm(): Promise<void> {
+		const itemContent = (document.getElementById('item-content') as HTMLInputElement).value;
+
+		this.setState({
+			editItemFormGood: itemContent.length >= 1
+		});
+	}
+
+	private async editListItem(): Promise<void> {
+		this.setState({
+			editItemSubmitClicked: true
+		});
+
+		const itemContent = (document.getElementById('item-content') as HTMLInputElement).value;
+		const res = await requestAPI('/editListItem', {
+			listItemID: this.state.editingItemID,
+			newContent: itemContent
+		});
+
+		this.setState({
+			editItemSubmitClicked: false
+		});
+
+		if (res.error === null) {
+			hideAPIError();
+			this.getListInfo();
+		} else {
+			showAPIError(res.error);
+		}
+	}
+
+	private detectSubmit(event: React.KeyboardEvent<HTMLInputElement>, submitButtonID: string) {
+		if (event.keyCode === 13) {
+			(document.getElementById(submitButtonID) as HTMLButtonElement).click();
 		}
 	}
 }
