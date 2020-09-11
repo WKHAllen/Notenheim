@@ -24,13 +24,13 @@ input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, .bt
 	color: white !important;
 }
 
-.btn-blue:hover {
+.btn-blue:not(:disabled):hover {
 	background-color: #0f3789 !important;
 	border-color: #0f3789 !important;
 	color: white !important;
 }
 
-.btn-blue:active {
+.btn-blue:not(:disabled):active {
 	background-color: #0e2c69 !important;
 	border-color: #0e2c69 !important;
 	color: white !important;
@@ -42,13 +42,13 @@ input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, .bt
 	color: white !important;
 }
 
-.btn-purple:hover {
+.btn-purple:not(:disabled):hover {
 	background-color: #5b3f76 !important;
 	border-color: #5b3f76 !important;
 	color: white !important;
 }
 
-.btn-purple:active {
+.btn-purple:not(:disabled):active {
 	background-color: #513769 !important;
 	border-color: #513769 !important;
 	color: white !important;
@@ -60,12 +60,12 @@ input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, .bt
 	color: white !important;
 }
 
-.btn-pink:hover {
+.btn-pink:not(:disabled):hover {
 	background-color: #c20366 !important;
 	border-color: #c20366 !important;
 }
 
-.btn-pink:hover {
+.btn-pink:not(:disabled):hover {
 	background-color: #ac025a !important;
 	border-color: #ac025a !important;
 }
