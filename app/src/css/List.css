@@ -136,3 +136,12 @@
 	-ms-transform: rotate(45deg);
 	transform: rotate(45deg);
 }
+
+.Draggable-Helper {
+	list-style-type: none;
+	border-radius: 8px;
+}
+
+.Draggable-Helper li, .Draggable-Helper button {
+	border-radius: 8px;
+}

@@ -147,6 +147,8 @@ export default class List extends React.Component<any, ListState> {
 								onSortEnd={(end, event) => this.updateList(end, event)}
 								distance={5}
 								useWindowAsScrollContainer={true}
+								helperClass="Draggable-Helper"
+								lockAxis="y"
 								checkboxUpdate={listItemID => this.checkListItem(listItemID)}
 								editDeleteOnClick={listItemID => { this.focusInput('item-content'); this.setState({ editingItemID: listItemID }) }} />
 						</ul>
