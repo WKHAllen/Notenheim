@@ -43,6 +43,10 @@
 	background-color: #9400a8;
 }
 
+.ListItem-Content {
+	overflow-wrap: anywhere;
+}
+
 .ListItem div:not(.ListItem-Control) {
 	padding: 0 8px !important;
 }
