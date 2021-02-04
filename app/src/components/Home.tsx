@@ -4,6 +4,7 @@ import { requestAPI } from "../requestAPI";
 import { showAPIError } from "../apiError";
 import { Link } from "react-router-dom";
 import { getCookie } from "../cookie";
+import HomeIndex from "./HomeIndex";
 
 interface HomeState {
   refreshClicked: boolean;
@@ -34,17 +35,7 @@ export default class Home extends React.Component<any, HomeState> {
 
   public render() {
     if (getCookie("loggedIn") !== "true") {
-      return (
-        <div className="Home">
-          <h1 className="mb-3">Notenheim</h1>
-          <p>
-            Hello! Welcome to Notenheim. Through this app, you can keep track of
-            all your notes and lists from one place, across all devices. If you
-            have an account, you can <Link to="/login">sign in here</Link>. If
-            you do not, you can <Link to="/register">create one here</Link>.
-          </p>
-        </div>
-      );
+      return <HomeIndex />;
     } else if (this.state.lists === null) {
       return (
         <div className="Home">
