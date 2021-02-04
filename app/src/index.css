@@ -1,110 +1,116 @@
 body {
-	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	color: #dfdfdf;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #dfdfdf;
 }
 
 ::selection {
-	background-color: #d70270;
+  background-color: #d70270;
 }
 
-::-moz-selection { /* Firefox */
-	background-color: #d70270;
+::-moz-selection {
+  /* Firefox */
+  background-color: #d70270;
 }
 
 ::-webkit-scrollbar {
-	width: 10px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-	background-color: #300063;
+  background-color: #300063;
 }
 
 ::-webkit-scrollbar-thumb {
-	background-color: #4700c2;
+  background-color: #4700c2;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background-color: #2800ab;
+  background-color: #2800ab;
 }
 
 ::-webkit-scrollbar-thumb:active {
-	background-color: #2500a0;
+  background-color: #2500a0;
 }
 
-input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, .btn:focus {
-	box-shadow: 0 0 0 3pt #7820d0 !important;
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+.btn:focus {
+  box-shadow: 0 0 0 3pt #7820d0 !important;
 }
 
 .btn-blue {
-	background-color: #0038a8 !important;
-	border-color: #0038a8 !important;
-	color: white !important;
+  background-color: #0038a8 !important;
+  border-color: #0038a8 !important;
+  color: white !important;
 }
 
 .btn-blue:not(:disabled):hover {
-	background-color: #0f3789 !important;
-	border-color: #0f3789 !important;
-	color: white !important;
+  background-color: #0f3789 !important;
+  border-color: #0f3789 !important;
+  color: white !important;
 }
 
 .btn-blue:not(:disabled):active {
-	background-color: #0e2c69 !important;
-	border-color: #0e2c69 !important;
-	color: white !important;
+  background-color: #0e2c69 !important;
+  border-color: #0e2c69 !important;
+  color: white !important;
 }
 
 .btn-purple {
-	background-color: #734f96 !important;
-	border-color: #734f96 !important;
-	color: white !important;
+  background-color: #734f96 !important;
+  border-color: #734f96 !important;
+  color: white !important;
 }
 
 .btn-purple:not(:disabled):hover {
-	background-color: #5b3f76 !important;
-	border-color: #5b3f76 !important;
-	color: white !important;
+  background-color: #5b3f76 !important;
+  border-color: #5b3f76 !important;
+  color: white !important;
 }
 
 .btn-purple:not(:disabled):active {
-	background-color: #513769 !important;
-	border-color: #513769 !important;
-	color: white !important;
+  background-color: #513769 !important;
+  border-color: #513769 !important;
+  color: white !important;
 }
 
 .btn-pink {
-	background-color: #d70270 !important;
-	border-color: #d70270 !important;
-	color: white !important;
+  background-color: #d70270 !important;
+  border-color: #d70270 !important;
+  color: white !important;
 }
 
 .btn-pink:not(:disabled):hover {
-	background-color: #c20366 !important;
-	border-color: #c20366 !important;
+  background-color: #c20366 !important;
+  border-color: #c20366 !important;
 }
 
 .btn-pink:not(:disabled):hover {
-	background-color: #ac025a !important;
-	border-color: #ac025a !important;
+  background-color: #ac025a !important;
+  border-color: #ac025a !important;
 }
 
 .btn-icon {
-	padding: 0;
-	width: 36px;
-	height: 36px;
-	text-align: center;
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  text-align: center;
 }
 
 .hidden {
-	display: none;
+  display: none;
 }
 
 .loading {
-	text-align: center !important;
+  text-align: center !important;
 }
 
 .times {
-	color: white !important;
+  color: white !important;
 }

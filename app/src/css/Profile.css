@@ -1,24 +1,24 @@
 .Profile h1 {
-	text-align: center;
+  text-align: center;
 }
 
 .Profile ul {
-	text-align: center;
-	color: #835fa6;
-	padding-inline-start: 0;
+  text-align: center;
+  color: #835fa6;
+  padding-inline-start: 0;
 }
 
 .Profile ul li {
-	list-style: none;
-	display: inline;
+  list-style: none;
+  display: inline;
 }
 
 .Profile ul li:after {
-	content: " \2022  ";
-	padding: 0 8px;
-	color: #d70270;
+  content: " \2022  ";
+  padding: 0 8px;
+  color: #d70270;
 }
 
 .Profile ul li:last-child:after {
-	content: none;
+  content: none;
 }

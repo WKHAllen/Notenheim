@@ -1,11 +1,11 @@
 .App {
-	background-color: #001080;
-	color: white;
-	min-height: 100vh;
+  background-color: #001080;
+  color: white;
+  min-height: 100vh;
 }
 
 .App-Body {
-	padding: 32px;
-	max-width: 800px;
-	margin: auto;
+  padding: 32px;
+  max-width: 800px;
+  margin: auto;
 }

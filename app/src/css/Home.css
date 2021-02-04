@@ -1,62 +1,63 @@
 .Home h1 {
-	text-align: center;
+  text-align: center;
 }
 
 .Home p {
-	text-align: justify;
+  text-align: justify;
 }
 
-.Home-Lists, .Home-Lists * {
-	border-radius: 8px;
+.Home-Lists,
+.Home-Lists * {
+  border-radius: 8px;
 }
 
 .Home-Lists ul {
-	list-style-type: none;
-	background-color: #5100a8;
-	margin: 0;
-	padding: 0;
-	font-size: 14pt;
+  list-style-type: none;
+  background-color: #5100a8;
+  margin: 0;
+  padding: 0;
+  font-size: 14pt;
 }
 
 .Home-Lists ul li:first-child {
-	padding: 16px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .Home-Lists ul li h2 {
-	margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .Home-Lists ul li a {
-	text-decoration: none;
-	display: block;
-	width: 100%;
-	height: 100%;
-	padding: 8px;
-	color: white;
-	background-color: #5100a8;
-	transition: all 0.4s ease 0s;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  color: white;
+  background-color: #5100a8;
+  transition: all 0.4s ease 0s;
 }
 
 .Home-Lists ul li a:hover {
-	background-color: #9400a8;
+  background-color: #9400a8;
 }
 
 .Home-Lists ul li a:active {
-	background-color: #a80089;
+  background-color: #a80089;
 }
 
 .Home-List {
-	text-align: justify;
+  text-align: justify;
 }
 
 .Home-List-Timestamp {
-	white-space: nowrap;
-	color: #7f8faf;
+  white-space: nowrap;
+  color: #7f8faf;
 }
 
 .Home-List-Buttons > *:not(:first-child) {
-	margin-left: 16px;
+  margin-left: 16px;
 }

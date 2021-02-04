@@ -1,8 +1,8 @@
 .Success {
-	background-color: green;
-	color: white;
+  background-color: green;
+  color: white;
 }
 
 .Success button {
-	box-shadow: none !important;
+  box-shadow: none !important;
 }
