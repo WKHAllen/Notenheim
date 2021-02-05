@@ -1,10 +1,18 @@
 .App {
   background-color: #001080;
   color: white;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.App-Body-Container {
+  flex: 1 1 auto;
 }
 
 .App-Body {
   padding: 32px;
   max-width: 800px;
   margin: auto;
+  height: 100%;
 }

@@ -22,30 +22,32 @@ export default class App extends React.Component {
       <Router>
         <div className="App">
           <Header />
-          <div className="App-Body">
-            <Success />
-            <Error />
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/logout" component={Logout} />
-              <Route exact path="/verify/:verifyID" component={Verify} />
-              <Route
-                exact
-                path="/resetPassword"
-                component={PasswordResetRequest}
-              />
-              <Route
-                exact
-                path="/resetPassword/:resetID"
-                component={PasswordReset}
-              />
-              <Route exact path="/profile" component={Profile} />
-              <Route exact path="/new" component={NewList} />
-              <Route exact path="/list/:listID" component={List} />
-              <Route component={NotFound} />
-            </Switch>
+          <div className="App-Body-Container">
+            <div className="App-Body">
+              <Success />
+              <Error />
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/register" component={Register} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/logout" component={Logout} />
+                <Route exact path="/verify/:verifyID" component={Verify} />
+                <Route
+                  exact
+                  path="/resetPassword"
+                  component={PasswordResetRequest}
+                />
+                <Route
+                  exact
+                  path="/resetPassword/:resetID"
+                  component={PasswordReset}
+                />
+                <Route exact path="/profile" component={Profile} />
+                <Route exact path="/new" component={NewList} />
+                <Route exact path="/list/:listID" component={List} />
+                <Route component={NotFound} />
+              </Switch>
+            </div>
           </div>
         </div>
       </Router>

@@ -1,4 +1,5 @@
 .Header {
+  flex: 0 1 auto;
   padding: 16px;
   background-color: #1850c8;
   display: flex;
