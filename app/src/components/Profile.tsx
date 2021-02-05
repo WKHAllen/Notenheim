@@ -50,7 +50,7 @@ export default class Profile extends React.Component<any, ProfileState> {
       return (
         <div className="Profile">
           <h1 className="mb-3">Profile</h1>
-          <p className="loading">Getting profile data...</p>
+          <p className="loading">Fetching profile data...</p>
         </div>
       );
     } else {

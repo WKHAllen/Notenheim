@@ -148,7 +148,7 @@ export default class List extends React.Component<any, ListState> {
       return (
         <div className="List">
           <h1 className="mb-3">List</h1>
-          <p className="loading">Getting list data...</p>
+          <p className="loading">Fetching list data...</p>
         </div>
       );
     } else {
@@ -221,8 +221,12 @@ export default class List extends React.Component<any, ListState> {
                 lockAxis="y"
                 checkboxUpdate={(listItemID) => this.checkListItem(listItemID)}
                 editDeleteOnClick={(listItemID) => {
-                  this.focusInput("item-content");
                   this.setState({ editingItemID: listItemID });
+                  this.setInputValue(
+                    "item-content",
+                    this.getItemContent(listItemID)
+                  );
+                  this.focusInput("item-content");
                 }}
               />
             </ul>
@@ -778,5 +782,9 @@ export default class List extends React.Component<any, ListState> {
       () => (document.getElementById(inputID) as HTMLInputElement).focus(),
       500
     );
+  }
+
+  private setInputValue(inputID: string, value: string): void {
+    (document.getElementById(inputID) as HTMLInputElement).value = value;
   }
 }
