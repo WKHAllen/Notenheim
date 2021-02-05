@@ -63,7 +63,7 @@ export default class Login extends React.Component<any, LoginState> {
         </form>
         <small>
           If you do not have an account, please{" "}
-          <Link to="/register">register here</Link>.
+          <Link to="/register">create one here</Link>.
         </small>
         <br />
         <small>

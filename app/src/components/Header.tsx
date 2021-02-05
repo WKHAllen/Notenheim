@@ -15,10 +15,9 @@ export default class Header extends React.Component {
           <nav>
             <ul className="Nav-Links">
               <li>
-                <Link to="/login">Login</Link>
-              </li>
-              <li>
-                <Link to="/register">Register</Link>
+                <Link to="/login">
+                  <i className="fas fa-sign-in-alt"></i>
+                </Link>
               </li>
             </ul>
           </nav>
@@ -39,10 +38,14 @@ export default class Header extends React.Component {
                 </Link>
               </li>
               <li>
-                <Link to="/profile">Profile</Link>
+                <Link to="/profile">
+                  <i className="fas fa-user"></i>
+                </Link>
               </li>
               <li>
-                <Link to="/logout">Logout</Link>
+                <Link to="/logout">
+                  <i className="fas fa-sign-out-alt"></i>
+                </Link>
               </li>
             </ul>
           </nav>
