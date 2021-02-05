@@ -47,9 +47,7 @@ export default class NewList extends React.Component<any, NewListState> {
               onChange={() => this.checkForm()}
               autoFocus
             />
-            <small className="form-text text-muted">
-              You can change this later.
-            </small>
+            <small className="form-text">You can change this later.</small>
           </div>
           <button
             type="submit"

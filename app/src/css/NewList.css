@@ -1,3 +1,7 @@
 .NewList h1 {
   text-align: center;
 }
+
+.NewList small {
+  color: #975fd0;
+}
