@@ -16,7 +16,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
     "react-sortable-hoc": "^1.11.0",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "web-vitals": "^1.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

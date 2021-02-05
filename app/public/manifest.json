@@ -1,6 +1,7 @@
 {
+  "name": "Notenheim",
   "short_name": "Notenheim",
-  "name": "Keep track of all your notes and lists from one place, across all devices",
+  "description": "Keep track of all your notes and lists from one place, across all devices",
   "icons": [
     {
       "src": "favicon.ico",
