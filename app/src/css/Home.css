@@ -2,10 +2,6 @@
   text-align: center;
 }
 
-.Home p {
-  text-align: justify;
-}
-
 .Home-Lists,
 .Home-Lists * {
   border-radius: 8px;
@@ -47,10 +43,6 @@
 
 .Home-Lists ul li a:active {
   background-color: #a80089;
-}
-
-.Home-List {
-  text-align: justify;
 }
 
 .Home-List-Timestamp {
