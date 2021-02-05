@@ -11,6 +11,8 @@ import { requestAPI } from "../requestAPI";
 import { getCookie } from "../cookie";
 import { hideAPIError, showAPIError } from "../apiError";
 
+const refreshInterval = 60 * 1000; // One minute
+
 interface ListItem {
   listItemID: string;
   content: string;
@@ -107,6 +109,8 @@ const SortableList = SortableContainer(
 );
 
 export default class List extends React.Component<any, ListState> {
+  private refreshTimeout: NodeJS.Timeout;
+
   constructor(props: any) {
     super(props);
 
@@ -123,6 +127,8 @@ export default class List extends React.Component<any, ListState> {
       deleteListItemClicked: false,
       listInfo: null,
     };
+
+    this.refreshTimeout = setTimeout(() => {}, 0);
   }
 
   public componentWillMount() {
@@ -490,6 +496,8 @@ export default class List extends React.Component<any, ListState> {
   }
 
   private async getListInfo(): Promise<void> {
+    clearTimeout(this.refreshTimeout);
+
     this.setState({
       refreshClicked: true,
     });
@@ -510,6 +518,8 @@ export default class List extends React.Component<any, ListState> {
       });
       showAPIError(res.error);
     }
+
+    this.refreshTimeout = setTimeout(() => this.getListInfo(), refreshInterval);
   }
 
   // private async updateList(newList: ListItem[]): Promise<void> {

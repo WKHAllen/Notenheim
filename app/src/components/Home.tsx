@@ -1,10 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "../css/Home.css";
 import { requestAPI } from "../requestAPI";
-import { showAPIError } from "../apiError";
-import { Link } from "react-router-dom";
+import { showAPIError, hideAPIError } from "../apiError";
 import { getCookie } from "../cookie";
 import HomeIndex from "./HomeIndex";
+
+const refreshInterval = 60 * 1000; // One minute
 
 interface HomeState {
   refreshClicked: boolean;
@@ -18,6 +20,8 @@ interface HomeState {
 }
 
 export default class Home extends React.Component<any, HomeState> {
+  private refreshTimeout: NodeJS.Timeout;
+
   constructor(props: any) {
     super(props);
 
@@ -25,6 +29,8 @@ export default class Home extends React.Component<any, HomeState> {
       refreshClicked: false,
       lists: null,
     };
+
+    this.refreshTimeout = setTimeout(() => {}, 0);
   }
 
   public componentDidMount() {
@@ -89,23 +95,28 @@ export default class Home extends React.Component<any, HomeState> {
   }
 
   private async getLists(): Promise<void> {
+    clearTimeout(this.refreshTimeout);
+
     this.setState({
       refreshClicked: true,
     });
 
-    requestAPI("/getLists").then((res) => {
-      this.setState({
-        refreshClicked: false,
-      });
+    const res = await requestAPI("/getLists");
 
-      if (res.error === null) {
-        this.setState({
-          lists: res.lists,
-        });
-      } else {
-        showAPIError(res.error);
-      }
+    this.setState({
+      refreshClicked: false,
     });
+
+    if (res.error === null) {
+      hideAPIError();
+      this.setState({
+        lists: res.lists,
+      });
+    } else {
+      showAPIError(res.error);
+    }
+
+    this.refreshTimeout = setTimeout(() => this.getLists(), refreshInterval);
   }
 
   private formatTimestamp(timestamp: number): string {
