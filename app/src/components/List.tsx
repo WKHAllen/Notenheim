@@ -65,7 +65,9 @@ const SortableListItem = SortableElement(
             <span className="checkmark" />
           </label>
         </div>
-        <div className="p-2 flex-grow-1 ListItem-Content">{item.content}</div>
+        <div className="p-2 flex-grow-1 ListItem-Content">
+          <label htmlFor={`checked-${item.listItemID}`}>{item.content}</label>
+        </div>
         <div className="p-2 ListItem-Control">
           <button
             type="button"
@@ -73,6 +75,7 @@ const SortableListItem = SortableElement(
             data-toggle="modal"
             data-target="#edit-delete-item-modal"
             onClick={() => editDeleteOnClick(item.listItemID)}
+            aria-label="Edit/delete item"
           >
             <i className="fas fa-ellipsis-h" />
           </button>
@@ -164,6 +167,7 @@ export default class List extends React.Component<any, ListState> {
                       type="button"
                       className="btn btn-pink btn-icon"
                       onClick={() => this.props.history.push("/")}
+                      aria-label="Back"
                     >
                       <i className="fas fa-chevron-left" />
                     </button>
@@ -174,6 +178,7 @@ export default class List extends React.Component<any, ListState> {
                       className="btn btn-pink btn-icon"
                       onClick={() => this.getListInfo()}
                       disabled={this.state.refreshClicked}
+                      aria-label="Refresh"
                     >
                       <i className="fas fa-sync-alt" />
                     </button>
@@ -185,6 +190,7 @@ export default class List extends React.Component<any, ListState> {
                       data-toggle="modal"
                       data-target="#new-list-item-modal"
                       onClick={() => this.prepareNewItemModal()}
+                      aria-label="New item"
                     >
                       <i className="fas fa-plus" />
                     </button>
@@ -196,6 +202,7 @@ export default class List extends React.Component<any, ListState> {
                       data-toggle="modal"
                       data-target="#edit-list-name-modal"
                       onClick={() => this.focusInput("list-name")}
+                      aria-label="Edit list name"
                     >
                       <i className="fas fa-edit" />
                     </button>
@@ -206,29 +213,34 @@ export default class List extends React.Component<any, ListState> {
                       className="btn btn-pink btn-icon"
                       data-toggle="modal"
                       data-target="#delete-list-modal"
+                      aria-label="Delete list"
                     >
                       <i className="fas fa-trash" />
                     </button>
                   </div>
                 </div>
               </li>
-              <SortableList
-                items={this.state.listInfo.items}
-                onSortEnd={(end, event) => this.updateList(end, event)}
-                distance={5}
-                useWindowAsScrollContainer={true}
-                helperClass="Draggable-Helper"
-                lockAxis="y"
-                checkboxUpdate={(listItemID) => this.checkListItem(listItemID)}
-                editDeleteOnClick={(listItemID) => {
-                  this.setState({ editingItemID: listItemID });
-                  this.setInputValue(
-                    "item-content",
-                    this.getItemContent(listItemID)
-                  );
-                  this.focusInput("item-content");
-                }}
-              />
+              <li>
+                <SortableList
+                  items={this.state.listInfo.items}
+                  onSortEnd={(end, event) => this.updateList(end, event)}
+                  distance={5}
+                  useWindowAsScrollContainer={true}
+                  helperClass="Draggable-Helper"
+                  lockAxis="y"
+                  checkboxUpdate={(listItemID) =>
+                    this.checkListItem(listItemID)
+                  }
+                  editDeleteOnClick={(listItemID) => {
+                    this.setState({ editingItemID: listItemID });
+                    this.setInputValue(
+                      "item-content",
+                      this.getItemContent(listItemID)
+                    );
+                    this.focusInput("item-content");
+                  }}
+                />
+              </li>
             </ul>
           </div>
           {/* New list item modal */}
@@ -292,7 +304,7 @@ export default class List extends React.Component<any, ListState> {
                       this.state.newItemSubmitClicked
                     }
                   >
-                    Create item
+                    New item
                   </button>
                 </div>
               </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../css/PasswordReset.css";
-import { requestAPI, requestAPIForm } from "../requestAPI";
+import { requestAPI } from "../requestAPI";
 import { hideAPIError, showAPIError } from "../apiError";
 
 interface PasswordResetState {

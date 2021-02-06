@@ -62,6 +62,7 @@ export default class Home extends React.Component<any, HomeState> {
                     type="button"
                     className="btn btn-pink btn-icon"
                     onClick={() => this.props.history.push("/new")}
+                    aria-label="New list"
                   >
                     <i className="fas fa-plus" />
                   </button>
@@ -70,6 +71,7 @@ export default class Home extends React.Component<any, HomeState> {
                     className="btn btn-pink btn-icon"
                     onClick={() => this.getLists()}
                     disabled={this.state.refreshClicked}
+                    aria-label="Refresh"
                   >
                     <i className="fas fa-sync-alt" />
                   </button>

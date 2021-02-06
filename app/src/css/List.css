@@ -47,6 +47,11 @@
   overflow-wrap: anywhere;
 }
 
+.ListItem-Content label {
+  display: block;
+  margin-bottom: 0;
+}
+
 .ListItem div:not(.ListItem-Control) {
   padding: 0 8px !important;
 }
