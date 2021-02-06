@@ -14,9 +14,13 @@ export async function requestAPI(
   const requestURL = params
     ? `/api${url}?` + new URLSearchParams(params)
     : `/api${url}`;
-  const response = await fetch(requestURL);
-  const responseJSON = (await response.json()) as APIResponse;
-  return responseJSON;
+  try {
+    const response = await fetch(requestURL);
+    const responseJSON = (await response.json()) as APIResponse;
+    return responseJSON;
+  } catch (err) {
+    return { error: "Failed to fetch data" };
+  }
 }
 
 export async function requestAPIForm(
