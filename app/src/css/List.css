@@ -2,6 +2,10 @@
   text-align: center;
 }
 
+.List h1 p {
+  margin-bottom: 0;
+}
+
 .ListItems,
 .ListItems * {
   border-radius: 8px;
@@ -49,6 +53,10 @@
 
 .ListItem-Content label {
   display: block;
+  margin-bottom: 0;
+}
+
+.ListItem-Content p {
   margin-bottom: 0;
 }
 

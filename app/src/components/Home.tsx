@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+import gfm from "remark-gfm";
 import "../css/Home.css";
 import { requestAPI } from "../requestAPI";
 import { showAPIError, hideAPIError } from "../apiError";
@@ -81,7 +83,9 @@ export default class Home extends React.Component<any, HomeState> {
                 <li key={item.listID}>
                   <Link to={`/list/${item.listID}`}>
                     <div className="d-flex Home-List">
-                      <div className="p-2 flex-grow-1">{item.title}</div>
+                      <div className="p-2 flex-grow-1">
+                        <ReactMarkdown plugins={[gfm]} children={item.title} />
+                      </div>
                       <div className="p-2 Home-List-Timestamp">
                         {this.formatTimestamp(item.updateTimestamp)}
                       </div>

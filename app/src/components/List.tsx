@@ -6,6 +6,8 @@ import {
   SortEnd,
   SortEvent,
 } from "react-sortable-hoc";
+import ReactMarkdown from "react-markdown";
+import gfm from "remark-gfm";
 import "../css/List.css";
 import { requestAPI } from "../requestAPI";
 import { getCookie } from "../cookie";
@@ -66,7 +68,9 @@ const SortableListItem = SortableElement(
           </label>
         </div>
         <div className="p-2 flex-grow-1 ListItem-Content">
-          <label htmlFor={`checked-${item.listItemID}`}>{item.content}</label>
+          <label htmlFor={`checked-${item.listItemID}`}>
+            <ReactMarkdown plugins={[gfm]} children={item.content} />
+          </label>
         </div>
         <div className="p-2 ListItem-Control">
           <button
@@ -157,7 +161,12 @@ export default class List extends React.Component<any, ListState> {
     } else {
       return (
         <div className="List">
-          <h1 className="mb-3">{this.state.listInfo.title}</h1>
+          <h1 className="mb-3">
+            <ReactMarkdown
+              plugins={[gfm]}
+              children={this.state.listInfo.title}
+            />
+          </h1>
           <div className="ListItems">
             <ul>
               <li>
