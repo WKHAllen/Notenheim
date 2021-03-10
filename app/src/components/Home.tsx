@@ -84,7 +84,11 @@ export default class Home extends React.Component<any, HomeState> {
                   <Link to={`/list/${item.listID}`}>
                     <div className="d-flex Home-List">
                       <div className="p-2 flex-grow-1">
-                        <ReactMarkdown plugins={[gfm]} children={item.title} />
+                        <ReactMarkdown
+                          plugins={[gfm]}
+                          children={item.title}
+                          linkTarget="_blank"
+                        />
                       </div>
                       <div className="p-2 Home-List-Timestamp">
                         {this.formatTimestamp(item.updateTimestamp)}

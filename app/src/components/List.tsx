@@ -69,7 +69,11 @@ const SortableListItem = SortableElement(
         </div>
         <div className="p-2 flex-grow-1 ListItem-Content">
           <label htmlFor={`checked-${item.listItemID}`}>
-            <ReactMarkdown plugins={[gfm]} children={item.content} />
+            <ReactMarkdown
+              plugins={[gfm]}
+              children={item.content}
+              linkTarget="_blank"
+            />
           </label>
         </div>
         <div className="p-2 ListItem-Control">
@@ -165,6 +169,7 @@ export default class List extends React.Component<any, ListState> {
             <ReactMarkdown
               plugins={[gfm]}
               children={this.state.listInfo.title}
+              linkTarget="_blank"
             />
           </h1>
           <div className="ListItems">
