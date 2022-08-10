@@ -9,6 +9,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Cookie maximum age
+const cookieAge = 33 * 365.242 * 24 * 60 * 60 * 1000
+
 // Register registers a user
 func Register(c *gin.Context) {
 	params, failure := helper.QueriesJSONError(c, "email", "password")
@@ -44,8 +47,7 @@ func Login(c *gin.Context) {
 		domain = "notenheim.com"
 	}
 
-	c.SetCookie("sessionID", sessionID, 0, "/", domain, false, true)
-	c.SetCookie("loggedIn", "true", 0, "/", domain, false, false)
+	c.SetCookie("sessionID", sessionID, cookieAge, "/", domain, false, false)
 
 	helper.JSONSuccess(c)
 }
@@ -60,8 +62,7 @@ func Logout(c *gin.Context) {
 		domain = "notenheim.com"
 	}
 
-	c.SetCookie("sessionID", "", -1, "/", domain, false, true)
-	c.SetCookie("loggedIn", "false", 0, "/", domain, false, false)
+	c.SetCookie("sessionID", "", -1, "/", domain, false, false)
 	err := services.Logout(sessionID)
 	if helper.JSONErrorDefault(c, err) { return }
 

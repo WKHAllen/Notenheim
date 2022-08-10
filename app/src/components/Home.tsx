@@ -36,13 +36,13 @@ export default class Home extends React.Component<any, HomeState> {
   }
 
   public componentDidMount() {
-    if (getCookie("loggedIn") === "true") {
+    if (getCookie("sessionID")) {
       this.getLists();
     }
   }
 
   public render() {
-    if (getCookie("loggedIn") !== "true") {
+    if (!getCookie("sessionID")) {
       return <HomeIndex />;
     } else if (this.state.lists === null) {
       return (

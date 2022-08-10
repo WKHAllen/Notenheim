@@ -20,7 +20,7 @@ export default class NewList extends React.Component<any, NewListState> {
   }
 
   public componentWillMount() {
-    if (getCookie("loggedIn") !== "true") {
+    if (!getCookie("sessionID")) {
       this.props.history.push("/login?after=/new");
     }
   }

@@ -5,7 +5,7 @@ import { getCookie } from "../cookie";
 
 export default class Header extends React.Component {
   public render() {
-    if (getCookie("loggedIn") !== "true") {
+    if (!getCookie("sessionID")) {
       return (
         <div className="Header">
           <Link to="/">

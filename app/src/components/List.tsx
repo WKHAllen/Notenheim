@@ -143,7 +143,7 @@ export default class List extends React.Component<any, ListState> {
   }
 
   public componentWillMount() {
-    if (getCookie("loggedIn") !== "true") {
+    if (!getCookie("sessionID")) {
       this.props.history.push(
         `/login?after=/list/${this.props.match.params.listID}`
       );

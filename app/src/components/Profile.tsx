@@ -26,7 +26,7 @@ export default class Profile extends React.Component<any, ProfileState> {
   }
 
   public componentWillMount() {
-    if (getCookie("loggedIn") !== "true") {
+    if (!getCookie("sessionID")) {
       this.props.history.push("/login?after=/profile");
     }
   }

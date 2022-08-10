@@ -6,7 +6,7 @@ import { getCookie } from "../cookie";
 
 export default class Logout extends React.Component<any> {
   public componentDidMount() {
-    if (getCookie("loggedIn") === "true") {
+    if (getCookie("sessionID")) {
       requestAPI("/logout").then((res) => {
         if (res.error === null) {
           this.props.history.push("/");
